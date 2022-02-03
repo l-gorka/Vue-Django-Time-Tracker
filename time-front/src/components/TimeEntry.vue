@@ -245,6 +245,11 @@ export default {
           endMinutes
         );
         end = new Date(end).getTime() / 1000;
+        if (start > end) {
+          end = this.zeroNextDay(this.dataObj.end_date).setHours(endHours, endMinutes)
+          end = new Date(end).getTime() / 1000;
+          console.log(end)
+        }
         this.dataObj.end_date = end;
         console.log(this.dataObj);
         this.saveData("date updated");
@@ -268,8 +273,13 @@ export default {
     zeroHours(timestamp) {
       console.log("timestamp", timestamp);
       let date = new Date(timestamp * 1000).setHours(0, 0);
-      date = new Date(date);
-      return date;
+      return new Date(date);
+    },
+    zeroNextDay(timestamp) {
+      let day = new Date(timestamp * 1000).setHours(0, 0);
+      day = new Date(day)      
+      day.setDate(day.getDate() + 1)
+      return new Date(day)
     },
     timeValid(timeStr) {
       if (timeStr.length === 3) {
