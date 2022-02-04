@@ -19,8 +19,13 @@
         trap-focus
       >
         <template #trigger>
-          <a :style="projectColor" @click="copyValue()" class="navbar-item" role="button">
-            <span >{{ project }}</span>
+          <a
+            :style="projectColor"
+            @click="copyValue()"
+            class="navbar-item"
+            role="button"
+          >
+            <span>{{ project }}</span>
             <b-icon icon="menu-down"></b-icon>
           </a>
         </template>
@@ -64,8 +69,6 @@
           aria-role="listitem"
           >{{ project.title }}</b-dropdown-item
         >
-
-        
       </b-dropdown>
     </div>
     <div class="column is-1">
@@ -75,16 +78,18 @@
     <div class="column is-1">
       <!-- TIME STARTED -->
       <b-input
+        ref="timeStartRef"
         @blur="setTime(startTime)"
-        @focus="timeInputFocus(startTime, $event)"
+        @focus="timeInputFocus(startTime, $refs.timeStartRef)"
         v-model="startTime"
       ></b-input>
     </div>
     <div class="column is-1">
       <!-- TIME ENDED -->
       <b-input
+      ref="timeEndRef"
         @blur="setTime(endTime)"
-        @focus="timeInputFocus(endTime, $event)"
+        @focus="timeInputFocus(endTime, $refs.timeEndRef)"
         v-model="endTime"
       ></b-input>
     </div>
@@ -95,7 +100,10 @@
           <span class="is-size-4">{{ duration }}</span>
         </button>
         <b-dropdown-item custom
-          ><b-input v-model="duration"></b-input
+          ><b-input
+            @focus="focusOnDuration($event)"
+            v-model="duration"
+          ></b-input
         ></b-dropdown-item>
       </b-dropdown>
     </div>
@@ -115,7 +123,7 @@ export default {
   mounted() {
     this.loadData();
   },
-  
+
   data() {
     return {
       // COMMON
@@ -155,7 +163,6 @@ export default {
       this.axios
         .post("http://127.0.0.1:8000/time-entries/1/update/", this.dataObj)
         .then((response) => {
-          console.log(response.data);
           this.dataObj = response.data;
           this.getProject();
           this.getDescription();
@@ -181,8 +188,7 @@ export default {
       let url = "http://127.0.0.1:8000/project-list/" + this.dataObj.project;
       this.axios.get(url).then((response) => {
         this.project = response.data.title;
-        this.projectColor = `color: ${response.data.color }`
-        console.log(response.data);
+        this.projectColor = `color: ${response.data.color}`;
       });
     },
     setProject(id) {
@@ -206,6 +212,10 @@ export default {
     },
     createProject() {},
     // DURATION DROPDOWN
+    focusOnDuration(event) {
+      this.tempValue = this.duration;
+      event.target.select();
+    },
     getDuration() {
       let timeDiff = this.dataObj.end_date - this.dataObj.start_date;
       let dHours = Math.floor(timeDiff / 60 / 60);
@@ -216,9 +226,18 @@ export default {
       this.duration = dHours + ":" + dMinutes + ":" + dSeconds;
     },
     // TIME INPUTS
-    timeInputFocus(instance, event) {
-      console.log(instance, event.target)
-      event.target.select()
+    timeInputFocus(instance, ref) {
+      this.copyValue(instance);
+      if (instance == this.startTime) {
+        this.startTime = this.startTime.replace(':', '')
+      } else {
+        this.endTime =  this.endTime.replace(':', '')
+      }
+      
+      this.$nextTick(() => {
+        ref.$refs.input.select()
+      })
+      
     },
     getTime() {
       let startHours = new Date(this.dataObj.start_date * 1000).getHours();
@@ -232,6 +251,11 @@ export default {
     setTime(timeInstance) {
       if (!(this.tempValue == timeInstance)) {
         let [startHours, startMinutes] = this.timeValid(this.startTime);
+        if (startHours == false && startMinutes == false) {
+          this.startTime = this.tempValue;
+
+          return false;
+        }
         let start = this.zeroHours(this.dataObj.start_date).setHours(
           startHours,
           startMinutes
@@ -240,27 +264,34 @@ export default {
         this.dataObj.start_date = start;
 
         let [endHours, endMinutes] = this.timeValid(this.endTime);
+        if (endHours == false && sendinutes == false) {
+          this.endTime = this.tempValue;
+
+          return false;
+        }
         let end = this.zeroHours(this.dataObj.end_date).setHours(
           endHours,
           endMinutes
         );
         end = new Date(end).getTime() / 1000;
         if (start > end) {
-          end = this.zeroNextDay(this.dataObj.end_date).setHours(endHours, endMinutes)
+          end = this.zeroNextDay(this.dataObj.end_date).setHours(
+            endHours,
+            endMinutes
+          );
           end = new Date(end).getTime() / 1000;
-          console.log(end)
+
         }
         this.dataObj.end_date = end;
-        console.log(this.dataObj);
         this.saveData("date updated");
       } else {
-        this.timeInstance = this.tempValue;
+        this.getTime()
+        
       }
     },
     // HELPERS
     copyValue(value) {
       this.tempValue = value;
-      console.log(this.tempValue);
     },
     toast(toastMessage) {
       this.$buefy.toast.open({
@@ -271,15 +302,15 @@ export default {
       });
     },
     zeroHours(timestamp) {
-      console.log("timestamp", timestamp);
+      
       let date = new Date(timestamp * 1000).setHours(0, 0);
       return new Date(date);
     },
     zeroNextDay(timestamp) {
       let day = new Date(timestamp * 1000).setHours(0, 0);
-      day = new Date(day)      
-      day.setDate(day.getDate() + 1)
-      return new Date(day)
+      day = new Date(day);
+      day.setDate(day.getDate() + 1);
+      return new Date(day);
     },
     timeValid(timeStr) {
       if (timeStr.length === 3) {
