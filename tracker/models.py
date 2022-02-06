@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from unixtimestampfield import UnixTimeStampField
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from datetime import datetime
 
 # Create your models here.
@@ -55,6 +55,14 @@ def time_entry_save(sender, instance, **kwargs):
     difference = instance.time_difference()
     day_entry.time_total += difference
     day_entry.save()
-    print(day_entry.time_total)
 
-post_save.connect(time_entry_save, sender=TimeEntry)   
+def time_entry_delete(sender, instance, **kwargs):
+    date = datetime.fromtimestamp(instance.start_date)
+    day_entry = DayEntry.objects.get(date=date, owner=instance.owner)
+    difference = instance.time_difference()
+    print(difference)
+    day_entry.time_total = day_entry.time_total - difference
+    day_entry.save()
+
+post_save.connect(time_entry_save, sender=TimeEntry)
+pre_delete.connect(time_entry_delete, sender=TimeEntry)
