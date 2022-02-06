@@ -13,9 +13,9 @@
         class="navbar-item"
         role="button"
       >
-        <b-button :style="projectColor" v-if="project" class="is-ghost is-size-6 ">{{
+        <span :style="projectColor" v-if="project" class="is-ghost is-size-6 ">{{
           projectName
-        }}</b-button
+        }}</span
         ><b-button
           v-else
           icon-left="plus-circle"

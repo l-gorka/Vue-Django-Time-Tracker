@@ -126,8 +126,9 @@ export default {
     // PROJECT DROPDOWN
     setProject(id) {
       let toastMessage = "Project has been updated.";
-      if (!(this.dataObj.project == id)) {
-        this.dataObj.project = id;
+      if (!(this.project == id)) {
+        this.project = id;
+        this.dataObj.project = id
       }
     },
     // HELPERS

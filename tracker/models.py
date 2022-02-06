@@ -34,11 +34,14 @@ class TimeEntry(models.Model):
     class Meta():
         verbose_name_plural = 'Time entries'
 
+    def time_difference(self):
+        return self.end_date - self.start_date 
+
 
 class DayEntry(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField()
-    time_total = models.IntegerField(null=True, blank=True)
+    time_total = models.IntegerField(default=0, blank=True)
     time_entries = models.ManyToManyField(TimeEntry)
 
     class Meta():
@@ -49,5 +52,9 @@ def time_entry_save(sender, instance, **kwargs):
     date = datetime.fromtimestamp(instance.start_date)
     day_entry, created = DayEntry.objects.get_or_create(date=date, owner=instance.owner)
     day_entry.time_entries.add(instance)
+    difference = instance.time_difference()
+    day_entry.time_total += difference
+    day_entry.save()
+    print(day_entry.time_total)
 
 post_save.connect(time_entry_save, sender=TimeEntry)   
