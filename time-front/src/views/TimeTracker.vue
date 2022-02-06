@@ -1,10 +1,12 @@
 <template>
   <div class="container is-fullhd">
     <div>
-      <CurrentTask />
+
+      <CurrentTask @timeEntryCreated="getDayEntries" />
     </div>
     <div v-if="dayEntries">
       <DayEntry
+        @dataChanged="getDayEntries"
         :dayEntry="dayEntry"
         v-for="dayEntry in dayEntries"
         :key="dayEntry.id"
@@ -14,30 +16,38 @@
 </template>
 
 <script>
-import TimeEntry from "../components/TimeEntry.vue"
+import TimeEntry from "../components/TimeEntry.vue";
 import DayEntry from "../components/DayEntry.vue";
 import CurrentTask from "../components/CurrentTask.vue";
 export default {
   components: { DayEntry, TimeEntry, CurrentTask },
   data() {
     return {
-      dayEntries: []
+      dayEntries: [],
     };
   },
   mounted() {
-    this.getDayEntries()
+    this.getDayEntries();
   },
   methods: {
+    alert() {
+      alert("changed");
+    },
     getDayEntries() {
-      this.axios.get('http://127.0.0.1:8000/day-entries/').then((response) => this.dayEntries = response.data)
-      console.log(this.dayEntries)
-    }
-  }
+      this.axios.get("http://127.0.0.1:8000/day-entries/").then((response) => {
+        this.dayEntries = response.data;
+        for (let item of this.dayEntries) {
+          item.time_entries.reverse()
+          console.log(item)
+        }
+      });
+    },
+  },
 };
 </script>
 
 <style>
 .input-text-center input {
-    text-align: center;
+  text-align: center;
 }
 </style>

@@ -13,7 +13,7 @@
         <div class="column">
           <!-- DESCRIPTION -->
           <b-input
-          placeholder="What are you working on?"
+            placeholder="What are you working on?"
             v-on:keyup.native.enter="$event.target.blur()"
             @focus="copyValue(description)"
             @blur="setDescription"
@@ -33,12 +33,27 @@
         </div>
         <div class="column is-2-fullhd is-6-mobile is-2-desktop">
           <!-- COUNTER -->
-          <Counter @counterStopped="counterStopped" :isCounterStarted="isStarted" />
+          <Counter
+            @counterStopped="counterStopped"
+            :isCounterStarted="isStarted"
+          />
         </div>
-        <div class="column is-1 is-flex is-justify-content-end ">
+        <div class="column is-1 is-flex is-justify-content-end">
           <!-- BUTTON -->
-          <b-button @click="stopTimer" v-if="isStarted" icon-left="clock-outline" type="is-primary">STOP</b-button>
-          <b-button @click="startTimer" v-else icon-left="clock-outline" type="is-primary">START</b-button>
+          <b-button
+            @click="stopTimer"
+            v-if="isStarted"
+            icon-left="clock-outline"
+            type="is-primary"
+            >STOP</b-button
+          >
+          <b-button
+            @click="startTimer"
+            v-else
+            icon-left="clock-outline"
+            type="is-primary"
+            >START</b-button
+          >
         </div>
       </div>
     </div>
@@ -80,37 +95,28 @@ export default {
   methods: {
     // COMMON
     startTimer() {
-        this.dataObj.start_date = Date.parse(new Date()) / 1000
-        console.log(this.dataObj.start_date)
-        this.isStarted = true;
-        
-    }, 
+      this.dataObj.start_date = Date.parse(new Date()) / 1000;
+
+      this.isStarted = true;
+    },
     stopTimer() {
-        this.isStarted = false;
-        console.log(this.dataObj)
-        
+      this.isStarted = false;
     },
     counterStopped(e) {
-        this.dataObj.end_date = this.dataObj.start_date + e
-        console.log(this.dataObj.start_date, this.dataObj.end_date)
-        this.saveData(null, "Time entry has been created")
+      this.dataObj.end_date = this.dataObj.start_date + e;
+      this.saveData(null, "Time entry has been created");
+      
     },
     saveData(func, toastMessage) {
-    console.log(JSON.stringify(this.dataObj))
       this.axios
         .post("http://127.0.0.1:8000/time-entry-create/", this.dataObj)
         .then((response) => {
-            console.log(response)
           if (func) {
             func();
           }
+          console.log(response.data)
+          this.$emit("timeEntryCreated", response.data.id);
           this.toast(toastMessage);
-          /*
-          this.dataObj = response.data;
-          this.getProject();
-          this.getDescription();
-          this.getDuration();
-           */
         });
     },
     // DESCRIPTION
@@ -128,7 +134,7 @@ export default {
       let toastMessage = "Project has been updated.";
       if (!(this.project == id)) {
         this.project = id;
-        this.dataObj.project = id
+        this.dataObj.project = id;
       }
     },
     // HELPERS

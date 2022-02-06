@@ -66,6 +66,7 @@ import AddProject from "../components/AddProject.vue";
 import TimeInput from "../components/TimeInput.vue";
 import ProjectDropdown from "../components/ProjectsDropdown.vue";
 export default {
+  emits: ['dataChanged'],
   components: { AddProject, TimeInput, ProjectDropdown },
   props: ["canCancel", "timeEntryID"],
   mounted() {
@@ -110,12 +111,8 @@ export default {
             func();
           }
           this.toast(toastMessage);
-          /*
-          this.dataObj = response.data;
-          this.getProject();
-          this.getDescription();
-          this.getDuration();
-           */
+          console.log('before emits')
+          this.$emit('dataChanged')
         });
     },
     // DESCRIPTION
