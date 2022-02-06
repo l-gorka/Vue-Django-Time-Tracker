@@ -4,7 +4,7 @@
       <NavBar />
     </div>
     <div class="content">
-      <div class="section">
+      <div>
         <router-view />
       </div>
     </div>
@@ -20,4 +20,7 @@ export default {
 </script>
 
 <style>
+.input-text-center input {
+    text-align: center;
+}
 </style>

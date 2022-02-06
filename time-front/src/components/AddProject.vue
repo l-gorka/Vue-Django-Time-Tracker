@@ -80,6 +80,7 @@ export default {
         this.axios
           .post("http://127.0.0.1:8000/project-create/", this.projectData)
           .then((response) => {
+            this.$emit("projectAdded", response.data.id)
             this.$emit("close");
             this.toast("Project has been created");
           });
