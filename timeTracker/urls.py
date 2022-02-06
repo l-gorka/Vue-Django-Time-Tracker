@@ -25,5 +25,5 @@ urlpatterns = [
     
     path('time-entries/<str:pk>/', views.TimeEntryView),
     path('time-entries/<str:pk>/update/', views.TimeEntryUpdate),
-    path('time-entries/create/', views.TimeEntryCreate),
+    path('time-entry-create/', views.TimeEntryCreate),
 ]

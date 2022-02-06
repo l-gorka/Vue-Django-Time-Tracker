@@ -8,17 +8,20 @@ from .models import Project, TimeEntry
 from .serializers import ProjectSerializer, TimeEntrySerializer
 # Create your views here.
 
+
 @api_view(['GET'])
 def ProjectList(request):
     projects = Project.objects.all().order_by('title')
     serializer = ProjectSerializer(projects, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 def ProjectView(request, pk):
     project = Project.objects.get(id=pk)
     serializer = ProjectSerializer(project)
     return Response(serializer.data)
+
 
 @api_view(['POST'])
 def ProjectCreate(request):
@@ -44,9 +47,11 @@ def TimeEntryUpdate(request, pk):
         serializer.save()
     return Response(serializer.data)
 
+
 @api_view(['POST'])
 def TimeEntryCreate(request):
-    serializer = TimeEntrySerializer(data = request.data)
+    serializer = TimeEntrySerializer(data=request.data)
     if serializer.is_valid():
+        print('is valid')
         serializer.save()
     return Response(serializer.data)

@@ -19,7 +19,7 @@
             v-model="description"
           ></b-input>
         </div>
-        <div class="column is-3">
+        <div class="column is-2">
           <!-- PROJECTS DROPDOWN -->
           <ProjectDropdown
             @ProjectChanged="setProject($event)"
@@ -30,14 +30,14 @@
           <!-- TAGS -->
           <b-icon icon="tag-multiple" size="is-medium"> </b-icon>
         </div>
-        <div class="column is-1">
+        <div class="column is-1-fullhd is-6-mobile is-2-desktop">
           <!-- COUNTER -->
-          <Counter />
+          <Counter @counterStopped="counterStopped" :isCounterStarted="isStarted" />
         </div>
-        <div class="column is-1">
+        <div class="column is-1 is-flex is-justify-content-end ">
           <!-- BUTTON -->
-          <b-button @click="stopTimer" v-if="isStarted" type="is-primary">STOP</b-button>
-          <b-button @click="startTimer" icon-left="progress-clock" v-else type="is-primary">START</b-button>
+          <b-button @click="stopTimer" v-if="isStarted" icon-left="clock-outline" type="is-primary">STOP</b-button>
+          <b-button @click="startTimer" v-else icon-left="clock-outline" type="is-primary">START</b-button>
         </div>
       </div>
     </div>
@@ -70,7 +70,7 @@ export default {
         owner: 1,
         description: "",
         project: null,
-        tags: [],
+        tags: [1],
         start_date: 1644007667,
         end_date: 1645007667,
       },
@@ -79,16 +79,25 @@ export default {
   methods: {
     // COMMON
     startTimer() {
+        this.dataObj.start_date = Date.parse(new Date()) / 1000
+        console.log(this.dataObj.start_date)
         this.isStarted = true;
     }, 
     stopTimer() {
         this.isStarted = false;
-        this.saveData()
+        console.log(this.dataObj)
+        //this.saveData()
+    },
+    counterStopped(e) {
+        this.dataObj.end_date = this.dataObj.start_date + e
+        console.log(this.dataObj.start_date, this.dataObj.end_date)
     },
     saveData(func, toastMessage) {
+    console.log(JSON.stringify(this.dataObj))
       this.axios
-        .post("http://127.0.0.1:8000/time-entries/create/", this.dataObj)
+        .post("http://127.0.0.1:8000/time-entry-create/", this.dataObj)
         .then((response) => {
+            console.log(response)
           if (func) {
             func();
           }
