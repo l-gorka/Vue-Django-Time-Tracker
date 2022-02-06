@@ -20,7 +20,5 @@ export default {
 </script>
 
 <style>
-.input-text-center input {
-    text-align: center;
-}
+
 </style>

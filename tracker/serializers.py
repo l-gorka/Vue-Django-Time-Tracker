@@ -1,5 +1,7 @@
+from dataclasses import field
+from multiprocessing import set_forkserver_preload
 from rest_framework import serializers
-from .models import Project, TimeEntry
+from .models import DayEntry, Project, TimeEntry
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -14,3 +16,9 @@ class TimeEntrySerializer(serializers.ModelSerializer):
         model = TimeEntry
         fields = '__all__'
 
+
+class DayEntrySerializer(serializers.ModelSerializer):
+
+    class Meta():
+        model = DayEntry
+        fields = '__all__'

@@ -23,7 +23,10 @@ urlpatterns = [
     path('project-list/<str:pk>/', views.ProjectView),
     path('project-create/', views.ProjectCreate),
     
+    path('time-entries/', views.TimeEntryList),
     path('time-entries/<str:pk>/', views.TimeEntryView),
     path('time-entries/<str:pk>/update/', views.TimeEntryUpdate),
     path('time-entry-create/', views.TimeEntryCreate),
+
+    path('day-entries/', views.DayEntriesList)
 ]

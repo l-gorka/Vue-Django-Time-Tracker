@@ -1,11 +1,12 @@
+from sqlite3 import Time
 from time import sleep
 from django.shortcuts import render
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Project, TimeEntry
-from .serializers import ProjectSerializer, TimeEntrySerializer
+from .models import DayEntry, Project, TimeEntry
+from .serializers import DayEntrySerializer, ProjectSerializer, TimeEntrySerializer
 # Create your views here.
 
 
@@ -54,4 +55,17 @@ def TimeEntryCreate(request):
     if serializer.is_valid():
         print('is valid')
         serializer.save()
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def TimeEntryList(request):
+    entries = TimeEntry.objects.all()
+    serializer = TimeEntrySerializer(entries, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def DayEntriesList(request):
+    entries = DayEntry.objects.all().order_by('-date')
+    serializer = DayEntrySerializer(entries, many=True)
     return Response(serializer.data)

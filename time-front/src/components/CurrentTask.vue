@@ -1,5 +1,5 @@
 <template>
-  <div class="panel is-warning mb-2 pt-2">
+  <div class="panel is-warning mb-4 pt-2 mt-4">
     <div class="panel-body">
       <div
         ref="tEntry"
@@ -13,6 +13,7 @@
         <div class="column">
           <!-- DESCRIPTION -->
           <b-input
+          placeholder="What are you working on?"
             v-on:keyup.native.enter="$event.target.blur()"
             @focus="copyValue(description)"
             @blur="setDescription"
@@ -30,7 +31,7 @@
           <!-- TAGS -->
           <b-icon icon="tag-multiple" size="is-medium"> </b-icon>
         </div>
-        <div class="column is-1-fullhd is-6-mobile is-2-desktop">
+        <div class="column is-2-fullhd is-6-mobile is-2-desktop">
           <!-- COUNTER -->
           <Counter @counterStopped="counterStopped" :isCounterStarted="isStarted" />
         </div>
@@ -60,7 +61,7 @@ export default {
       // TIME INPUTS
       // PROJECTS DROPDOWN
       projects: [],
-      project: 14,
+      project: null,
       projectColor: "",
       searchTerm: "",
       // DURATION DROPDOWN
@@ -70,9 +71,9 @@ export default {
         owner: 1,
         description: "",
         project: null,
-        tags: [1],
-        start_date: 1644007667,
-        end_date: 1645007667,
+        tags: [2],
+        start_date: null,
+        end_date: null,
       },
     };
   },
@@ -82,15 +83,17 @@ export default {
         this.dataObj.start_date = Date.parse(new Date()) / 1000
         console.log(this.dataObj.start_date)
         this.isStarted = true;
+        
     }, 
     stopTimer() {
         this.isStarted = false;
         console.log(this.dataObj)
-        //this.saveData()
+        
     },
     counterStopped(e) {
         this.dataObj.end_date = this.dataObj.start_date + e
         console.log(this.dataObj.start_date, this.dataObj.end_date)
+        this.saveData(null, "Time entry has been created")
     },
     saveData(func, toastMessage) {
     console.log(JSON.stringify(this.dataObj))

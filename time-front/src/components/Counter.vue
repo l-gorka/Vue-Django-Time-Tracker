@@ -1,7 +1,14 @@
 <template>
-  <div>
-    <b-input :value="counterStr" class="input-text-center"></b-input>
-  </div>
+  <b-dropdown ref="dropdown">
+        <button class="button is-ghost has-text-black" slot="trigger">
+          <span class="is-size-4">{{ counterStr }}</span>
+        </button>
+        <b-dropdown-item custom
+          ><b-input
+            
+          ></b-input
+        ></b-dropdown-item>
+      </b-dropdown>
 </template>
 
 <script>
@@ -37,7 +44,7 @@ export default {
         let totalSeconds
         totalSeconds = this.counterSeconds
         let hours, minutes, seconds
-        hours = Math.floor(totalSeconds / 60 / 60)
+        hours =  + Math.floor(totalSeconds / 60 / 60)
         totalSeconds -=  hours * 60 * 60
         minutes = Math.floor(totalSeconds / 60)
         totalSeconds -= minutes * 60
@@ -50,4 +57,7 @@ export default {
 </script>
 
 <style>
+.counter input {
+  font-size: rem;
+}
 </style>

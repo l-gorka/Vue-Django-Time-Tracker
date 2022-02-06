@@ -13,8 +13,15 @@
         class="navbar-item"
         role="button"
       >
-        <span>{{ projectName }}</span>
-        <b-icon icon="menu-down"></b-icon>
+        <b-button :style="projectColor" v-if="project" class="is-ghost">{{
+          projectName
+        }}</b-button
+        ><b-button
+          v-else
+          icon-left="plus-circle"
+          class="is-ghost"
+          label="Project"
+        />
       </a>
     </template>
     <b-dropdown-item
@@ -41,7 +48,10 @@
         aria-modal
       >
         <template #default="props">
-          <AddProject @projectAdded="projectAdded($event)" @close="props.close"></AddProject>
+          <AddProject
+            @projectAdded="projectAdded($event)"
+            @close="props.close"
+          ></AddProject>
         </template>
       </b-modal>
     </b-dropdown-item>
@@ -61,46 +71,49 @@
 </template>
 
 <script>
-import AddProject from './AddProject.vue'
+import AddProject from "./AddProject.vue";
 export default {
-  emits: ['ProjectChanged'],
-  props: ['project'],
-  components: {AddProject},
+  emits: ["ProjectChanged"],
+  props: ["project"],
+  components: { AddProject },
   data() {
     return {
       projectId: null,
-      projectName: '',
+      projectName: "",
       projects: [],
-      projectColor: '',
-      searchTerm: '',
+      projectColor: "",
+      searchTerm: "",
       addProjectActive: false,
     };
   },
-  mounted() {
-    this.projectId = this.project
-    this.getProject()
-    this.loadProjects()
+  watch: {
+    project: function () {
+      this.projectId = this.project;
+      this.getProject();
+    },
   },
+
   methods: {
     projectAdded(id) {
-      this.projectId = id
-      this.getProject()
-      this.setProject(id)
+      this.projectId = id;
+      this.getProject();
+      this.setProject(id);
     },
     getProject() {
-      let url = "http://127.0.0.1:8000/project-list/" + this.projectId;
-      this.axios.get(url).then((response) => {
-        this.projectName = response.data.title;
-        this.projectColor = `color: ${response.data.color}`;
-      });
+      if (this.projectId) {
+        let url = "http://127.0.0.1:8000/project-list/" + this.projectId;
+        this.axios.get(url).then((response) => {
+          this.projectName = response.data.title;
+          this.projectColor = `color: ${response.data.color}`;
+        });
+      }
     },
     setProject(id) {
       if (!(this.project == id)) {
-        this.$emit('ProjectChanged', id)
-        this.projectId = id
-        this.loadProjects()
-        this.getProject()
-        
+        this.$emit("ProjectChanged", id);
+        this.projectId = id;
+        this.loadProjects();
+        this.getProject();
       }
     },
     loadProjects() {

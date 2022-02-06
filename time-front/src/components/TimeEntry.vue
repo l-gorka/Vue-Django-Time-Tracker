@@ -1,8 +1,9 @@
 <template>
-  <div ref="tEntry" class="columns p-1 m-0 is-flex is-align-items-center">
+  <div ref="tEntry" class="columns py-0 px-1 m-0 is-flex is-align-items-center">
     <div class="column is-4">
       <!-- DESCRIPTION -->
       <b-input
+      placeholder="Add description."
         v-on:keyup.native.enter="$event.target.blur()"
         @focus="copyValue(description)"
         @blur="setDescription"
@@ -12,8 +13,7 @@
     <div class="column is-3">
       <!-- PROJECTS DROPDOWN -->
       <ProjectDropdown
-        @ProjectChanged="setProject($event)"
-        v-if="dataObj.project"
+        @ProjectChanged="setProject($event)"        
         :project="dataObj.project"
       />
     </div>
@@ -67,7 +67,7 @@ import TimeInput from "../components/TimeInput.vue";
 import ProjectDropdown from "../components/ProjectsDropdown.vue";
 export default {
   components: { AddProject, TimeInput, ProjectDropdown },
-  props: ["canCancel"],
+  props: ["canCancel", "timeEntryID"],
   mounted() {
     this.loadData();
   },
@@ -94,7 +94,7 @@ export default {
     // COMMON
     loadData() {
       this.axios
-        .get("http://127.0.0.1:8000/time-entries/1/")
+        .get(`http://127.0.0.1:8000/time-entries/${this.timeEntryID}`)
         .then((response) => {
           this.dataObj = response.data;
           this.getDescription();
@@ -102,8 +102,9 @@ export default {
         });
     },
     saveData(func, toastMessage) {
+      console.log(this.dataObj)
       this.axios
-        .post("http://127.0.0.1:8000/time-entries/1/update/", this.dataObj)
+        .post(`http://127.0.0.1:8000/time-entries/${this.timeEntryID}/update/`, this.dataObj)
         .then((response) => {
           if (func) {
             func();
@@ -149,7 +150,7 @@ export default {
       let dMinutes = Math.floor(timeDiff / 60);
       timeDiff -= dMinutes * 60;
       let dSeconds = timeDiff;
-      this.duration = dHours + ":" + dMinutes + ":" + dSeconds;
+      this.duration = dHours + ":" + ('00' + dMinutes).slice(-2) + ":" + ('00' + dSeconds).slice(-2);
     },
     // TIME INPUTS
     setStartTime(e) {

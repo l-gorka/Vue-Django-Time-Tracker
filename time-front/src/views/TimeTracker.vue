@@ -3,53 +3,41 @@
     <div>
       <CurrentTask />
     </div>
-    <div>
+    <div v-if="dayEntries">
       <DayEntry
-        :dayEntry="timeEntry"
-        v-for="timeEntry in timeEntries"
-        :key="timeEntry"
+        :dayEntry="dayEntry"
+        v-for="dayEntry in dayEntries"
+        :key="dayEntry.id"
       />
     </div>
   </div>
 </template>
 
 <script>
+import TimeEntry from "../components/TimeEntry.vue"
 import DayEntry from "../components/DayEntry.vue";
 import CurrentTask from "../components/CurrentTask.vue";
 export default {
-  components: { DayEntry, CurrentTask },
+  components: { DayEntry, TimeEntry, CurrentTask },
   data() {
     return {
-      timeEntries: [
-        {
-          date: "28 Feb 2022",
-          total: "03:16:21",
-          entries: [
-            {
-              info: {
-                date: "Wed, Jan 26",
-                description: "Some description",
-                timeStarted: "12:11",
-                timeEnded: "13:34",
-                project: "Vue learning",
-                duration: "1:23:21",
-              },
-            },
-          ],
-        },
-      ],
-      projects: [
-        "Wyprowadzanie kota",
-        "Jedzenie",
-        "Pranie",
-        "Czesanie",
-        "Inne",
-        "Czynności",
-      ],
+      dayEntries: []
     };
   },
+  mounted() {
+    this.getDayEntries()
+  },
+  methods: {
+    getDayEntries() {
+      this.axios.get('http://127.0.0.1:8000/day-entries/').then((response) => this.dayEntries = response.data)
+      console.log(this.dayEntries)
+    }
+  }
 };
 </script>
 
 <style>
+.input-text-center input {
+    text-align: center;
+}
 </style>
