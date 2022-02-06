@@ -13,13 +13,13 @@
         class="navbar-item"
         role="button"
       >
-        <b-button :style="projectColor" v-if="project" class="is-ghost">{{
+        <b-button :style="projectColor" v-if="project" class="is-ghost is-size-6 ">{{
           projectName
         }}</b-button
         ><b-button
           v-else
           icon-left="plus-circle"
-          class="is-ghost"
+          class="is-ghost is-size-6"
           label="Project"
         />
       </a>
