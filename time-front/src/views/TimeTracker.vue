@@ -38,7 +38,6 @@ export default {
         this.dayEntries = response.data;
         for (let item of this.dayEntries) {
           item.time_entries.reverse()
-          console.log(item)
         }
       });
     },

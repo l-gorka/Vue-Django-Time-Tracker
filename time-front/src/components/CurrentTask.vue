@@ -105,7 +105,16 @@ export default {
     counterStopped(e) {
       this.dataObj.end_date = this.dataObj.start_date + e;
       this.saveData(null, "Time entry has been created");
-      
+      this.project = null;
+      this.description = null;
+      this.dataObj = {
+        owner: 1,
+        description: "",
+        project: null,
+        tags: [2],
+        start_date: null,
+        end_date: null,
+      };
     },
     saveData(func, toastMessage) {
       this.axios
@@ -114,7 +123,7 @@ export default {
           if (func) {
             func();
           }
-          console.log(response.data)
+          console.log(response.data);
           this.$emit("timeEntryCreated", response.data.id);
           this.toast(toastMessage);
         });

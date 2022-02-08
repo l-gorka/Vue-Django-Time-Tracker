@@ -7,7 +7,7 @@
       </div>
       <div class="panel-body">
         <TimeEntry
-        @dataChanged="dataChanged"
+          @dataChanged="dataChanged"
           :timeEntryID="id"
           v-for="id in timeEntries"
           :key="id"
@@ -24,9 +24,9 @@ export default {
   components: { TimeEntry },
   methods: {
     dataChanged() {
-      console.log('day data changed')
-      this.$emit('dataChanged')
-    }
+      console.log("day data changed");
+      this.$emit("dataChanged");
+    },
   },
   data() {
     return {
@@ -52,8 +52,8 @@ export default {
       );
     },
     timeEntries: function () {
-      return this.dayEntry.time_entries
-    }
+      return this.dayEntry.time_entries;
+    },
   },
 };
 </script>
