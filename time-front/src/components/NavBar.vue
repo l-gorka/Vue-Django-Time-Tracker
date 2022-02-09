@@ -31,9 +31,9 @@
                     <a class="button is-primary">
                         <strong>Sign up</strong>
                     </a>
-                    <a class="button is-light">
+                    <b-navbar-item class="button is-light" tag="router-link" :to="{ path: '/login/' }">
                         Log in
-                    </a>
+                    </b-navbar-item>
                 </div>
             </b-navbar-item>
         </template>

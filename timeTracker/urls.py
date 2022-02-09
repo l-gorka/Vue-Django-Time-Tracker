@@ -16,13 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from tracker import views
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
     path('admin/', admin.site.urls),
     path('project-list/', views.ProjectList),
     path('project-list/<str:pk>/', views.ProjectView),
     path('project-create/', views.ProjectCreate),
-    
+
     path('time-entries/', views.TimeEntryList),
     path('time-entries/<str:pk>/', views.TimeEntryView),
     path('time-entries/<str:pk>/update/', views.TimeEntryUpdate),

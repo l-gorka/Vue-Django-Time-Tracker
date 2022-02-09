@@ -4,11 +4,12 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Buefy from 'buefy'
+import store from './store'
 import 'buefy/dist/buefy.css'
 
 
 Vue.use(Buefy)
-Vue.use(VueAxios, axios)
+Vue.use(VueAxios, axios, store)
 
 Vue.config.productionTip = false
 
