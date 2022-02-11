@@ -118,6 +118,7 @@ export default {
         end_date: null,
       };
     },
+    // Save data, emit signal to update TimeEntries.
     saveData(func, toastMessage) {
       getAPI
         .post("/time-entry-create/", this.dataObj, {
@@ -126,10 +127,9 @@ export default {
           },
         })
         .then((response) => {
-          if (func) {
+          if (func) { // If function to update values is passed, call it.
             func();
           }
-          console.log(response.data);
           this.$emit("timeEntryCreated", response.data.id);
           this.toast(toastMessage);
         });

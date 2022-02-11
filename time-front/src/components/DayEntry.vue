@@ -34,7 +34,8 @@ export default {
     };
   },
   computed: {
-    time_total: function () {
+    // Convert time in seconds to be displayed in HH:MM:SS format.
+    time_total: function() {
       let totalSeconds;
       totalSeconds = this.dayEntry.time_total;
       let hours, minutes, seconds;
@@ -43,6 +44,7 @@ export default {
       minutes = Math.floor(totalSeconds / 60);
       totalSeconds -= minutes * 60;
       seconds = totalSeconds;
+      // If value has 1 digit, add preceding 0 to it.
       return (
         ("00" + hours).slice(-2) +
         ":" +

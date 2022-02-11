@@ -1,7 +1,7 @@
 <template>
   <div class="modal-card" style="">
     <header class="modal-card-head">
-      <h2 class="modal-card-title">Create new project</h2>
+      <h2 class="modal-card-title">Log In</h2>
       <button type="button" class="delete" @click="$emit('close')" />
     </header>
     <section class="modal-card-body">
@@ -11,6 +11,12 @@
       <b-field label="Password">
         <b-input v-model="password" type="password" password-reveal></b-input>
       </b-field>
+      <b-notification
+            type="is-danger"
+            aria-close-label="Close notification"
+            role="alert">
+            Sorry, Invalid credentials. Please try again.
+        </b-notification>
     </section>
     <footer class="modal-card-foot">
         <p>{{username}}</p>
@@ -32,11 +38,11 @@
       return {
         username: '',
         password: '',
-        wrongCred: false // activates appropriate message if set to true
+        wrongCred: false // activate appropriate message if set to true
       }
     },
     methods: {
-      loginUser () { // call loginUSer action
+      loginUser () { // Call loginUser action.
         this.$store.dispatch('loginUser', {
           username: this.username,
           password: this.password

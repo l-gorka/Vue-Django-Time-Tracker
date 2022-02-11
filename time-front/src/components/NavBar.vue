@@ -1,6 +1,7 @@
 <template>
   <b-navbar class="" fixed-top>
     <template #brand>
+      <p> a {{loginModalActive}}</p>
       <b-navbar-item tag="router-link" :to="{ path: '/' }">
         <img
           src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
@@ -27,11 +28,12 @@
           <a class="button is-primary">
             <strong>Sign up</strong>
           </a>
-          <a @click="loginModalActive = true" class="button is-light"> Log in </a>
+          <a @click="showModal" class="button is-light"> Log in </a>
           <b-modal
             @close="loginModalActive = false"
             :active="loginModalActive"
             has-modal-card
+            full-screen="true"
             trap-focus
             :destroy-on-hide="false"
             aria-role="dialog"
@@ -62,6 +64,10 @@ export default {
         }
         
     },
-    methods: {}
+    methods: {
+      showModal() {
+        this.loginModalActive = true
+      }
+    }
 }
 </script>
