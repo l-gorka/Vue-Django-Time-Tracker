@@ -27,7 +27,7 @@ class TimeEntry(models.Model):
     description = models.CharField(max_length=200, blank=True, null=True)
     project = models.ForeignKey(
         Project, on_delete=models.SET_NULL, blank=True, null=True)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True)
     start_date = UnixTimeStampField(use_numeric=True, default=0.0)
     end_date = UnixTimeStampField(use_numeric=True, default=0.0)
 

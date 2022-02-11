@@ -87,7 +87,7 @@ export default {
         owner: 1,
         description: "",
         project: null,
-        tags: [2],
+        tags: [],
         start_date: null,
         end_date: null,
       },
@@ -103,12 +103,13 @@ export default {
     stopTimer() {
       this.isStarted = false;
     },
+    // Called to save TimeEntry.
     counterStopped(e) {
       this.dataObj.end_date = this.dataObj.start_date + e;
       this.saveData(null, "Time entry has been created");
       this.project = null;
       this.description = null;
-      this.dataObj = {
+      this.dataObj = {  // Reset counter and all inputs.
         owner: 1,
         description: "",
         project: null,
