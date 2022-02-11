@@ -1,7 +1,7 @@
 <template>
   <div class="container is-fullhd">
     <div>
-
+      <p>{{token.slice(-10)}}</p>
       <CurrentTask @timeEntryCreated="getDayEntries" />
     </div>
     <div v-if="dayEntries">
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { getAPI } from "../axios-base";
 import TimeEntry from "../components/TimeEntry.vue";
 import DayEntry from "../components/DayEntry.vue";
 import CurrentTask from "../components/CurrentTask.vue";
@@ -29,17 +30,28 @@ export default {
   mounted() {
     this.getDayEntries();
   },
+  computed: {
+    token() {
+      return this.$store.state.accessToken
+    }
+  },
   methods: {
     alert() {
       alert("changed");
     },
     getDayEntries() {
-      this.axios.get("http://127.0.0.1:8000/day-entries/").then((response) => {
-        this.dayEntries = response.data;
-        for (let item of this.dayEntries) {
-          item.time_entries.reverse()
-        }
-      });
+      getAPI
+        .get("/day-entries/", {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        })
+        .then((response) => {
+          this.dayEntries = response.data;
+          for (let item of this.dayEntries) {
+            item.time_entries.reverse();
+          }
+        });
     },
   },
 };

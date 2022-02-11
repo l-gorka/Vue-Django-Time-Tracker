@@ -16,10 +16,11 @@
             type="is-danger"
             message="Please enter project name"
           >
-            <b-input @input="title = !title" v-model="projectData.title"> </b-input>
+            <b-input @input="title = !title" v-model="projectData.title">
+            </b-input>
           </b-field>
           <b-field label="Project color">
-            <twitter-picker v-model="color" />
+            <compact-picker v-model="color" />
           </b-field>
         </div>
         <div class="column">
@@ -31,7 +32,6 @@
               @click="this.projectData.billable = !this.projectData.billable"
               v-model="projectData.billable"
             ></b-switch>
-            <p>{{ color }}</p>
           </b-field>
           <b-field v-if="projectData.billable" label="Billable rate">
             <b-numberinput
@@ -51,10 +51,11 @@
 </template>
 
 <script>
-import { Twitter } from "vue-color";
+import { getAPI } from "../axios-base";
+import { Compact } from "vue-color";
 export default {
   components: {
-    "twitter-picker": Twitter,
+    "compact-picker": Compact,
   },
   emits: ["close"],
   data() {
@@ -65,22 +66,28 @@ export default {
         client: "",
         billable: false,
         billable_rate: null,
-        color: "#FF6900",
+        color: "#000000",
       },
-      color: "#FF6900",
+      color: "#000000",
       title: true,
     };
   },
   methods: {
     createProject() {
-      console.log(this.color.hex);
-      this.projectData.color = this.color.hex;
+      if (!(this.color == "#000000" )) {
+        this.projectData.color = this.color.hex;
+      }
+      
       console.log(this.projectData);
       if (this.projectData.title) {
-        this.axios
-          .post("http://127.0.0.1:8000/project-create/", this.projectData)
+        getAPI
+          .post("/project-create/", this.projectData, {
+            headers: {
+              Authorization: `Bearer ${this.$store.state.accessToken}`,
+            },
+          })
           .then((response) => {
-            this.$emit("projectAdded", response.data.id)
+            this.$emit("projectAdded", response.data.id);
             this.$emit("close");
             this.toast("Project has been created");
           });

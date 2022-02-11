@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import { getAPI } from "../axios-base";
 import ProjectDropdown from "../components/ProjectsDropdown.vue";
 import Counter from "../components/Counter.vue";
 export default {
@@ -117,8 +118,12 @@ export default {
       };
     },
     saveData(func, toastMessage) {
-      this.axios
-        .post("http://127.0.0.1:8000/time-entry-create/", this.dataObj)
+      getAPI
+        .post("/time-entry-create/", this.dataObj, {
+          headers: {
+            Authorization: `Bearer ${this.$store.state.accessToken}`,
+          },
+        })
         .then((response) => {
           if (func) {
             func();

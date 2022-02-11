@@ -3,7 +3,7 @@
     <div class="column is-4">
       <!-- DESCRIPTION -->
       <b-input
-      placeholder="Add description."
+        placeholder="Add description."
         v-on:keyup.native.enter="$event.target.blur()"
         @focus="copyValue(description)"
         @blur="setDescription"
@@ -13,7 +13,7 @@
     <div class="column is-3">
       <!-- PROJECTS DROPDOWN -->
       <ProjectDropdown
-        @ProjectChanged="setProject($event)"        
+        @ProjectChanged="setProject($event)"
         :project="dataObj.project"
       />
     </div>
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { getAPI } from "../axios-base";
 import AddProject from "../components/AddProject.vue";
 import TimeInput from "../components/TimeInput.vue";
 import ProjectDropdown from "../components/ProjectsDropdown.vue";
@@ -93,25 +94,34 @@ export default {
   },
   methods: {
     // COMMON
-    loadData() {
-      this.axios
-        .get(`http://127.0.0.1:8000/time-entries/${this.timeEntryID}`)
+    loadData() {       
+      getAPI
+        .get(`time-entries/${this.timeEntryID}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.state.accessToken}`,
+          },
+        })
         .then((response) => {
+          
           this.dataObj = response.data;
           this.getDescription();
           this.getDuration();
         });
+      
     },
     saveData(func, toastMessage) {
       console.log(this.dataObj)
-      this.axios
-        .post(`http://127.0.0.1:8000/time-entries/${this.timeEntryID}/update/`, this.dataObj)
+      getAPI
+        .post(`time-entries/${this.timeEntryID}/update/`, this.dataObj, {
+          headers: {
+            Authorization: `Bearer ${this.$store.state.accessToken}`,
+          }
+        })
         .then((response) => {
           if (func) {
             func();
           }
           this.toast(toastMessage);
-          console.log('before emits')
           this.$emit('dataChanged')
         });
     },
@@ -152,10 +162,27 @@ export default {
     // TIME INPUTS
     setStartTime(e) {
       this.dataObj.start_date = e;
+      // If time entry passing the midnight, set end_date to the next day by adding 86400 seconds = 24 hours.
+      if (this.dataObj.start_date > this.dataObj.end_date) {
+        this.dataObj.end_date += 86400
+      }
+      // Check if there is more than 24h difference between dates, if so, set end_date to the day before by substraction 86400 seconds. 
       this.saveData(this.getDuration, "Start time has been updated");
+      if (this.dataObj.end_date - this.dataObj.start_date > 86400) {
+        this.dataObj.end_date -= 86400
+      }
     },
     setEndTime(e) {
       this.dataObj.end_date = e;
+      // If time entry passing the midnight, set end_date to the next day by adding 86400 seconds = 24 hours.
+      if (this.dataObj.start_date > this.dataObj.end_date) {
+        this.dataObj.end_date += 86400
+      }
+      // Check if there is more than 24h difference between dates, if so, set end_date to the day before by substraction 86400 seconds. 
+      this.saveData(this.getDuration, "Start time has been updated");
+      if (this.dataObj.end_date - this.dataObj.start_date > 86400) {
+        this.dataObj.end_date -= 86400
+      }
       this.saveData(this.getDuration, "End time has been updated");
     },
     // HELPERS

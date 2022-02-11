@@ -13,7 +13,7 @@
         class="navbar-item"
         role="button"
       >
-        <span :style="projectColor" v-if="project" class="is-ghost is-size-6 ">{{
+        <span :style="projectColor" v-if="project" class="is-ghost is-size-6">{{
           projectName
         }}</span
         ><b-button
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { getAPI } from "../axios-base";
 import AddProject from "./AddProject.vue";
 export default {
   emits: ["ProjectChanged"],
@@ -101,11 +102,17 @@ export default {
     },
     getProject() {
       if (this.projectId) {
-        let url = "http://127.0.0.1:8000/project-list/" + this.projectId;
-        this.axios.get(url).then((response) => {
-          this.projectName = response.data.title;
-          this.projectColor = `color: ${response.data.color}`;
-        });
+        getAPI
+          .get("/project-list/" + this.projectId, {
+            headers: {
+              Authorization: `Bearer ${this.$store.state.accessToken}`,
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            this.projectName = response.data.title;
+            this.projectColor = `color: ${response.data.color}`;
+          });
       }
     },
     setProject(id) {
@@ -117,9 +124,15 @@ export default {
       }
     },
     loadProjects() {
-      this.axios.get("http://127.0.0.1:8000/project-list/").then((response) => {
-        this.projects = response.data;
-      });
+      getAPI
+          .get("/project-list/", {
+            headers: {
+              Authorization: `Bearer ${this.$store.state.accessToken}`,
+            },
+          })
+          .then((response) => {
+            this.projects = response.data
+          });
     },
     filteredProjects() {
       return this.projects.filter((project) => {
