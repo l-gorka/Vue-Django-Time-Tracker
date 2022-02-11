@@ -1,7 +1,6 @@
 <template>
   <b-navbar class="" fixed-top>
     <template #brand>
-      <p> a {{loginModalActive}}</p>
       <b-navbar-item tag="router-link" :to="{ path: '/' }">
         <img
           src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
@@ -24,30 +23,18 @@
 
     <template #end>
       <b-navbar-item tag="div">
-        <div class="buttons">
+        <div v-if="isLoggedIn" class="buttons">
+          <a @click="logoutUser" class="button is-ghost">
+            <strong>Log out</strong>
+          </a>
+        </div>
+        <div v-else class="buttons">
           <a class="button is-primary">
             <strong>Sign up</strong>
           </a>
-          <a @click="showModal" class="button is-light"> Log in </a>
-          <b-modal
-            @close="loginModalActive = false"
-            :active="loginModalActive"
-            has-modal-card
-            full-screen="true"
-            trap-focus
-            :destroy-on-hide="false"
-            aria-role="dialog"
-            aria-label="Example Modal"
-            close-button-aria-label="Close"
-            aria-modal
-          >
-            <template #default="props">
-              <Login
-                @projectAdded="projectAdded($event)"
-                @close="props.close"
-              ></Login>
-            </template>
-          </b-modal>
+          <a class="button is-light" @click="cardModal">
+            <strong>Log In</strong>
+          </a>
         </div>
       </b-navbar-item>
     </template>
@@ -55,19 +42,35 @@
 </template>
 
 <script>
-import Login from '../components/Login.vue'
+import Login from "../components/Login.vue";
 export default {
-    components: { Login },
-    data() {
-        return {
-            loginModalActive: false,
-        }
-        
+  components: { Login },
+  data() {
+    return {};
+  },
+  computed: {
+    isLoggedIn() {
+      console.log(this.$store);
+      return this.$store.getters.loggedIn;
     },
-    methods: {
-      showModal() {
-        this.loginModalActive = true
-      }
-    }
-}
+  },
+  methods: {
+    showModal() {
+      this.loginModalActive = true;
+    },
+    cardModal() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: Login,
+        hasModalCard: true,
+        customClass: "custom-class custom-class-2",
+        trapFocus: true,
+      });
+    },
+    logoutUser() {
+        this.$store.dispatch('logoutUser')
+        this.$router.push({ name: "Home" });
+      },
+  },
+};
 </script>

@@ -1,7 +1,6 @@
 <template>
   <div class="container is-fullhd">
     <div>
-      <p>{{token.slice(-10)}}</p>
       <CurrentTask @timeEntryCreated="getDayEntries" />
     </div>
     <div v-if="dayEntries">
