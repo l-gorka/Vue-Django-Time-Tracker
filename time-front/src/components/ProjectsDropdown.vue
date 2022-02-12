@@ -19,41 +19,18 @@
         ><b-button
           v-else
           icon-left="plus-circle"
-          class="is-ghost is-size-6"
+          class="is-ghost p-0 m-1 is-size-6"
           label="Project"
         />
       </a>
     </template>
-    <b-dropdown-item
-      aria-role="listitem"
-      type="is-primary"
-      size="is-medium"
-      custom
+    <b-dropdown-item aria-role="listitem" type="is-primary" size="is-medium"
       ><b-button
         icon-left="plus-circle"
         class="is-ghost"
         label="Create new project"
-        @click="addProjectActive = true"
+        @click="showModal"
       />
-
-      <b-modal
-        @close="addProjectActive = false"
-        :active="addProjectActive"
-        has-modal-card
-        trap-focus
-        :destroy-on-hide="false"
-        aria-role="dialog"
-        aria-label="Example Modal"
-        close-button-aria-label="Close"
-        aria-modal
-      >
-        <template #default="props">
-          <AddProject
-            @projectAdded="projectAdded($event)"
-            @close="props.close"
-          ></AddProject>
-        </template>
-      </b-modal>
     </b-dropdown-item>
 
     <b-dropdown-item custom aria-role="listitem">
@@ -85,7 +62,14 @@ export default {
       projectColor: "",
       searchTerm: "",
       addProjectActive: false,
+      isMobile: false,
     };
+  },
+  mounted() {
+    console.log(window.innerWidth);
+    if (window.innerWidth < 768) {
+      this.isMobile = true;
+    }
   },
   watch: {
     project: function () {
@@ -95,6 +79,22 @@ export default {
   },
 
   methods: {
+    showModal() {
+      let fs = this.isMobile;
+      console.log("fs", fs);
+      this.$buefy.modal.open({
+        
+        parent: this,
+        component: AddProject,
+        fullScreen: fs,
+        hasModalCard: true,
+        customClass: "custom-class custom-class-2",
+        trapFocus: true,
+        events: {
+          projectAdded: value => this.setProject(value)
+        }
+      });
+    },
     projectAdded(id) {
       this.projectId = id;
       this.getProject();
@@ -125,14 +125,14 @@ export default {
     },
     loadProjects() {
       getAPI
-          .get("/project-list/", {
-            headers: {
-              Authorization: `Bearer ${this.$store.state.accessToken}`,
-            },
-          })
-          .then((response) => {
-            this.projects = response.data
-          });
+        .get("/project-list/", {
+          headers: {
+            Authorization: `Bearer ${this.$store.state.accessToken}`,
+          },
+        })
+        .then((response) => {
+          this.projects = response.data;
+        });
     },
     filteredProjects() {
       return this.projects.filter((project) => {

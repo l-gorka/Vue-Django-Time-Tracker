@@ -6,7 +6,7 @@
     </header>
     <section class="modal-card-body">
       <div class="columns">
-        <div class="column">
+        <div class="column ">
           <b-field v-if="title" label="Project name">
             <b-input v-model="projectData.title"></b-input>
           </b-field>
@@ -23,7 +23,7 @@
             <compact-picker v-model="color" />
           </b-field>
         </div>
-        <div class="column">
+        <div class="column ">
           <b-field label="Client">
             <b-input v-model="projectData.client"></b-input>
           </b-field>

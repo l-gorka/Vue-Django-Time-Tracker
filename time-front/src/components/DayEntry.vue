@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="panel is-success my-5">
+    <div class="panel is-success my-5 mx-2">
       <div class="panel-heading level mb-0 py-1 px-3">
         <p class="m-0">{{ dayEntry.date }}</p>
         <p>Total: {{ time_total }}</p>

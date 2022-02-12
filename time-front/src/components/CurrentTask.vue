@@ -5,12 +5,13 @@
         ref="tEntry"
         class="
           columns
+          is-multiline
           p-1
           m-0
           is-flex is-align-items-center is-justify-content-between
         "
       >
-        <div class="column">
+        <div class="column is-12-mobile">
           <!-- DESCRIPTION -->
           <b-input
             placeholder="What are you working on?"
@@ -20,18 +21,14 @@
             v-model="description"
           ></b-input>
         </div>
-        <div class="column is-2">
+        <div class="column is-12-mobile is-2">
           <!-- PROJECTS DROPDOWN -->
           <ProjectDropdown
             @ProjectChanged="setProject($event)"
             :project="project"
           />
         </div>
-        <div class="column is-1">
-          <!-- TAGS -->
-          <b-icon icon="tag-multiple" size="is-medium"> </b-icon>
-        </div>
-        <div class="column is-2-fullhd is-6-mobile is-2-desktop">
+        <div class="column is-2-fullhd is-2-desktop">
           <!-- COUNTER -->
           <Counter
             @counterStopped="counterStopped"
