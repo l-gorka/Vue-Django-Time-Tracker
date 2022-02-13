@@ -2,7 +2,6 @@
   <div class="modal-card" style="">
     <header class="modal-card-head">
       <h2 class="modal-card-title">Create new project</h2>
-      <button type="button" class="delete" @click="$emit('close')" />
     </header>
     <section class="modal-card-body">
       <div class="columns">

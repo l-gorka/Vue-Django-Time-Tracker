@@ -1,15 +1,30 @@
-from sqlite3 import Time
-from time import sleep
-from django.shortcuts import render
-
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.contrib.auth.models import User
+from django.db.utils import IntegrityError
+from django.views.decorators.csrf import csrf_exempt
+
+import json
 
 from .models import DayEntry, Project, TimeEntry
 from .serializers import DayEntrySerializer, ProjectSerializer, TimeEntrySerializer
 # Create your views here.
 
 
+@api_view(['POST'])
+def register_user(request):
+    body = json.loads(request.body)
+    print(body)
+    try:
+        created = User.objects.create(
+            username=body['username'], email=body['email'], 
+            password=body['password1'])
+        return Response('User has been registered', status=202)
+    except IntegrityError:
+            return Response("User already exists", status=401)
+        
+
+@csrf_exempt
 @api_view(['GET'])
 def ProjectList(request):
     projects = Project.objects.all().order_by('title')
@@ -56,6 +71,7 @@ def TimeEntryCreate(request):
         print('is valid')
         serializer.save()
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 def TimeEntryList(request):

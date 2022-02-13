@@ -2,7 +2,6 @@
   <div class="modal-card" style="">
     <header class="modal-card-head">
       <h2 class="modal-card-title">Log In</h2>
-      <button type="button" class="delete" @click="$emit('close')" />
     </header>
     <section class="modal-card-body">
       <b-field label="Username">
@@ -21,7 +20,6 @@
       </b-notification>
     </section>
     <footer class="modal-card-foot">
-      <p>{{ username }}</p>
       <b-button label="Close" @click="$emit('close')" />
       <b-button @click="loginUser" label="Login" type="is-primary" />
     </footer>
