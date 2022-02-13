@@ -67,6 +67,7 @@ def TimeEntryUpdate(request, pk):
 @api_view(['POST'])
 def TimeEntryCreate(request):
     serializer = TimeEntrySerializer(data=request.data)
+    print(serializer)
     if serializer.is_valid():
         print('is valid')
         serializer.save()

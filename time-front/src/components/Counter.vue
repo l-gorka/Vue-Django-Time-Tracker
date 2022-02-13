@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  props: ["isCounterStarted"],
+  props: ["isCounterStarted", "counterTimeSeconds"],
   data() {
     return {
       counter: null,
@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     startCounter() {
-      console.log("counter started");
+      this.counterSeconds += this.counterTimeSeconds
       this.counter = setInterval(() => this.displayCounter(), 1000);
     },
     stopCounter() {
