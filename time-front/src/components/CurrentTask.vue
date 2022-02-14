@@ -82,14 +82,19 @@ export default {
         let cookie = this.$store.state.taskStarted
         if (cookie) {
             this.counterSeconds = (Date.parse(new Date()) / 1000) - cookie
+            console.log('conter sec', this.counterSeconds)
             this.startTimer()
         }
     },
     methods: {
         // COMMON
         startTimer() {
+            let cookie = this.$store.state.taskStarted
             this.dataObj.start_date = Date.parse(new Date()) / 1000
-            this.$store.commit('updateTaskStarted', this.dataObj.start_date)
+            if (!(cookie)) {    // set new cookie if not present
+                this.$store.commit('updateTaskStarted', this.dataObj.start_date)
+            }
+            
             if (this.counterSeconds) { // add seconds from cookie
                 this.dataObj.start_date += this.counterSeconds
             }
