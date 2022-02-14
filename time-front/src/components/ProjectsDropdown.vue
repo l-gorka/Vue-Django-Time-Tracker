@@ -2,11 +2,11 @@
     <b-dropdown append-to-body aria-role="menu" scrollable max-height="300" trap-focus>
         <template #trigger>
             <a :style="projectColor" @click="loadProjects" class="navbar-item" role="button">
-                <span :style="projectColor" v-if="project" class="is-ghost is-size-6">
-                    {{
-                    projectName
-                    }}
-                </span>
+                <span
+                    :style="projectColor"
+                    v-if="project"
+                    class="is-ghost is-size-6"
+                >{{projectName}}</span>
                 <b-button
                     v-else
                     icon-left="plus-circle"

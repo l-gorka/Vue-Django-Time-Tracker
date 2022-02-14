@@ -26,8 +26,8 @@ def register_user(request):
 
 @csrf_exempt
 @api_view(['GET'])
-def ProjectList(request):
-    projects = Project.objects.all().order_by('title')
+def project_list(request):
+    projects = Project.objects.filter(owner=request.user).order_by('title')
     serializer = ProjectSerializer(projects, many=True)
     return Response(serializer.data)
 
@@ -40,7 +40,7 @@ def ProjectView(request, pk):
 
 
 @api_view(['POST'])
-def ProjectCreate(request):
+def project_create(request):
     serializer = ProjectSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()

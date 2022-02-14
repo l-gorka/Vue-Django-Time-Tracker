@@ -60,7 +60,7 @@ export default {
   data() {
     return {
       projectData: {
-        owner: 1,
+        owner: null,
         title: "",
         client: "",
         billable: false,
@@ -72,11 +72,11 @@ export default {
     };
   },
   methods: {
-    createProject() {
+    createProject() { // set color if choosen
       if (!(this.color == "#000000" )) {
         this.projectData.color = this.color.hex;
       }
-      
+      this.projectData.owner = this.$store.state.userID // set owner to current user
       console.log(this.projectData);
       if (this.projectData.title) {
         getAPI

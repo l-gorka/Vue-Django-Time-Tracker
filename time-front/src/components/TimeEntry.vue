@@ -190,6 +190,9 @@ export default {
             this.saveData(this.getDuration, "End time has been updated");
         },
         // HELPERS
+        continueActivity() {
+            this.$emit('continueActivity', this.dataObj)
+        },
         deleteTimeEntry() {
             this.$buefy.dialog.confirm({
                 title: 'Deleting entry',

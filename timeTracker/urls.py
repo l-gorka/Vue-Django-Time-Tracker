@@ -27,9 +27,9 @@ urlpatterns = [
     path('register/', views.register_user),
 
     path('admin/', admin.site.urls),
-    path('project-list/', views.ProjectList),
+    path('project-list/', views.project_list),
     path('project-list/<str:pk>/', views.ProjectView),
-    path('project-create/', views.ProjectCreate),
+    path('project-create/', views.project_create),
 
     path('time-entries/', views.time_entry_list),
     path('time-entries/<str:pk>/', views.TimeEntryView),
