@@ -7,7 +7,8 @@
 [ ] Fix responsiveness.
 [x] Add cookie to save started time entry.
 [x] Add colored text in project dropdown.
-[ ] Add delete TimeEntry funcionality.
+[x] Add delete TimeEntry funcionality.
+[x] Add continue activity funcionality
 
 ## Changelog
 
