@@ -11,7 +11,8 @@ export default new Vuex.Store({
 		refreshToken: localStorage.getItem('refresh_token') || null,
 		taskStarted: localStorage.getItem('task_started') || null,
 		userID: localStorage.getItem('userID') || null,
-		APIData: '' // received data from the backend API is stored here.
+		APIData: '', // received data from the backend API is stored here.
+		continueTask: null,
 	},
 	getters: {
 		loggedIn(state) {
@@ -19,6 +20,13 @@ export default new Vuex.Store({
 		}
 	},
 	mutations: {
+		updateContinueTask(state, dataObj) {
+			state.continueTask = dataObj
+			console.log(state.continueTask)
+		},
+		deleteContinueTask(state) {
+			state.continueTask = null
+		},
 		// set cookie to prevent started task when reloading page
 		updateTaskStarted(state, time) {
 			localStorage.setItem('task_started', time)
@@ -47,6 +55,7 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
+		
 		// remove current task cookie
 		removeTaskStarted(context) {
 			localStorage.removeItem('task_started')

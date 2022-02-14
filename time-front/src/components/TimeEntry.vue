@@ -49,7 +49,7 @@
         <div class="column level is-flex is-justify-content-center is-1">
             <!-- OPTIONS -->
             <b-tooltip position="is-left" :delay="500" label="Continue timer for this activity">
-                <b-button type="is-ghost" size="is-small">
+                <b-button @click="continueActivity" type="is-ghost" size="is-small">
                     <b-icon icon="play-circle" class="is-size-4"></b-icon>
                 </b-button>
             </b-tooltip>
@@ -191,7 +191,7 @@ export default {
         },
         // HELPERS
         continueActivity() {
-            this.$emit('continueActivity', this.dataObj)
+            this.$store.commit('updateContinueTask', this.dataObj)
         },
         deleteTimeEntry() {
             this.$buefy.dialog.confirm({

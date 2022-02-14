@@ -21,7 +21,11 @@
                 </div>
                 <div class="column is-2-fullhd is-2-desktop">
                     <!-- COUNTER -->
-                    <Counter @counterStopped="counterStopped" :isCounterStarted="isStarted" :counterTimeSeconds="counterSeconds" />
+                    <Counter
+                        @counterStopped="counterStopped"
+                        :isCounterStarted="isStarted"
+                        :counterTimeSeconds="counterSeconds"
+                    />
                 </div>
                 <div class="column is-1 is-flex is-justify-content-end">
                     <!-- BUTTON -->
@@ -86,6 +90,26 @@ export default {
             this.startTimer()
         }
     },
+    computed: {
+        // if updateContinueTask is called, return dataObj
+        storeContinue() {
+            return this.$store.state.continueTask
+        }
+    },
+    watch: {
+        // updateContinueTask is called, set description and project, then start timer
+        storeContinue() {
+            if (this.storeContinue && !(this.isStarted)) {
+                this.description = this.storeContinue.description
+                this.project = this.storeContinue.project
+                this.dataObj.description = this.storeContinue.description
+                this.dataObj.project = this.storeContinue.project
+                this.startTimer()
+                this.$store.commit('deleteContinueTask')    // delete dataObj from store
+            }
+
+        }
+    },
     methods: {
         // COMMON
         startTimer() {
@@ -94,12 +118,13 @@ export default {
             if (!(cookie)) {    // set new cookie if not present
                 this.$store.commit('updateTaskStarted', this.dataObj.start_date)
             }
-            
+
             if (this.counterSeconds) { // add seconds from cookie
                 this.dataObj.start_date += this.counterSeconds
             }
             this.isStarted = true;
-            
+            this.toast('Timer has been started')
+
         },
         stopTimer() {
             this.isStarted = false;
@@ -123,7 +148,6 @@ export default {
         },
         // Save data, emit signal to update TimeEntries.
         saveData(func, toastMessage) {
-            console.log(this.dataObj)
             getAPI
                 .post("/time-entry-create/", this.dataObj, {
                     headers: {
