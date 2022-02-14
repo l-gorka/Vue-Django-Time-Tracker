@@ -80,6 +80,15 @@ def TimeEntryList(request):
     serializer = TimeEntrySerializer(entries, many=True)
     return Response(serializer.data)
 
+@api_view(['POST'])
+def time_entry_delete(request):
+    entry = TimeEntry.objects.get(id=request.id)
+    if request.user == entry.owner:
+        entry.delete()
+        return Response('Item has been deleted', status=202)
+    else:
+        return Response('Forbidden', 403)
+
 
 @api_view(['GET'])
 def DayEntriesList(request):

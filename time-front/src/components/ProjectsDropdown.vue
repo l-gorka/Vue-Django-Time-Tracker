@@ -27,12 +27,12 @@
         <b-dropdown-item custom aria-role="listitem">
             <b-input v-model="searchTerm" placeholder="search" expanded />
         </b-dropdown-item>
-
         <b-dropdown-item
             @click="setProject(project.id)"
             v-for="project of filteredProjects()"
             :key="project.id"
             aria-role="listitem"
+            :style="{color: project.color}"
         >{{ project.title }}</b-dropdown-item>
     </b-dropdown>
 </template>

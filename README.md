@@ -5,8 +5,8 @@
 [x] Add registration page.
 [ ] Add __str__ func to django models.
 [ ] Fix responsiveness.
-[ ] Add cookie to save started time entry.
-[ ] Add colored text in project dropdown.
+[x] Add cookie to save started time entry.
+[x] Add colored text in project dropdown.
 [ ] Add delete TimeEntry funcionality.
 
 ## Changelog
