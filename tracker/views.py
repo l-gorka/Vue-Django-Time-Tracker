@@ -14,7 +14,6 @@ from .serializers import DayEntrySerializer, ProjectSerializer, TimeEntrySeriali
 @api_view(['POST'])
 def register_user(request):
     body = json.loads(request.body)
-    print(body)
     try:
         created = User.objects.create(
             username=body['username'], email=body['email'], 
@@ -59,7 +58,6 @@ def TimeEntryUpdate(request, pk):
     entry = TimeEntry.objects.get(id=pk)
     serializer = TimeEntrySerializer(instance=entry, data=request.data)
     if serializer.is_valid():
-        print('serializer is valid')
         serializer.save()
     return Response(serializer.data)
 
@@ -67,16 +65,13 @@ def TimeEntryUpdate(request, pk):
 @api_view(['POST'])
 def time_entry_create(request):
     serializer = TimeEntrySerializer(data=request.data)    
-    print(serializer)
     if serializer.is_valid():
-        print('is valid')
         serializer.save()
     return Response(serializer.data)
 
 
 @api_view(['GET'])
 def time_entry_list(request):
-    print(request.user)
     entries = TimeEntry.objects.filter(owner=request.user)
     serializer = TimeEntrySerializer(entries, many=True)
     return Response(serializer.data)
@@ -85,7 +80,6 @@ def time_entry_list(request):
 def time_entry_delete(request, pk):
     
     entry = TimeEntry.objects.get(id=pk)
-    print(request, entry.owner, request.user)
     if request.user == entry.owner:
         entry.delete()
         return Response('Item has been deleted', status=202)

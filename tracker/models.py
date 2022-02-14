@@ -35,7 +35,7 @@ class TimeEntry(models.Model):
         verbose_name_plural = 'Time entries'
 
     def time_difference(self):
-        return self.end_date - self.start_date 
+        return self.end_date - self.start_date
 
 
 class DayEntry(models.Model):
@@ -52,16 +52,17 @@ def time_entry_save(sender, instance, **kwargs):
     date = datetime.fromtimestamp(instance.start_date)
     day_entry, created = DayEntry.objects.get_or_create(date=date, owner=instance.owner)
     day_entry.time_entries.add(instance)
-    difference = instance.time_difference()
-    day_entry.time_total += difference
+    day_entry.time_total = 0
+    for time_entry in day_entry.time_entries.all():
+        day_entry.time_total += time_entry.time_difference()
     day_entry.save()
 
 def time_entry_delete(sender, instance, **kwargs):
     date = datetime.fromtimestamp(instance.start_date)
     day_entry = DayEntry.objects.get(date=date, owner=instance.owner)
-    difference = instance.time_difference()
-    print(difference)
-    day_entry.time_total = day_entry.time_total - difference
+    day_entry.time_total = 0
+    for time_entry in day_entry.time_entries.all():
+        day_entry.time_total += time_entry.time_difference()
     day_entry.save()
 
 def time_entry_post_delete(sender, instance, **kwargs):

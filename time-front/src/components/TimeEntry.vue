@@ -183,7 +183,7 @@ export default {
                 this.dataObj.end_date += 86400;
             }
             // Check if there is more than 24h difference between dates, if so, set end_date to the day before by substraction 86400 seconds.
-            this.saveData(this.getDuration, "Start time has been updated");
+            //this.saveData(this.getDuration, "Start time has been updated");
             if (this.dataObj.end_date - this.dataObj.start_date > 86400) {
                 this.dataObj.end_date -= 86400;
             }
