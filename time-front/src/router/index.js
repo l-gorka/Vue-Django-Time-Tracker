@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
+import Dashboard from '../views/Dashboard.vue'
 import TimeTracker from '../views/TimeTracker.vue'
 const routes = [
   {
@@ -23,7 +24,11 @@ const routes = [
     name: 'TimeTracker',
     component: TimeTracker
   },
-  
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard
+  },
 ]
 
 const router = new VueRouter({
