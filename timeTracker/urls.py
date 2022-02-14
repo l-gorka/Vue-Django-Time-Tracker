@@ -31,10 +31,11 @@ urlpatterns = [
     path('project-list/<str:pk>/', views.ProjectView),
     path('project-create/', views.ProjectCreate),
 
-    path('time-entries/', views.TimeEntryList),
+    path('time-entries/', views.time_entry_list),
     path('time-entries/<str:pk>/', views.TimeEntryView),
     path('time-entries/<str:pk>/update/', views.TimeEntryUpdate),
-    path('time-entry-create/', views.TimeEntryCreate),
+    path('time-entries/<str:pk>/delete/', views.time_entry_delete),
+    path('time-entry-create/', views.time_entry_create),
 
-    path('day-entries/', views.DayEntriesList)
+    path('day-entries/', views.day_entries_list)
 ]

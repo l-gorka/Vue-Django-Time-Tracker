@@ -65,8 +65,8 @@ def TimeEntryUpdate(request, pk):
 
 
 @api_view(['POST'])
-def TimeEntryCreate(request):
-    serializer = TimeEntrySerializer(data=request.data)
+def time_entry_create(request):
+    serializer = TimeEntrySerializer(data=request.data)    
     print(serializer)
     if serializer.is_valid():
         print('is valid')
@@ -75,14 +75,17 @@ def TimeEntryCreate(request):
 
 
 @api_view(['GET'])
-def TimeEntryList(request):
-    entries = TimeEntry.objects.all()
+def time_entry_list(request):
+    print(request.user)
+    entries = TimeEntry.objects.filter(owner=request.user)
     serializer = TimeEntrySerializer(entries, many=True)
     return Response(serializer.data)
 
 @api_view(['POST'])
-def time_entry_delete(request):
-    entry = TimeEntry.objects.get(id=request.id)
+def time_entry_delete(request, pk):
+    
+    entry = TimeEntry.objects.get(id=pk)
+    print(request, entry.owner, request.user)
     if request.user == entry.owner:
         entry.delete()
         return Response('Item has been deleted', status=202)
@@ -91,7 +94,7 @@ def time_entry_delete(request):
 
 
 @api_view(['GET'])
-def DayEntriesList(request):
-    entries = DayEntry.objects.all().order_by('-date')
+def day_entries_list(request):
+    entries = DayEntry.objects.filter(owner=request.user).order_by('-date')
     serializer = DayEntrySerializer(entries, many=True)
     return Response(serializer.data)

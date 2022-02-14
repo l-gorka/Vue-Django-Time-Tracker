@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import jwtDecode from 'jwt-decode'
 import { axiosBase } from './axios-base'
 
 Vue.use(Vuex)
@@ -9,6 +10,7 @@ export default new Vuex.Store({
 		// refreshing the page
 		refreshToken: localStorage.getItem('refresh_token') || null,
 		taskStarted: localStorage.getItem('task_started') || null,
+		userID: localStorage.getItem('userID') || null,
 		APIData: '' // received data from the backend API is stored here.
 	},
 	getters: {
@@ -26,11 +28,13 @@ export default new Vuex.Store({
 		deleteTaskStarted(state) {
 			state.taskStarted = null
 		},
-		updateLocalStorage(state, { access, refresh }) {
+		updateLocalStorage(state, { access, refresh, userID }) {
 			localStorage.setItem('access_token', access)
 			localStorage.setItem('refresh_token', refresh)
+			localStorage.setItem('userID', userID)
 			state.accessToken = access
 			state.refreshToken = refresh
+			state.userID = userID
 		},
 		updateAccess(state, access) {
 			state.accessToken = access
@@ -39,6 +43,7 @@ export default new Vuex.Store({
 		destroyToken(state) {
 			state.accessToken = null
 			state.refreshToken = null
+			state.userID = null
 		}
 	},
 	actions: {
@@ -88,11 +93,13 @@ export default new Vuex.Store({
 						.then(response => {
 							localStorage.removeItem('access_token')
 							localStorage.removeItem('refresh_token')
+							localStorage.removeItem('userID')
 							context.commit('destroyToken')
 						})
 						.catch(err => {
 							localStorage.removeItem('access_token')
 							localStorage.removeItem('refresh_token')
+							localStorage.removeItem('userID')
 							context.commit('destroyToken')
 							resolve(err)
 						})
@@ -108,7 +115,9 @@ export default new Vuex.Store({
 				})
 					// if successful update local storage:
 					.then(response => {
-						context.commit('updateLocalStorage', { access: response.data.access, refresh: response.data.refresh }) // store the access and refresh token in localstorage
+						let user = jwtDecode(response.data.access).user_id
+						
+						context.commit('updateLocalStorage', { access: response.data.access, refresh: response.data.refresh, userID: user}) // store the access and refresh token in localstorage
 						resolve()
 					})
 					.catch(err => {

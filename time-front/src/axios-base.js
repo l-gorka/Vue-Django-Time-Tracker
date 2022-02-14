@@ -11,6 +11,7 @@ const getAPI = axios.create({
   baseURL: APIUrl
 })
 getAPI.interceptors.request.use(async config => {
+  console.log(config)
   let token = config.headers['Authorization'].split(' ')[1]
   token = jwtDecode(token).exp
   if (Date.now() / 1000 > token - 10) {

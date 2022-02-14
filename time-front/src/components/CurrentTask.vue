@@ -68,7 +68,7 @@ export default {
             duration: "",
             // DATA OBJ
             dataObj: {
-                owner: 1,
+                owner: this.$store.state.userID,
                 description: "",
                 project: null,
                 tags: [],
@@ -113,7 +113,7 @@ export default {
             this.project = null;
             this.description = null;
             this.dataObj = {  // Reset counter and all inputs.
-                owner: 1,
+                owner: this.$store.state.userID,
                 description: "",
                 project: null,
                 tags: [],
