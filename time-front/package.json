@@ -9,9 +9,11 @@
   "dependencies": {
     "axios": "^0.25.0",
     "buefy": "^0.9.14",
-    "chart.js": "^3.7.1",
+    "chart.js": "^2.9.4",
     "core-js": "^3.6.5",
+    "install": "^0.13.0",
     "jwt-decode": "^3.1.2",
+    "npm": "^8.5.0",
     "vue": "^2.6.11",
     "vue-axios": "^3.4.0",
     "vue-chartjs": "^3.5.1",
