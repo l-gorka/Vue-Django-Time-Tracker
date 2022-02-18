@@ -37,5 +37,6 @@ urlpatterns = [
     path('time-entries/<str:pk>/delete/', views.time_entry_delete),
     path('time-entry-create/', views.time_entry_create),
 
-    path('day-entries/', views.day_entries_list)
+    path('day-entries/', views.day_entries_list),
+    path('filtered-day-entries/', views.filtered_day_entry_list),
 ]

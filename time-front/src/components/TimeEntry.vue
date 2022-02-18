@@ -1,7 +1,7 @@
 <template>
     <div
         ref="tEntry"
-        class="time-entry panel-block columns is-multiline py-0 px-1 m-0 is-flex is-align-items-center"
+        class="time-entry has-background-white panel-block columns is-multiline py-0 px-1 m-0 is-flex is-align-items-center"
     >
         <div class="column is-12-mobile">
             <!-- DESCRIPTION -->

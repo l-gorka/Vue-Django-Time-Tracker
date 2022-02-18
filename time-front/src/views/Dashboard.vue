@@ -1,67 +1,106 @@
 <template>
-    <div class="container is-fullhd">
-        <h1>Dashboard</h1>
-        <div>
-            <b-field label="Select a date">
-                <b-datepicker
-                    placeholder="Click to select..."
-                    locale="pl-PL"
-                    :range="range"
-                    v-model="dates"
-                ></b-datepicker>
-            </b-field>
-            <b-button @click="getJson" type="is-primary" label="get json" />
-            <br />
-            {{ dates }}
-            <br />
-            {{ json }}
-            {{ date2[0] }}|{{  date2[1] }}
+    <div class="container is-fluid mt-5">
+        <div class="level">
+            <div class="level-left">
+                <div class="level-item">
+                    <div class="title">
+                        <b-icon icon="view-dashboard" size="is-small"></b-icon>
+                        <span>Dashboard</span>
+                    </div>
+                </div>
+            </div>
+            <div class="level-right">
+                <div class="level-item">
+                    <div class="title">
+                        <span>Picker</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="columns is-multiline">
+            <div class="column is-8">
+                <div class="columns">
+                    <div class="column is-half">
+                        <div class="box notification is-danger">
+                            <div class="heading">Total time</div>
+                            <div class="title">14:01:46</div>
+                            <div class="level">
+                                <div class="level-item">
+                                    <div class>
+                                        <div class="heading">Billable</div>
+                                        <div class="title is-5">100%</div>
+                                    </div>
+                                </div>
+                                <div class="level-item">
+                                    <div class>
+                                        <div class="heading">Amount</div>
+                                        <div class="title is-5">$ 56</div>
+                                    </div>
+                                </div>
+                                <div class="level-item">
+                                    <div class>
+                                        <div class="heading">Success %</div>
+                                        <div class="title is-5">+ 28,5%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-half">
+                        <div class="box notification is-info">
+                            <div class="heading">Top project</div>
+                            <div class="title">Some project here</div>
+                            <div class="level">
+                                <div class="level-item">
+                                    <div class>
+                                        <div class="heading">Orders $</div>
+                                        <div class="title is-5">425K</div>
+                                    </div>
+                                </div>
+                                <div class="level-item">
+                                    <div class>
+                                        <div class="heading">Returns $</div>
+                                        <div class="title is-5">106K</div>
+                                    </div>
+                                </div>
+                                <div class="level-item">
+                                    <div class>
+                                        <div class="heading">Success %</div>
+                                        <div class="title is-5">+ 28,5%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="message">
+                    <div class="message-header">
+                        <p>Chart</p>
+                    </div>
+                    <div class="message-body">
+                        <bar />
+                    </div>
+                </div>
+            </div>
+            <div class="column is-4">
+                <div class="message">
+                    <div class="message-header">
+                        <p>Chart</p>
+                    </div>
+                    <div class="message-body">
+                        <doughnut />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
-
 <script>
-import { getAPI } from '@/axios-base.js'
-import Chart from '@/components/dashboard/Chart.vue'
+import Bar from '../components/dashboard/Bar.vue'
+import Doughnut from '../components/dashboard/Doughnut.vue'
 export default {
-    components: {
-        Chart
-    },
-    computed: {
-        token() {
-            return this.$store.state.accessToken
-        },
-        date2() {
-            let start = new Date(this.dates[0])
-            let end = new Date(this.dates[1])
-            return [Date.parse(start) / 1000, Date.parse(end) / 1000] 
-        }
-    },
-    data() {
-        return {
-            range: true,
-            dates: [],
-            json: {}
-        }
-    },
-    methods: {
-        getJson() {
-            console.log('json')
-            getAPI
-                .get("/day-entries/", {
-                    headers: {
-                        Authorization: `Bearer ${this.token}`,
-                    },
-                })
-                .then((response) => {
-                    this.json = response.data
-                    console.log('json', this.json)
-                });
-        },
-
-
-    },
+    components: { Bar, Doughnut }
 
 }
 </script>

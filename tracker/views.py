@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
+from datetime import datetime
 
 import json
 
@@ -96,5 +98,11 @@ def day_entries_list(request):
 
 
 @api_view(['GET'])
-def day_entries_chart_list(request):
-    pass
+def filtered_day_entry_list(request):
+    start_timestamp = int(request.query_params['start'])
+    start_date = datetime.fromtimestamp(start_timestamp)
+    end = request.query_params['end']
+
+    #entries = DayEntry.objects.filter(owner=request.user & date)
+
+    return Response([start_date, end], 200)
