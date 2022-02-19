@@ -3,16 +3,16 @@
         <div class="level">
             <div class="level-left">
                 <div class="level-item">
-                    <div class="title">
+                    <div class="title is-danger">
                         <b-icon icon="view-dashboard" size="is-small"></b-icon>
-                        <span>Dashboard</span>
+                        <span>Dashboard <del>blue</del></span>
                     </div>
                 </div>
             </div>
             <div class="level-right">
                 <div class="level-item">
                     <div class="title">
-                        <span>Picker</span>
+                        <date-picker @setDate="setDate" />
                     </div>
                 </div>
             </div>
@@ -99,9 +99,14 @@
 <script>
 import Bar from '../components/dashboard/Bar.vue'
 import Doughnut from '../components/dashboard/Doughnut.vue'
+import DatePicker from '../components/dashboard/DatePicker.vue'
 export default {
-    components: { Bar, Doughnut }
-
+    components: { Bar, Doughnut, DatePicker },
+    methods: {
+        setDate(dateStart, dateEnd) {
+            this.$buefy.toast.open(`${dateStart} | ${dateEnd}`)
+        }
+    }
 }
 </script>
 
