@@ -5,7 +5,7 @@
                 <div class="level-item">
                     <div class="title is-danger">
                         <b-icon icon="view-dashboard" size="is-small"></b-icon>
-                        <span class="is-danger"> Dashboard</span>
+                        <span class="is-danger">Dashboard</span>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                     <div class="column is-half">
                         <div class="box notification is-info">
                             <div class="heading">Top project</div>
-                            <div class="title">Some project here</div>
+                            <div class="title">{{ topProjectLabel }}</div>
                             <div class="level">
                                 <div class="level-item">
                                     <div class>
@@ -84,7 +84,13 @@
                         <p>Chart</p>
                     </div>
                     <div class="message-body">
-                        <bar />
+                        <Bar
+                            v-if="filteredEntries"
+                            :entries="filteredEntries"
+                            :projects="sortedProjects"
+                            :dateStart="dateStart"
+                            :dateEnd="dateEnd"
+                        />
                     </div>
                 </div>
             </div>
@@ -95,10 +101,8 @@
                     </div>
                     <div class="message-body">
                         <doughnut
-                            @projectsData="displayProjectsData"
-                            v-if="filteredEntries && projectsObj"
-                            :entries="filteredEntries"
-                            :projects="projectsObj"
+                            v-if="filteredEntries && sortedProjects"
+                            :projects="sortedProjects"
                         />
                     </div>
                 </div>
@@ -118,17 +122,23 @@ export default {
     data() {
         return {
             isLoaded: false,
-            projectsObj: {},
+            projects: {},
+            sortedProjects: {},
             timeEntries: {},
             filteredEntries: {},
             dateStart: null,
             dateEnd: null,
             dateLabel: "",
+            totalSeconds: 0,
             timeTotalLabel: "",
+            topProjectLabel: "",
         };
     },
     methods: {
         setDate(dateStart, dateEnd, dateOptionSelected) {
+            // filter TimeEntries by dates from datepicker
+            this.dateStart = dateStart;
+            this.dateEnd = dateEnd;
             this.filteredEntries = this.timeEntries;
             let unixStart = dateStart.ts / 1000;
             let unixEnd = dateEnd.ts / 1000;
@@ -137,14 +147,40 @@ export default {
                     entry.start_date > unixStart && unixEnd > entry.start_date
                 );
             });
+
+            this.sortedProjects = this.getProjectsData();
+            this.topProjectLabel = this.sortedProjects[0].title;
             this.dateLabel = dateOptionSelected;
+            this.timeTotalLabel = Duration.fromMillis(
+                this.totalSeconds * 1000
+            ).toFormat("hh:mm:ss");
         },
-        displayProjectsData(totalSeconds, projectsData) {
-            console.log("display", totalSeconds, projectsData);
-            let timeStr = Duration.fromMillis(totalSeconds * 1000).toFormat(
-                "hh:mm:ss"
-            );
-            this.timeTotalLabel = `${timeStr}`;
+        getProjectsData() {
+            let sortedProjects = JSON.parse(JSON.stringify(this.projects));
+            console.log(this.projects);
+            let noProject = { title: "No project", color: "#808080", time: 0 }; //create object to store entries without project
+            sortedProjects.map((object) => (object.time = 0)); // add time field to projects object
+            // iterate over entries and add time to projects
+            for (let entry of this.filteredEntries) {
+                if (entry.project) {
+                    for (let project of sortedProjects) {
+                        if (entry.project === project.id) {
+                            this.totalSeconds +=
+                                entry.end_date - entry.start_date;
+                            project["time"] +=
+                                entry.end_date - entry.start_date;
+                        }
+                    }
+                } else {
+                    this.totalSeconds += entry.end_date - entry.start_date;
+                    noProject.time += entry.end_date - entry.start_date; // add time to antries without project
+                }
+            }
+            // add noProject to projects
+            sortedProjects.push(noProject);
+            sortedProjects.sort((a, b) => (a.time > b.time ? -1 : 1)); // sort projects by time in seconds
+            console.log('get projects', this.projects);
+            return sortedProjects;
         },
         getProjects() {
             getAPI
@@ -154,7 +190,7 @@ export default {
                     },
                 })
                 .then((response) => {
-                    this.projectsObj = response.data;
+                    this.projects = response.data;
                 });
         },
         getTimeEntries() {
