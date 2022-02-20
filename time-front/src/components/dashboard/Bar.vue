@@ -121,7 +121,7 @@ export default {
                                 duration = Duration.fromMillis(
                                     duration * 1000
                                 ).toFormat("hh:mm:ss");
-                                return `${project}: ${duration}`;
+                                return ` ${project}: ${duration}`;
                             } else {
                                 return "";
                             }
