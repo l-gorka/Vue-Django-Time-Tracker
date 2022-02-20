@@ -86,7 +86,6 @@ export default {
         let cookie = this.$store.state.taskStarted
         if (cookie) {
             this.counterSeconds = (Date.parse(new Date()) / 1000) - cookie
-            console.log('conter sec', this.counterSeconds)
             this.startTimer()
         }
     },

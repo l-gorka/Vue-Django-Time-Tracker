@@ -61,7 +61,6 @@ export default {
       if (hours && minutes) {
         let zero = new Date(this.timestamp * 1000).setHours(0, 0) / 1000;
         let timestamp = new Date(zero * 1000).setHours(hours, minutes) / 1000;
-        console.log(timestamp);
         return timestamp;
       } else {
         return false;

@@ -66,11 +66,11 @@ export default {
                 this.dateOptionSelected = pickerLabel; // update button label
                 this.$refs.dropdown.isActive = false; // close dropdown
                 // emit array with new date
-                this.$emit('setDate', this.dateStart, this.dateEnd)
+                this.$emit('setDate', this.dateStart, this.dateEnd, this.dateOptionSelected)
             });
         },
         setDateOption(option) {
-            console.log(option);
+            
             // select option and close dropdown
             this.dateOptionSelected = option;
             this.$refs.dropdown.isActive = false;
@@ -100,7 +100,7 @@ export default {
                 new Date(this.dateEnd),
             ];
 
-            this.$emit('setDate', this.dateStart, this.dateEnd)
+            this.$emit('setDate', this.dateStart, this.dateEnd, this.dateOptionSelected)
         },
     },
     mounted() {

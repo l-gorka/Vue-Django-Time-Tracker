@@ -24,7 +24,6 @@ export default {
   components: { TimeEntry },
   methods: {
     dataChanged() {
-      console.log("day data changed");
       this.$emit("dataChanged");
     },
   },

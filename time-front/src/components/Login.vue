@@ -31,7 +31,6 @@ export default {
   name: "login",
   components: {},
   mounted() {
-    console.log("Login");
   },
   data() {
     return {

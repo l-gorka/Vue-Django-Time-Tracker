@@ -5,14 +5,20 @@
                 <div class="level-item">
                     <div class="title is-danger">
                         <b-icon icon="view-dashboard" size="is-small"></b-icon>
-                        <span>Dashboard <del>blue</del></span>
+                        <span class="is-danger"> Dashboard</span>
                     </div>
                 </div>
             </div>
             <div class="level-right">
                 <div class="level-item">
                     <div class="title">
-                        <date-picker @setDate="setDate" />
+                        <date-picker v-if="isLoaded" @setDate="setDate" />
+                        <b-button
+                            v-else
+                            type="is-primary is-light"
+                            icon-left="calendar"
+                            label="Set time"
+                        />
                     </div>
                 </div>
             </div>
@@ -22,8 +28,8 @@
                 <div class="columns">
                     <div class="column is-half">
                         <div class="box notification is-danger">
-                            <div class="heading">Total time</div>
-                            <div class="title">14:01:46</div>
+                            <div class="heading">{{ dateLabel }}</div>
+                            <div class="title">{{ timeTotalLabel }}</div>
                             <div class="level">
                                 <div class="level-item">
                                     <div class>
@@ -88,7 +94,12 @@
                         <p>Chart</p>
                     </div>
                     <div class="message-body">
-                        <doughnut />
+                        <doughnut
+                            @projectsData="displayProjectsData"
+                            v-if="filteredEntries && projectsObj"
+                            :entries="filteredEntries"
+                            :projects="projectsObj"
+                        />
                     </div>
                 </div>
             </div>
@@ -97,17 +108,78 @@
 </template>
 
 <script>
-import Bar from '../components/dashboard/Bar.vue'
-import Doughnut from '../components/dashboard/Doughnut.vue'
-import DatePicker from '../components/dashboard/DatePicker.vue'
+import { DateTime, Duration } from "luxon";
+import { getAPI } from "@/axios-base.js";
+import Bar from "../components/dashboard/Bar.vue";
+import Doughnut from "../components/dashboard/Doughnut.vue";
+import DatePicker from "../components/dashboard/DatePicker.vue";
 export default {
     components: { Bar, Doughnut, DatePicker },
+    data() {
+        return {
+            isLoaded: false,
+            projectsObj: {},
+            timeEntries: {},
+            filteredEntries: {},
+            dateStart: null,
+            dateEnd: null,
+            dateLabel: "",
+            timeTotalLabel: "",
+        };
+    },
     methods: {
-        setDate(dateStart, dateEnd) {
-            this.$buefy.toast.open(`${dateStart} | ${dateEnd}`)
-        }
-    }
-}
+        setDate(dateStart, dateEnd, dateOptionSelected) {
+            this.filteredEntries = this.timeEntries;
+            let unixStart = dateStart.ts / 1000;
+            let unixEnd = dateEnd.ts / 1000;
+            this.filteredEntries = this.timeEntries.filter((entry) => {
+                return (
+                    entry.start_date > unixStart && unixEnd > entry.start_date
+                );
+            });
+            this.dateLabel = dateOptionSelected;
+        },
+        displayProjectsData(totalSeconds, projectsData) {
+            console.log("display", totalSeconds, projectsData);
+            let timeStr = Duration.fromMillis(totalSeconds * 1000).toFormat(
+                "hh:mm:ss"
+            );
+            this.timeTotalLabel = `${timeStr}`;
+        },
+        getProjects() {
+            getAPI
+                .get("/project-list/", {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`,
+                    },
+                })
+                .then((response) => {
+                    this.projectsObj = response.data;
+                });
+        },
+        getTimeEntries() {
+            getAPI
+                .get("/time-entries/", {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`,
+                    },
+                })
+                .then((response) => {
+                    this.timeEntries = response.data;
+                    this.isLoaded = true;
+                });
+        },
+    },
+    computed: {
+        token() {
+            return this.$store.state.accessToken;
+        },
+    },
+    mounted() {
+        this.getProjects();
+        this.getTimeEntries();
+    },
+};
 </script>
 
 <style>

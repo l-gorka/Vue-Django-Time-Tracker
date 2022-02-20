@@ -109,7 +109,6 @@ export default {
                 });
         },
         saveData(func, toastMessage) {
-            console.log(this.dataObj);
             getAPI
                 .post(`time-entries/${this.timeEntryID}/update/`, this.dataObj, {
                     headers: {
@@ -201,7 +200,7 @@ export default {
                 type: 'is-danger',
                 hasIcon: true,
                 onConfirm: () => {
-                    console.log('confirmed')
+            
                     getAPI
                         .post(`time-entries/${this.timeEntryID}/delete/`, null, {
                             headers: {

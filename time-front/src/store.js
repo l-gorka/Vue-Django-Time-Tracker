@@ -22,7 +22,7 @@ export default new Vuex.Store({
 	mutations: {
 		updateContinueTask(state, dataObj) {
 			state.continueTask = dataObj
-			console.log(state.continueTask)
+			
 		},
 		deleteContinueTask(state) {
 			state.continueTask = null
@@ -31,7 +31,7 @@ export default new Vuex.Store({
 		updateTaskStarted(state, time) {
 			localStorage.setItem('task_started', time)
 			state.taskStarted = time
-			console.log('store task str', state.taskStarted)
+			
 		},
 		deleteTaskStarted(state) {
 			state.taskStarted = null

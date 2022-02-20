@@ -77,7 +77,6 @@ export default {
         this.projectData.color = this.color.hex;
       }
       this.projectData.owner = this.$store.state.userID // set owner to current user
-      console.log(this.projectData);
       if (this.projectData.title) {
         getAPI
           .post("/project-create/", this.projectData, {
