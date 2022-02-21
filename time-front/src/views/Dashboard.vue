@@ -27,55 +27,15 @@
             <div class="column is-8">
                 <div class="columns">
                     <div class="column is-half">
-                        <div class="box notification is-danger">
+                        <div class="box notification is-primary">
                             <div class="heading">{{ dateLabel }}</div>
                             <div class="title">{{ timeTotalLabel }}</div>
-                            <div class="level">
-                                <div class="level-item">
-                                    <div class>
-                                        <div class="heading">Billable</div>
-                                        <div class="title is-5">100%</div>
-                                    </div>
-                                </div>
-                                <div class="level-item">
-                                    <div class>
-                                        <div class="heading">Amount</div>
-                                        <div class="title is-5">$ 56</div>
-                                    </div>
-                                </div>
-                                <div class="level-item">
-                                    <div class>
-                                        <div class="heading">Success %</div>
-                                        <div class="title is-5">+ 28,5%</div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="column is-half">
                         <div class="box notification is-info">
                             <div class="heading">Top project</div>
                             <div class="title">{{ topProjectLabel }}</div>
-                            <div class="level">
-                                <div class="level-item">
-                                    <div class>
-                                        <div class="heading">Orders $</div>
-                                        <div class="title is-5">425K</div>
-                                    </div>
-                                </div>
-                                <div class="level-item">
-                                    <div class>
-                                        <div class="heading">Returns $</div>
-                                        <div class="title is-5">106K</div>
-                                    </div>
-                                </div>
-                                <div class="level-item">
-                                    <div class>
-                                        <div class="heading">Success %</div>
-                                        <div class="title is-5">+ 28,5%</div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -136,24 +96,32 @@ export default {
     },
     methods: {
         setDate(dateStart, dateEnd, dateOptionSelected) {
+            this.totalSeconds = 0;
             // filter TimeEntries by dates from datepicker
             this.dateStart = dateStart;
             this.dateEnd = dateEnd;
             this.filteredEntries = this.timeEntries;
             let unixStart = dateStart.ts / 1000;
             let unixEnd = dateEnd.ts / 1000;
+            console.log(unixStart, unixEnd);
             this.filteredEntries = this.timeEntries.filter((entry) => {
+                console.log(unixStart, entry.start_date, unixEnd);
                 return (
                     entry.start_date > unixStart && unixEnd > entry.start_date
                 );
             });
-
-            this.sortedProjects = this.getProjectsData();
-            this.topProjectLabel = this.sortedProjects[0].title;
-            this.dateLabel = dateOptionSelected;
+            this.sortedProjects = this.getProjectsData(); // sort projects by time
             this.timeTotalLabel = Duration.fromMillis(
                 this.totalSeconds * 1000
-            ).toFormat("hh:mm:ss");
+            ).toFormat("hh:mm:ss"); // set time total label
+            // if no entries in given time range, set top project label to
+            if (this.totalSeconds) {
+                this.topProjectLabel = this.sortedProjects[0].title; // set label to project with the largest duration
+            } else {
+                this.topProjectLabel = "No project"; // if no entries in given time range, set label to no project
+            }
+
+            this.dateLabel = dateOptionSelected;
         },
         getProjectsData() {
             let sortedProjects = JSON.parse(JSON.stringify(this.projects));
@@ -179,7 +147,7 @@ export default {
             // add noProject to projects
             sortedProjects.push(noProject);
             sortedProjects.sort((a, b) => (a.time > b.time ? -1 : 1)); // sort projects by time in seconds
-            console.log('get projects', this.projects);
+            console.log("get projects", this.projects);
             return sortedProjects;
         },
         getProjects() {

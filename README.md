@@ -3,12 +3,12 @@
 ## TODO
 
 - [x] Add registration page.
-- [ ] Add __str__ func to django models.
-- [ ] Fix responsiveness.
 - [x] Add cookie to save started time entry.
-- [x] Add colored text in project dropdown.
+- [x] Add colored text in projects dropdown.
 - [x] Add delete TimeEntry funcionality.
 - [x] Add continue activity funcionality
+- [x] Add change date feature to TimeEntry
+- [x] 
 
 ## Changelog
 
