@@ -13,9 +13,12 @@
                 v-model="description"
             ></b-input>
         </div>
-        <div class="column is-12-mobile is-3-desktop">
-            <!-- PROJECTS DROPDOWN -->
+        <div
+            class="column is-12-mobile is-3-desktop is-flex is-justify-content-space-between is-align-items-center"
+        >
+            <!-- PROJECTS DROPDOWN AND CALENDAR DROPDOWN -->
             <ProjectDropdown @ProjectChanged="setProject($event)" :project="dataObj.project" />
+            <CalendarDropdown @dateChanged="dateChanged" v-if="dataObj.start_date" :timestamp="dataObj.start_date" />
         </div>
 
         <!-- TIME STARTED -->
@@ -67,9 +70,10 @@ import { getAPI } from "../axios-base";
 import AddProject from "../components/AddProject.vue";
 import TimeInput from "../components/TimeInput.vue";
 import ProjectDropdown from "../components/ProjectsDropdown.vue";
+import CalendarDropdown from "../components/CalendarDropdown.vue";
 export default {
     emits: ["dataChanged"],
-    components: { AddProject, TimeInput, ProjectDropdown },
+    components: { AddProject, TimeInput, ProjectDropdown, CalendarDropdown },
     props: ["canCancel", "timeEntryID"],
     mounted() {
         this.loadData();
@@ -110,11 +114,15 @@ export default {
         },
         saveData(func, toastMessage) {
             getAPI
-                .post(`time-entries/${this.timeEntryID}/update/`, this.dataObj, {
-                    headers: {
-                        Authorization: `Bearer ${this.$store.state.accessToken}`,
-                    },
-                })
+                .post(
+                    `time-entries/${this.timeEntryID}/update/`,
+                    this.dataObj,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.$store.state.accessToken}`,
+                        },
+                    }
+                )
                 .then((response) => {
                     if (func) {
                         func();
@@ -143,7 +151,13 @@ export default {
                 this.saveData(null, toastMessage);
             }
         },
-
+        // CALENDAR DROPDOWN
+        dateChanged(dateDifferenceSeconds) {
+            console.log('calendar')
+            this.dataObj.start_date += dateDifferenceSeconds
+            this.dataObj.end_date += dateDifferenceSeconds
+            this.saveData(this.getDuration, "Entry date has been updated");
+        },
         // DURATION DROPDOWN
         focusOnDuration(event) {
             this.tempValue = this.duration;
@@ -190,32 +204,35 @@ export default {
         },
         // HELPERS
         continueActivity() {
-            this.$store.commit('updateContinueTask', this.dataObj)
+            this.$store.commit("updateContinueTask", this.dataObj);
         },
         deleteTimeEntry() {
             this.$buefy.dialog.confirm({
-                title: 'Deleting entry',
-                message: 'Are you sure you want to <b>delete</b> this entry? This action cannot be undone.',
-                confirmText: 'Delete Entry',
-                type: 'is-danger',
+                title: "Deleting entry",
+                message:
+                    "Are you sure you want to <b>delete</b> this entry? This action cannot be undone.",
+                confirmText: "Delete Entry",
+                type: "is-danger",
                 hasIcon: true,
                 onConfirm: () => {
-            
                     getAPI
-                        .post(`time-entries/${this.timeEntryID}/delete/`, null, {
-                            headers: {
-                                Authorization: `Bearer ${this.$store.state.accessToken}`,
-                            },
-                        })
+                        .post(
+                            `time-entries/${this.timeEntryID}/delete/`,
+                            null,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${this.$store.state.accessToken}`,
+                                },
+                            }
+                        )
                         .then((response) => {
-                            console.log('response')
+                            console.log("response");
                             this.toast("Time entry has been deleted");
                             this.$emit("dataChanged");
                         })
-                        .then((error) => console.log(error))
-                }
-            })
-
+                        .then((error) => console.log(error));
+                },
+            });
         },
         copyValue(value) {
             this.tempValue = value;

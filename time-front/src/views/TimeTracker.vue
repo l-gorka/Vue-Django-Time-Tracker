@@ -35,9 +35,6 @@ export default {
     }
   },
   methods: {
-    alert() {
-      alert("changed");
-    },
     getDayEntries() {
       getAPI
         .get("/day-entries/", {

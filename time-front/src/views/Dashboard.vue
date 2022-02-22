@@ -3,9 +3,9 @@
         <div class="level">
             <div class="level-left">
                 <div class="level-item">
-                    <div class="title is-danger">
+                    <div class="title">
                         <b-icon icon="view-dashboard" size="is-small"></b-icon>
-                        <span class="is-danger">Dashboard</span>
+                        <span > Dashboard</span>
                     </div>
                 </div>
             </div>
@@ -41,7 +41,7 @@
                 </div>
                 <div class="message">
                     <div class="message-header">
-                        <p>Chart</p>
+                        <p>Timeline</p>
                     </div>
                     <div class="message-body">
                         <Bar
@@ -57,7 +57,7 @@
             <div class="column is-4">
                 <div class="message">
                     <div class="message-header">
-                        <p>Chart</p>
+                        <p>Projects</p>
                     </div>
                     <div class="message-body">
                         <doughnut

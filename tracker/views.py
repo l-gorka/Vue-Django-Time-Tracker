@@ -93,7 +93,6 @@ def time_entry_delete(request, pk):
 @api_view(['GET'])
 def day_entries_list(request):
     entries = DayEntry.objects.filter(owner=request.user).order_by('-date')
-    print(entries[0].date)
     serializer = DayEntrySerializer(entries, many=True)
     return Response(serializer.data)
 

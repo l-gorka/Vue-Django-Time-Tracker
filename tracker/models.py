@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from unixtimestampfield import UnixTimeStampField
-from django.db.models.signals import post_save, pre_delete, post_delete
+from django.db.models.signals import post_save, pre_save, pre_delete, post_delete
 from datetime import datetime
 
 # Create your models here.
@@ -37,6 +37,9 @@ class TimeEntry(models.Model):
     def time_difference(self):
         return self.end_date - self.start_date
 
+    def __str__(self):
+        return str(datetime.fromtimestamp(self.start_date))
+
 
 class DayEntry(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -47,32 +50,65 @@ class DayEntry(models.Model):
     class Meta():
         verbose_name_plural = 'Day entries'
 
+    def __str__(self):
+        return str(self.date)
+
+    def get_time_total(self):
+        self.time_total = 0
+        for time_entry in self.time_entries.all():
+            self.time_total += time_entry.time_difference()
+        print(self.date, self.time_total)
+
+
 
 def time_entry_save(sender, instance, **kwargs):
+    # add time entry to day entry, if not present, create new day entry
     date = datetime.fromtimestamp(instance.start_date)
-    day_entry, created = DayEntry.objects.get_or_create(date=date, owner=instance.owner)
+    day_entry, created = DayEntry.objects.get_or_create(
+        date=date, owner=instance.owner)
     day_entry.time_entries.add(instance)
-    day_entry.time_total = 0
-    for time_entry in day_entry.time_entries.all():
-        day_entry.time_total += time_entry.time_difference()
+    # calculate total day time based on time entries
+    day_entry.get_time_total()
     day_entry.save()
+
+
+def time_entry_pre_save(sender, instance, **kwargs):
+    # in case of changing time entry date, first it needs to be removed from corresponding day entry
+    try:
+        day_entry = DayEntry.objects.get(time_entries=instance.id)
+    except DayEntry.DoesNotExist:
+        day_entry = None
+    if day_entry:
+        day_entry.time_entries.remove(instance)
+        if day_entry.time_entries.count() == 0:
+            day_entry.delete()
+        else:
+            day_entry.get_time_total()
+            day_entry.save()
+    
+
+    
+
 
 def time_entry_delete(sender, instance, **kwargs):
+    # in case of delting time entry, calculate total time of coresponding day entry again
     date = datetime.fromtimestamp(instance.start_date)
     day_entry = DayEntry.objects.get(date=date, owner=instance.owner)
-    day_entry.time_total = 0
-    for time_entry in day_entry.time_entries.all():
-        day_entry.time_total += time_entry.time_difference()
+    day_entry.get_time_total()
     day_entry.save()
 
+
 def time_entry_post_delete(sender, instance, **kwargs):
+    # in case of deleting time entry check if there are other time entries at that day
+    # if no, delete day entry
     date = datetime.fromtimestamp(instance.start_date)
     day_entry = DayEntry.objects.get(date=date, owner=instance.owner)
-    print('count', day_entry.time_entries.count())
+    print('pd', day_entry)
     if day_entry.time_entries.count() == 0:
-        print('inside')
         day_entry.delete()
 
+
+pre_save.connect(time_entry_pre_save, sender=TimeEntry)
 post_save.connect(time_entry_save, sender=TimeEntry)
 pre_delete.connect(time_entry_delete, sender=TimeEntry)
 post_delete.connect(time_entry_post_delete, sender=TimeEntry)
