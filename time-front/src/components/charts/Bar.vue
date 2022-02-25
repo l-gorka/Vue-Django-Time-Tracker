@@ -4,7 +4,7 @@
 
 <script>
 import { Duration, DateTime, Info } from "luxon";
-import Bar from "@/components/dashboard/Bar.js";
+import Bar from "@/components/charts/Bar.js";
 export default {
     props: ["entries", "projects", "dateStart", "dateEnd"],
     components: { Bar },

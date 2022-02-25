@@ -6,7 +6,7 @@
 
 <script>
 import { DateTime, Duration } from "luxon";
-import Doughnut from "./Doughnut.js";
+import Doughnut from "../charts/Doughnut.js";
 export default {
     props: ["projects"],
     components: { Doughnut },
@@ -45,7 +45,9 @@ export default {
             chartData: {},
             chartOptions: {
                 legend: {
-                    display: false,
+                    display: true,
+                    position: 'bottom',
+                    align: 'start',
                 },
                 tooltips: {
                     titleFontSize: 16,

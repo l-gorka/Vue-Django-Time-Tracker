@@ -75,7 +75,6 @@ export default {
                 owner: this.$store.state.userID,
                 description: "",
                 project: null,
-                tags: [],
                 start_date: null,
                 end_date: null,
             },
@@ -140,7 +139,6 @@ export default {
                 owner: this.$store.state.userID,
                 description: "",
                 project: null,
-                tags: [],
                 start_date: null,
                 end_date: null,
             };

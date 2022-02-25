@@ -44,9 +44,12 @@ def ProjectView(request, pk):
 @api_view(['POST'])
 def project_create(request):
     serializer = ProjectSerializer(data=request.data)
+    print('pcreate', serializer)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
+    else:
+        return Response("Invalid data", 40)
 
 
 @api_view(['GET'])

@@ -5,7 +5,7 @@
                 <div class="level-item">
                     <div class="title">
                         <b-icon icon="view-dashboard" size="is-small"></b-icon>
-                        <span > Dashboard</span>
+                        <span>Dashboard</span>
                     </div>
                 </div>
             </div>
@@ -74,8 +74,8 @@
 <script>
 import { DateTime, Duration } from "luxon";
 import { getAPI } from "@/axios-base.js";
-import Bar from "../components/dashboard/Bar.vue";
-import Doughnut from "../components/dashboard/Doughnut.vue";
+import Bar from "../components/charts/Bar.vue";
+import Doughnut from "../components/charts/Doughnut.vue";
 import DatePicker from "../components/dashboard/DatePicker.vue";
 export default {
     components: { Bar, Doughnut, DatePicker },
@@ -151,15 +151,10 @@ export default {
             return sortedProjects;
         },
         getProjects() {
-            getAPI
-                .get("/project-list/", {
-                    headers: {
-                        Authorization: `Bearer ${this.token}`,
-                    },
-                })
-                .then((response) => {
-                    this.projects = response.data;
-                });
+            this.$store.dispatch("getProjects").then(() => {
+                this.projects = this.$store.state.projects;
+                this.isLoaded = true;
+            });
         },
         getTimeEntries() {
             getAPI
@@ -170,7 +165,7 @@ export default {
                 })
                 .then((response) => {
                     this.timeEntries = response.data;
-                    this.isLoaded = true;
+
                 });
         },
     },

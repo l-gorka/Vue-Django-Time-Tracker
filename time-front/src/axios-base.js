@@ -10,9 +10,10 @@ const axiosBase = axios.create({
 const getAPI = axios.create({
   baseURL: APIUrl
 })
+// get a new access token if the old is about to expire
 getAPI.interceptors.request.use(async config => {
   let token = config.headers['Authorization'].split(' ')[1]
-  token = jwtDecode(token).exp
+  token = jwtDecode(token).exp // get expiration time from token
   if (Date.now() / 1000 > token - 10) {
     let access = await store.dispatch('refreshToken')
     config.headers.Authorization = `Bearer ${access}`

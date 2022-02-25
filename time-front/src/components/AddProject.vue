@@ -62,9 +62,6 @@ export default {
       projectData: {
         owner: null,
         title: "",
-        client: "",
-        billable: false,
-        billable_rate: null,
         color: "#000000",
       },
       color: "#000000",

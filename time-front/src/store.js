@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import jwtDecode from 'jwt-decode'
-import { axiosBase } from './axios-base'
+import { axiosBase, getAPI } from './axios-base'
 
 Vue.use(Vuex)
 export default new Vuex.Store({
@@ -11,7 +11,8 @@ export default new Vuex.Store({
 		refreshToken: localStorage.getItem('refresh_token') || null,
 		taskStarted: localStorage.getItem('task_started') || null,
 		userID: localStorage.getItem('userID') || null,
-		APIData: '', // received data from the backend API is stored here.
+		projects: {},
+		timeEntries: {},
 		continueTask: null,
 	},
 	getters: {
@@ -20,18 +21,22 @@ export default new Vuex.Store({
 		}
 	},
 	mutations: {
+		updateProjects(state, projects) {
+			state.projects = projects
+		},
+		updateTimeEntries(state, timeEntries) {
+			state.timeEntries = timeEntries
+		},
 		updateContinueTask(state, dataObj) {
 			state.continueTask = dataObj
-			
 		},
 		deleteContinueTask(state) {
 			state.continueTask = null
 		},
-		// set cookie to prevent started task when reloading page
+		// set cookie to preserve started task when reloading page
 		updateTaskStarted(state, time) {
 			localStorage.setItem('task_started', time)
 			state.taskStarted = time
-			
 		},
 		deleteTaskStarted(state) {
 			state.taskStarted = null
@@ -55,25 +60,35 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
-		
+
 		// remove current task cookie
 		removeTaskStarted(context) {
 			localStorage.removeItem('task_started')
 			context.commit('deleteTaskStarted')
 		},
-		// run the below action to get a new access token on expiration
+		getProjects(context) {
+			return new Promise((resolve, reject) => {
+				getAPI.get("/project-list/", {
+					headers: { Authorization: `Bearer ${context.state.accessToken}`, },
+				}).then((response) => {
+					context.commit('updateProjects', response.data)
+					resolve(response.data.access)
+				}).catch(err => {
+					reject(err)
+				})
+			})
+		},
+		// get a new access token on expiration
 		refreshToken(context) {
 			return new Promise((resolve, reject) => {
 				axiosBase.post('/api/token/refresh/', {
 					refresh: context.state.refreshToken
 				}) // send the stored refresh token to the backend API
 					.then(response => { // if API sends back new access and refresh token update the store
-
 						context.commit('updateAccess', response.data.access)
 						resolve(response.data.access)
 					})
 					.catch(err => {
-
 						reject(err) // error generating new access and refresh token because refresh token has expired
 					})
 			})
@@ -125,8 +140,8 @@ export default new Vuex.Store({
 					// if successful update local storage:
 					.then(response => {
 						let user = jwtDecode(response.data.access).user_id
-						
-						context.commit('updateLocalStorage', { access: response.data.access, refresh: response.data.refresh, userID: user}) // store the access and refresh token in localstorage
+
+						context.commit('updateLocalStorage', { access: response.data.access, refresh: response.data.refresh, userID: user }) // store the access and refresh token in localstorage
 						resolve()
 					})
 					.catch(err => {

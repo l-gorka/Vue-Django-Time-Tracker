@@ -10,16 +10,30 @@ from datetime import datetime
 class Project(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
-    client = models.CharField(max_length=50, blank=True, null=True)
-    billable = models.BooleanField(default=False)
-    billable_rate = models.DecimalField(
-        decimal_places=2, max_digits=10, null=True, blank=True)
     color = models.CharField(max_length=20)
+    date_created = models.DateTimeField(auto_now_add=True, blank=True)
+    time_entries = models.ManyToManyField(
+        'TimeEntry', related_name='project_time_entries', blank=True)
+    time_total = models.IntegerField(default=0, blank=True)
 
+    def add_entry(self, instance):
+        # add time entry instance to project m2m field
+        self.time_entries.add(instance)
+        self.get_time_total()
 
-class Tag(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=50)
+    def remove_entry(self, instance):
+        # remove time entry instance from project m2m field
+        self.time_entries.remove(instance)
+        self.get_time_total()
+
+    def get_time_total(self):
+        # calculate project's total time
+        self.time_total = 0
+        for entry in self.time_entries.all():
+            self.time_total += entry.time_difference()
+
+    def __str__(self):
+        return self.title
 
 
 class TimeEntry(models.Model):
@@ -27,7 +41,6 @@ class TimeEntry(models.Model):
     description = models.CharField(max_length=200, blank=True, null=True)
     project = models.ForeignKey(
         Project, on_delete=models.SET_NULL, blank=True, null=True)
-    tags = models.ManyToManyField(Tag, blank=True)
     start_date = UnixTimeStampField(use_numeric=True, default=0.0)
     end_date = UnixTimeStampField(use_numeric=True, default=0.0)
 
@@ -57,8 +70,6 @@ class DayEntry(models.Model):
         self.time_total = 0
         for time_entry in self.time_entries.all():
             self.time_total += time_entry.time_difference()
-        print(self.date, self.time_total)
-
 
 
 def time_entry_save(sender, instance, **kwargs):
@@ -70,6 +81,10 @@ def time_entry_save(sender, instance, **kwargs):
     # calculate total day time based on time entries
     day_entry.get_time_total()
     day_entry.save()
+    if instance.project:
+        project = Project.objects.get(id=instance.project.id)
+        project.add_entry(instance)
+        project.save()
 
 
 def time_entry_pre_save(sender, instance, **kwargs):
@@ -85,25 +100,43 @@ def time_entry_pre_save(sender, instance, **kwargs):
         else:
             day_entry.get_time_total()
             day_entry.save()
-    
 
-    
+    # if time entry is updated, remove it from associated project so it wont be counted in time total
+    try:
+        original_entry = TimeEntry.objects.get(id=instance.id)
+    except TimeEntry.DoesNotExist:
+        return False
+    if original_entry.project:
+        project = Project.objects.get(id=original_entry.project.id)
+        project.remove_entry(instance)
+        project.save()
 
 
 def time_entry_delete(sender, instance, **kwargs):
     # in case of delting time entry, calculate total time of coresponding day entry again
     date = datetime.fromtimestamp(instance.start_date)
-    day_entry = DayEntry.objects.get(date=date, owner=instance.owner)
+    try:
+        day_entry = DayEntry.objects.get(date=date, owner=instance.owner)
+    except DayEntry.DoesNotExist:
+        return False
     day_entry.get_time_total()
     day_entry.save()
+
+    # remove time entry from associated project
+    if instance.project:
+        project = Project.objects.get(id=instance.project.id)
+        project.remove_entry(instance)
+        project.save()
 
 
 def time_entry_post_delete(sender, instance, **kwargs):
     # in case of deleting time entry check if there are other time entries at that day
     # if no, delete day entry
     date = datetime.fromtimestamp(instance.start_date)
-    day_entry = DayEntry.objects.get(date=date, owner=instance.owner)
-    print('pd', day_entry)
+    try:
+        day_entry = DayEntry.objects.get(date=date, owner=instance.owner)
+    except DayEntry.DoesNotExist:
+        return False
     if day_entry.time_entries.count() == 0:
         day_entry.delete()
 
