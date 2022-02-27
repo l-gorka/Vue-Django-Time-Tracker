@@ -12,7 +12,11 @@
             <div class="level-right">
                 <div class="level-item">
                     <div class="title">
-                        <date-picker v-if="isLoaded" @setDate="setDate" />
+                        <date-picker
+                            :largeIcon="true"
+                            v-if="projectsLoaded && entriesLoaded"
+                            @setDate="setDate"
+                        />
                         <b-button
                             v-else
                             type="is-primary is-light"
@@ -81,7 +85,8 @@ export default {
     components: { Bar, Doughnut, DatePicker },
     data() {
         return {
-            isLoaded: false,
+            projectsLoaded: false,
+            entriesLoaded: false,
             projects: {},
             sortedProjects: {},
             timeEntries: {},
@@ -103,9 +108,7 @@ export default {
             this.filteredEntries = this.timeEntries;
             let unixStart = dateStart.ts / 1000;
             let unixEnd = dateEnd.ts / 1000;
-            console.log(unixStart, unixEnd);
             this.filteredEntries = this.timeEntries.filter((entry) => {
-                console.log(unixStart, entry.start_date, unixEnd);
                 return (
                     entry.start_date > unixStart && unixEnd > entry.start_date
                 );
@@ -125,7 +128,7 @@ export default {
         },
         getProjectsData() {
             let sortedProjects = JSON.parse(JSON.stringify(this.projects));
-            console.log(this.projects);
+            
             let noProject = { title: "No project", color: "#808080", time: 0 }; //create object to store entries without project
             sortedProjects.map((object) => (object.time = 0)); // add time field to projects object
             // iterate over entries and add time to projects
@@ -147,13 +150,12 @@ export default {
             // add noProject to projects
             sortedProjects.push(noProject);
             sortedProjects.sort((a, b) => (a.time > b.time ? -1 : 1)); // sort projects by time in seconds
-            console.log("get projects", this.projects);
             return sortedProjects;
         },
         getProjects() {
             this.$store.dispatch("getProjects").then(() => {
                 this.projects = this.$store.state.projects;
-                this.isLoaded = true;
+                this.projectsLoaded = true;
             });
         },
         getTimeEntries() {
@@ -165,6 +167,7 @@ export default {
                 })
                 .then((response) => {
                     this.timeEntries = response.data;
+                    this.entriesLoaded = true;
 
                 });
         },

@@ -3,7 +3,7 @@
     <div>
       <CurrentTask @timeEntryCreated="getDayEntries" />
     </div>
-    <div v-if="dayEntries">
+    <div class="mb-5" v-if="dayEntries">
       <DayEntry
         @dataChanged="getDayEntries"
         :dayEntry="dayEntry"

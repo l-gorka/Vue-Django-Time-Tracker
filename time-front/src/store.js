@@ -78,6 +78,18 @@ export default new Vuex.Store({
 				})
 			})
 		},
+		getTimeEntries(context) {
+			return new Promise((resolve, reject) => {
+				getAPI.get("/time-entries/", {
+					headers: { Authorization: `Bearer ${context.state.accessToken}`, },
+				}).then((response) => {
+					context.commit('updateTimeEntries', response.data)
+					resolve(response.data.access)
+				}).catch(err => {
+					reject(err)
+				})
+			})
+		},
 		// get a new access token on expiration
 		refreshToken(context) {
 			return new Promise((resolve, reject) => {

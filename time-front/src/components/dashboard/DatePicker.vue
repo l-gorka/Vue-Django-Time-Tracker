@@ -2,10 +2,19 @@
     <div>
         <b-dropdown ref="dropdown" mobile-modal position="is-bottom-left" aria-role="list">
             <template #trigger="{}">
-                <b-button :label="dateOptionSelected" type="is-primary" icon-left="calendar" />
+                <b-button
+                    v-if="largeIcon"
+                    :label="dateOptionSelected"
+                    type="is-primary"
+                    icon-left="calendar"
+                />
+                <b-button v-else class="has-text-white" type="is-ghost" size="is-small">
+                    <b-icon icon="calendar" class="is-size-4"></b-icon>
+                </b-button>
             </template>
 
             <b-dropdown-item custom aria-role="listitem">
+                {{largeIcon}}
                 <div class="columns">
                     <div
                         class="column is-flex is-flex-direction-column is-align-self-baseline is-align-content-stretch"
@@ -45,6 +54,7 @@
 import { DateTime, Duration } from "luxon";
 export default {
     components: {},
+    props: ['largeIcon'],
     data() {
         return {
             dateStart: null,
@@ -70,7 +80,7 @@ export default {
             });
         },
         setDateOption(option) {
-            
+
             // select option and close dropdown
             this.dateOptionSelected = option;
             this.$refs.dropdown.isActive = false;

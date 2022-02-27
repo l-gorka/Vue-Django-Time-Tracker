@@ -78,7 +78,7 @@ def time_entry_create(request):
 
 @api_view(['GET'])
 def time_entry_list(request):
-    entries = TimeEntry.objects.filter(owner=request.user)
+    entries = TimeEntry.objects.filter(owner=request.user).order_by('start_date')
     serializer = TimeEntrySerializer(entries, many=True)
     return Response(serializer.data)
 

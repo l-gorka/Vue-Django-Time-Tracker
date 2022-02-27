@@ -1,29 +1,30 @@
 <template>
-    <Bar v-if="chartData" :height="400" :width="900" :chart-data="chartData" :options="options" />
+    <Bar v-if="chartData" :height="350" :width="900" :chart-data="chartData" :options="options" />
 </template>
 
 <script>
 import { Duration, DateTime, Info } from "luxon";
 import Bar from "@/components/charts/Bar.js";
 export default {
-    props: ["entries", "projects", "dateStart", "dateEnd"],
+    props: ['entries', 'color', "project"],
     components: { Bar },
     mounted() {
         this.weekdays = Info.weekdays();
-    },
-    watch: {
-        entries: function () {
-            this.timeline = this.setTimeline();
-            this.setData();
-        },
+        this.setData()
+        this.setChartData()
     },
     methods: {
-        setTimeline() {
+        setData() {
+            let labels = this.entries.map((entry) => entry.start_date)
+            let values = this.entries.map((entry) => entry.end_date - entry.start_date)
+            let dateStart = DateTime.fromMillis(labels[0] * 1000).startOf('day')
+            let dateEnd = DateTime.fromMillis(labels[labels.length - 1] * 1000).endOf('day')
+
             let timeline = [];
             let timelineRanges = [];
-            let cursor = this.dateStart;
+            let cursor = dateStart;
             // iterates through given date range with 1 day step
-            while (cursor < this.dateEnd) {
+            while (cursor <= dateEnd) {
                 timeline.push(cursor.startOf("day").ts); // create array with days to be displayed as xLabel
                 timelineRanges.push({
                     // ceate array of date ranges to filter entries
@@ -32,49 +33,47 @@ export default {
                 });
                 cursor = cursor.plus({ days: 1 });
             }
-
-            let datasets = [];
-            // create dataset for each day and fill with project data
-            for (let project of this.projects) {
-                let dataset = {};
-                dataset["label"] = project.title;
-                dataset["backgroundColor"] = project.color;
-                dataset["data"] = Array(timeline.length).fill(0);
-                dataset["id"] = project.id || null;
-                datasets.push(dataset);
+            let data = []
+            for (let x = 0; x < timeline.length; x++) {
+                data[x] = 0
             }
-            // add time from entries to datasets
-            for (let dataset of datasets) {
+            for (let x = 0; x < timelineRanges.length; x++) {
                 for (let entry of this.entries) {
-                    if (entry.project == dataset.id) {
-                        for (let x = 0; x < timelineRanges.length; x++) {
-                            if (
-                                entry.start_date > timelineRanges[x].start &&
-                                entry.start_date < timelineRanges[x].end
-                            ) {
-                                dataset.data[x] +=
-                                    entry.end_date - entry.start_date;
-                            }
-                        }
+                    if (entry.start_date > timelineRanges[x].start && entry.start_date < timelineRanges[x].end) {
+                        data[x] += (entry.end_date - entry.start_date)
                     }
                 }
             }
-            this.labels = timeline;
-            this.datasets = datasets;
+            let datasets = [{
+                data: data,
+                backgroundColor: this.color
+            }]
+            this.datasets = datasets
+            this.labels = timeline
+
+
         },
-        setData() {
-            this.chartData = {
-                labels: this.labels,
-                datasets: this.datasets,
-            };
+        setChartData() {
+            this.$nextTick(() => {
+                this.chartData = {
+                    labels: this.labels,
+                    datasets: this.datasets,
+                };
+            })
+
         },
+    },
+    watch: {
+        entries: function () {
+            this.setData();
+            this.setChartData()
+        }
     },
     data() {
         return {
             labels: [],
             datasets: [],
             chartData: {},
-            weekdays: [],
             options: {
                 responsive: true,
                 legend: {
@@ -91,24 +90,18 @@ export default {
                                 object.labels[TooltipItem[0].index]
                             );
                             let day = titleDate.weekday - 1;
+                            console.log('tooltip', titleDate.day, titleDate.month)
                             titleDate = titleDate.toFormat("dd-MM-yyyy");
                             // add total day duration
-                            let total = 0;
-                            for (let dataset of object.datasets) {
-                                total += dataset.data[TooltipItem[0].index];
-                            }
-                            total = Duration.fromMillis(total * 1000).toFormat(
-                                "hh:mm:ss"
-                            );
-                            return `${this.weekdays[day]}, ${titleDate}: ${total}`;
+                            return `${this.weekdays[day]}, ${titleDate}`;
                         },
 
                         label: (tooltipItem, object) => {
                             let project =
-                                object.datasets[tooltipItem.datasetIndex].label;
+                                this.project;
                             let duration =
                                 object.datasets[tooltipItem.datasetIndex].data[
-                                    tooltipItem.index
+                                tooltipItem.index
                                 ];
                             if (duration > 0) {
                                 duration = Duration.fromMillis(
@@ -126,7 +119,7 @@ export default {
                         {
                             offset: true,
                             type: "time",
-                            stacked: true, // this should be set to make the bars stacked
+
                             distribution: "linear",
                             time: {
                                 unit: "day",
@@ -139,7 +132,7 @@ export default {
                     ],
                     yAxes: [
                         {
-                            stacked: true, // this also..
+
                             ticks: {
                                 stepSize: 3600,
                                 callback: function (value, index, values) {
@@ -152,9 +145,12 @@ export default {
                     ],
                 },
             },
-        };
-    },
-};
+
+        }
+    }
+}
+
+
 </script>
 
 <style>
