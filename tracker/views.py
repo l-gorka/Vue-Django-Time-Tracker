@@ -44,12 +44,30 @@ def ProjectView(request, pk):
 @api_view(['POST'])
 def project_create(request):
     serializer = ProjectSerializer(data=request.data)
-    print('pcreate', serializer)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
     else:
-        return Response("Invalid data", 40)
+        return Response("Invalid data", 402)
+
+@api_view(['POST'])
+def project_update(request, pk):
+    project = Project.objects.get(id=pk)
+    serializer = ProjectSerializer(instance=project, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        return Response("Invalid data", 402)
+
+@api_view(['POST'])
+def project_delete(request, pk):    
+    project = Project.objects.get(id=pk)
+    if request.user == project.owner:
+        project.delete()
+        return Response('Item has been deleted', status=202)
+    else:
+        return Response('Forbidden', 403)
 
 
 @api_view(['GET'])

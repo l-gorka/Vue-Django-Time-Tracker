@@ -76,7 +76,7 @@ export default {
                 customClass: "",
                 trapFocus: true,
                 events: {
-                    projectAdded: (value) => this.setProject(value),
+                    projectAdded: (project) => this.setProject(project.id),
                 },
             });
         },

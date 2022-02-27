@@ -32,7 +32,7 @@ export default {
       });
     },
     inputBlur() {
-      // Check if input value changed
+      // check if input value changed
       if (!(this.timeStr == this.tempValue)) {
         // check if input value is valid
         let [hours, minutes] = this.timeValid(this.timeStr);
@@ -40,7 +40,7 @@ export default {
           // if valid, emit 'changed'
 		  let newTimestamp = this.timeStrToTimestamp(hours, minutes)
 		  this.$emit('timeChanged', newTimestamp)
-		  //display new time	
+		  // display new time	
 		  this.timeStr = this.displayTime(this.timeStr)
         } else {
           // if not valid, restore value from tempValue

@@ -44,9 +44,10 @@
                     </div>
                 </div>
                 <div class="message">
-                    <div class="message-header">
-                        <p>Timeline</p>
-                    </div>
+                        <div class="message-header is-flex is-justify-content-space-between">
+                            <span>Timeline</span>
+                            <b-icon icon="chart-box-outline"></b-icon>
+                        </div>
                     <div class="message-body">
                         <Bar
                             v-if="filteredEntries"
@@ -60,9 +61,10 @@
             </div>
             <div class="column is-4">
                 <div class="message">
-                    <div class="message-header">
-                        <p>Projects</p>
-                    </div>
+                        <div class="message-header is-flex is-justify-content-space-between">
+                                <span>Projects</span>
+                                <b-icon  icon="chart-donut"></b-icon>
+                            </div>
                     <div class="message-body">
                         <doughnut
                             v-if="filteredEntries && sortedProjects"
@@ -128,7 +130,7 @@ export default {
         },
         getProjectsData() {
             let sortedProjects = JSON.parse(JSON.stringify(this.projects));
-            
+
             let noProject = { title: "No project", color: "#808080", time: 0 }; //create object to store entries without project
             sortedProjects.map((object) => (object.time = 0)); // add time field to projects object
             // iterate over entries and add time to projects

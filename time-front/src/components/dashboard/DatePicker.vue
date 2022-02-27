@@ -14,7 +14,6 @@
             </template>
 
             <b-dropdown-item custom aria-role="listitem">
-                {{largeIcon}}
                 <div class="columns">
                     <div
                         class="column is-flex is-flex-direction-column is-align-self-baseline is-align-content-stretch"
