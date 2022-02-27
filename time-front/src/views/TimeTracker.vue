@@ -27,7 +27,12 @@ export default {
     };
   },
   mounted() {
-    this.getDayEntries();
+    
+    this.$store.dispatch('getProjects')
+    this.$store.dispatch('getTimeEntries').then(() => {
+                this.getDayEntries();
+            })
+        
   },
   computed: {
     token() {

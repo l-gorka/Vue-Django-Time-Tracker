@@ -29,7 +29,7 @@ export default {
   },
   data() {
     return {
-      dayEntryData: null,
+      entries: [],
     };
   },
   computed: {

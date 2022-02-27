@@ -86,6 +86,17 @@ export default {
             this.setProject(id);
         },
         getProject() {
+            this.projects = this.$store.state.projects
+            if (this.projectId) {
+                for (let project of this.projects) {
+                    if (project.id == this.projectId) {
+                        this.projectName = project.title
+                        this.projectColor = `color: ${project.color}`
+                    }
+                 }
+            }
+        },
+        getProject2() {
             if (this.projectId) {
                 getAPI
                     .get("/project-list/" + this.projectId, {
@@ -108,15 +119,7 @@ export default {
             }
         },
         loadProjects() {
-            getAPI
-                .get("/project-list/", {
-                    headers: {
-                        Authorization: `Bearer ${this.$store.state.accessToken}`,
-                    },
-                })
-                .then((response) => {
-                    this.projects = response.data;
-                });
+            this.projects = this.$store.state.projects
         },
         filteredProjects() {
             return this.projects.filter((project) => {

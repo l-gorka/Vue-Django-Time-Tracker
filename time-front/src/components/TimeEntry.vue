@@ -100,17 +100,14 @@ export default {
     methods: {
         // COMMON
         loadData() {
-            getAPI
-                .get(`time-entries/${this.timeEntryID}`, {
-                    headers: {
-                        Authorization: `Bearer ${this.$store.state.accessToken}`,
-                    },
-                })
-                .then((response) => {
-                    this.dataObj = response.data;
-                    this.getDescription();
-                    this.getDuration();
-                });
+            let storeEntries = this.$store.state.timeEntries
+            for (let entry of storeEntries) {
+                if (entry.id == this.timeEntryID) {
+                    this.dataObj = entry
+                }
+            }
+            this.getDescription()
+            this.getDuration()
         },
         saveData(func, toastMessage) {
             getAPI
