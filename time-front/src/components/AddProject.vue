@@ -7,7 +7,7 @@
             <div class="columns">
                 <div class="column">
                     <b-field v-if="title" label="Project name">
-                        <b-input v-model="projectData.title"></b-input>
+                        <b-input @keyup.native.enter="createProject" v-model="projectData.title"></b-input>
                     </b-field>
                     <b-field
                         v-else
@@ -28,7 +28,7 @@
         <footer class="modal-card-foot">
             <b-button label="Close" @click="$emit('close')" />
             <b-button
-                @keyup.enter="createProject"
+                
                 @click="createProject"
                 :label="projectID ? 'Update project' : 'Create project' "
                 type="is-primary"

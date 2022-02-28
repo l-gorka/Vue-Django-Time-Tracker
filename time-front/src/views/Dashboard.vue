@@ -161,17 +161,10 @@ export default {
             });
         },
         getTimeEntries() {
-            getAPI
-                .get("/time-entries/", {
-                    headers: {
-                        Authorization: `Bearer ${this.token}`,
-                    },
-                })
-                .then((response) => {
-                    this.timeEntries = response.data;
-                    this.entriesLoaded = true;
-
-                });
+            this.$store.dispatch("getTimeEntries").then(() => {
+                this.timeEntries = this.$store.state.timeEntries;
+                this.entriesLoaded = true;
+            });
         },
     },
     computed: {

@@ -6,6 +6,7 @@ Vue.use(VueRouter)
 import Dashboard from '../views/Dashboard.vue'
 import TimeTracker from '../views/TimeTracker.vue'
 import Projects from '../views/Projects.vue'
+import Account from '../views/Account.vue'
 const routes = [
   {
     path: '/',
@@ -34,6 +35,11 @@ const routes = [
     path: '/projects',
     name: 'Projects',
     component: Projects
+  },
+  {
+    path: '/account',
+    name: 'Account',
+    component: Account
   },
 ]
 

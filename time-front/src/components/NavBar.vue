@@ -9,14 +9,11 @@
             </b-navbar-item>
         </template>
         <template #start>
-            <b-navbar-item tag="router-link" :to="{ path: '/about/' }">About</b-navbar-item>
+            <b-navbar-item v-if="isLoggedIn" tag="router-link" :to="{ path: '/about/' }">About</b-navbar-item>
             <b-navbar-item tag="router-link" :to="{ path: '/tracker/' }">Tracker</b-navbar-item>
             <b-navbar-item tag="router-link" :to="{ path: '/dashboard' }">Dashboard</b-navbar-item>
             <b-navbar-item tag="router-link" :to="{ path: '/projects' }">Projects</b-navbar-item>
-            <b-navbar-dropdown hoverable label="Info">
-                <b-navbar-item href="#">About</b-navbar-item>
-                <b-navbar-item href="#">Contact</b-navbar-item>
-            </b-navbar-dropdown>
+            <b-navbar-item tag="router-link" :to="{ path: '/account' }">Account</b-navbar-item>
         </template>
 
         <template #end>
@@ -25,6 +22,7 @@
                     <a @click="logoutUser" class="button is-ghost">
                         <strong>Log out</strong>
                     </a>
+    
                 </div>
                 <div v-else class="buttons">
                     <a class="button is-primary" @click="showRegisterModal">

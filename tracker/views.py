@@ -10,9 +10,15 @@ import time
 import json
 
 from .models import DayEntry, Project, TimeEntry
-from .serializers import DayEntrySerializer, ProjectSerializer, TimeEntrySerializer
+from .serializers import DayEntrySerializer, ProjectSerializer, TimeEntrySerializer, UserSelrializer
+from tracker import serializers
 # Create your views here.
 
+@api_view(['GET'])
+def user_data(request):
+    user = User.objects.get(id=request.user.id)
+    serializer = UserSelrializer(user)
+    return Response(serializer.data)
 
 @api_view(['POST'])
 def register_user(request):

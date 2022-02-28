@@ -1,6 +1,12 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 from .models import DayEntry, Project, TimeEntry
 import time
+
+class UserSelrializer(serializers.ModelSerializer):
+    class Meta():
+        model = User
+        fields = ['email', 'date_joined', 'last_login']
 
 class TimestampField(serializers.Field):
     def to_representation(self, value):
