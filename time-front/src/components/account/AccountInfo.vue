@@ -1,23 +1,24 @@
 <template>
     <div class="section">
-        <div v-if="userData" class="panel is-dark has-background-white">
+        <div v-if="isUserDataLoaded" class="panel is-dark has-background-white">
             <div class="panel-heading is-flex is-justify-content-space-between">
                 <span>Profile Info</span>
                 <b-icon icon="account"></b-icon>
             </div>
             <div class="panel-block">
                 <b-field label="Last logged in">
-                    <p>{{userData.last_login}}</p>
+                    
+                    <p>{{lastLogin}}</p>
                 </b-field>
             </div>
             <div class="panel-block">
                 <b-field label="Date joined">
-                    <p>{{userData.date_joined}}</p>
+                    <p>{{ dateJoined }}</p>
                 </b-field>
             </div>
             <div class="panel-block">
                 <b-field label="Email">
-                    <p>{{userData.email}}</p>
+                    <p>{{ email }}</p>
                 </b-field>
             </div>
 
@@ -27,31 +28,37 @@
 </template>
 
 <script>
+import { DateTime } from "luxon";
 import { getAPI } from "../../axios-base";
 export default {
     mounted() {
-        this.getUserData()
+        this.getUserData();
     },
     data() {
         return {
-            userData: {}
-        }
+            isUserDataLoaded: false,
+            dateJoined: null,
+            lastLogin: null,
+            email: "",
+        };
     },
     methods: {
         getUserData() {
             getAPI
-        .get("/account/", {
-          headers: {
-            Authorization: `Bearer ${this.$store.state.accessToken}`,
-          },
-        })
-        .then((response) => {
-        console.log('resp account', response.data)
-        this.userData = response.data
-        });
-        }
-    }
-}
+                .get("/account/", {
+                    headers: {
+                        Authorization: `Bearer ${this.$store.state.accessToken}`,
+                    },
+                })
+                .then((response) => {
+                    this.lastLogin = new Date(response.data.last_login);
+                    this.dateJoined = new Date(response.data.date_joined);
+                    this.email = response.data.email;
+                    this.isUserDataLoaded = true;
+                });
+        },
+    },
+};
 </script>
 
 <style>
