@@ -54,7 +54,6 @@ export default {
         project: function () {
             this.projectId = this.project;
             this.loadProjects()
-            console.log('proj drpdown', this.projectId);
         },
     },
 

@@ -1,30 +1,38 @@
 <template>
-  <div class="" id="app">
-    <div id="nav">
-      <NavBar />
+    <div class id="app">
+        <div id="nav">
+            <NavBar />
+        </div>
+        <div class="flex-wrapper">
+            
+                    <router-view />
+          
+            
+            <footer class="footer p-2" id="footer">
+                <Footer />
+            </footer>
+        </div>
     </div>
-    <div class="content">
-      <div>
-        <router-view />
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
 import NavBar from "./components/NavBar.vue";
-
+import Footer from "./components/Footer.vue";
 export default {
-  components: { NavBar },
+    components: { NavBar, Footer },
 };
 </script>
 
 <style>
+body,
 html {
-  min-height: 100%;
-  background: #F1F1F1;
+    display: flex;
+    flex-direction: column;
 }
-body {
-  background: #F1F1F1;
+.flex-wrapper {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
 }
 </style>

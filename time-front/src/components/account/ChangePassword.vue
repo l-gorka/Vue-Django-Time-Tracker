@@ -70,8 +70,8 @@
                         password-reveal
                     ></b-input>
                 </b-field>
-                <b-button v-if="isLoading" loading type="is-primary">Change password</b-button>
-                <b-button v-else @click="changePassword" type="is-primary">Change password</b-button>
+            
+                <b-button :loading="isLoading" @click="changePassword" type="is-primary">Change password</b-button>
             </div>
         </div>
     </div>
