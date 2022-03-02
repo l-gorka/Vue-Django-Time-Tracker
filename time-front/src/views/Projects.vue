@@ -161,15 +161,14 @@
 import { Duration } from "luxon";
 import { getAPI } from "../axios-base";
 import DatePicker from "../components/dashboard/DatePicker.vue";
-import ProjectBar from '../components/charts/ProjectBar.vue'
-import AddProject from '../components/AddProject.vue'
+import ProjectBar from "../components/charts/ProjectBar.vue";
+import AddProject from "../components/AddProject.vue";
 export default {
     components: { DatePicker, ProjectBar, AddProject },
     mounted() {
         this.getProjects();
-        this.getEntries()
-        this.isMobile()
-
+        this.getEntries();
+        this.isMobile();
     },
     data() {
         return {
@@ -186,34 +185,33 @@ export default {
     methods: {
         selectProject(project) {
             // after selecting project, hide projects dropdown on mobile
-            this.selectedProject = project
+            this.selectedProject = project;
             if (window.innerWidth < 1024) {
-                this.dropdownOpen = false
+                this.dropdownOpen = false;
             }
             this.filteredEntries = this.entries.filter((entry) => {
                 // select project to be displayed
-                return entry.project == this.selectedProject.id
-            })
-
+                return entry.project == this.selectedProject.id;
+            });
         },
         getProjects() {
             // call get projects action on store
             this.$store.dispatch("getProjects").then(() => {
                 this.projects = this.$store.state.projects;
-                this.projectsLoaded = true
+                this.projectsLoaded = true;
             });
         },
         getEntries() {
             // call get entries action on store
-            this.$store.dispatch('getTimeEntries').then(() => {
-                this.entries = this.$store.state.timeEntries
-                this.entriesLoaded = true
-            })
+            this.$store.dispatch("getTimeEntries").then(() => {
+                this.entries = this.$store.state.timeEntries;
+                this.entriesLoaded = true;
+            });
         },
         isMobile() {
             // if mobile, project dropdown should be hidden by default
             if (window.innerWidth < 1024) {
-                console.log('is mobile')
+                console.log("is mobile");
                 this.dropdownOpen = false;
             }
         },
@@ -230,33 +228,33 @@ export default {
             });
         },
         showAddProjectModal(edit) {
-
             // fire modal to add project
-            let isMobile = false // check window size
+            let isMobile = false; // check window size
             if (window.innerWidth < 768) {
-                isMobile = true
+                isMobile = true;
             }
-            let props = {}
-            // if 
-            if (edit) { 
+            let props = {};
+            // if
+            if (edit) {
                 props = {
                     projectID: this.selectedProject.id,
                     projectTitle: this.selectedProject.title,
-                    projectColor: this.selectedProject.color
-                }
+                    projectColor: this.selectedProject.color,
+                };
             }
             this.$buefy.modal.open({
                 parent: this,
                 props: props,
                 component: AddProject,
-                fullScreen: isMobile, // if window < 768px 
+                fullScreen: isMobile, // if window < 768px
                 hasModalCard: true,
                 customClass: "",
                 trapFocus: true,
                 events: {
-                    projectAdded: (project) => { // if project added, call store action for list of projects
-                        this.getProjects()
-                        this.selectedProject = project
+                    projectAdded: (project) => {
+                        // if project added, call store action for list of projects
+                        this.getProjects();
+                        this.selectedProject = project;
                     },
                 },
             });
@@ -282,8 +280,8 @@ export default {
                         )
                         .then((response) => {
                             this.toast("Project has been deleted");
-                            this.getProjects()
-                            this.selectedProject = null
+                            this.getProjects();
+                            this.selectedProject = null;
                         })
                         .then((error) => console.log(error));
                 },

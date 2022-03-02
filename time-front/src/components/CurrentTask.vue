@@ -17,7 +17,7 @@
                 </div>
                 <div class="column is-12-mobile is-2">
                     <!-- PROJECTS DROPDOWN -->
-                    <ProjectDropdown @ProjectChanged="setProject($event)" :project="project" />
+                    <ProjectDropdown @ProjectChanged="setProject" :project="project" />
                 </div>
                 <div class="column is-2-fullhd is-2-desktop">
                     <!-- COUNTER -->

@@ -10,9 +10,28 @@ import time
 import json
 
 from .models import DayEntry, Project, TimeEntry
-from .serializers import DayEntrySerializer, ProjectSerializer, TimeEntrySerializer, UserSelrializer
+from .serializers import DayEntrySerializer, ProjectSerializer, TimeEntrySerializer, UserSelrializer, ChangePasswordSerializer
 from tracker import serializers
 # Create your views here.
+
+
+@api_view(['POST'])
+def password_change(request):
+    time.sleep(1)
+    user = User.objects.get(id=request.user.id)
+    serializer = ChangePasswordSerializer(data=request.data)
+    if serializer.is_valid():
+        check = user.check_password(serializer.validated_data.get("old_password"))
+        if check:
+            #user.set_password(serializer.validated_data.get("password"))
+            user.save()
+            return Response('changed', 200)
+        else:
+            return Response('Password you entered is incorrect. Please retype your current password.', status=401)
+    else:
+        return Response("Password can't be a commonly used password or similar to your other personal information. ", 400)
+
+
 
 @api_view(['GET'])
 def user_data(request):
@@ -20,17 +39,18 @@ def user_data(request):
     serializer = UserSelrializer(user)
     return Response(serializer.data)
 
+
 @api_view(['POST'])
 def register_user(request):
     body = json.loads(request.body)
     try:
         created = User.objects.create(
-            username=body['username'], email=body['email'], 
+            username=body['username'], email=body['email'],
             password=body['password1'])
         return Response('User has been registered', status=202)
     except IntegrityError:
-            return Response("User already exists", status=401)
-        
+        return Response("User already exists", status=401)
+
 
 @csrf_exempt
 @api_view(['GET'])
@@ -56,6 +76,7 @@ def project_create(request):
     else:
         return Response("Invalid data", 402)
 
+
 @api_view(['POST'])
 def project_update(request, pk):
     project = Project.objects.get(id=pk)
@@ -66,8 +87,9 @@ def project_update(request, pk):
     else:
         return Response("Invalid data", 402)
 
+
 @api_view(['POST'])
-def project_delete(request, pk):    
+def project_delete(request, pk):
     project = Project.objects.get(id=pk)
     if request.user == project.owner:
         project.delete()
@@ -94,7 +116,7 @@ def TimeEntryUpdate(request, pk):
 
 @api_view(['POST'])
 def time_entry_create(request):
-    serializer = TimeEntrySerializer(data=request.data)    
+    serializer = TimeEntrySerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data)
@@ -102,13 +124,15 @@ def time_entry_create(request):
 
 @api_view(['GET'])
 def time_entry_list(request):
-    entries = TimeEntry.objects.filter(owner=request.user).order_by('start_date')
+    entries = TimeEntry.objects.filter(
+        owner=request.user).order_by('start_date')
     serializer = TimeEntrySerializer(entries, many=True)
     return Response(serializer.data)
 
+
 @api_view(['POST'])
 def time_entry_delete(request, pk):
-    
+
     entry = TimeEntry.objects.get(id=pk)
     if request.user == entry.owner:
         entry.delete()

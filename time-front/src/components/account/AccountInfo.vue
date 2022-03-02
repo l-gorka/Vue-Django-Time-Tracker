@@ -7,7 +7,6 @@
             </div>
             <div class="panel-block">
                 <b-field label="Last logged in">
-                    
                     <p>{{lastLogin}}</p>
                 </b-field>
             </div>
@@ -21,8 +20,6 @@
                     <p>{{ email }}</p>
                 </b-field>
             </div>
-
-            <div class="panel-block">asd</div>
         </div>
     </div>
 </template>

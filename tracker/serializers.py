@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
 from .models import DayEntry, Project, TimeEntry
 import time
@@ -39,3 +40,12 @@ class DayEntrySerializer(serializers.ModelSerializer):
         model = DayEntry
         fields = '__all__'
 
+
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=True)
+    old_password = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = User
+        fields = ('old_password', 'password', 'password2')

@@ -16,13 +16,8 @@
                 />
             </a>
         </template>
-        <b-dropdown-item aria-role="listitem" type="is-primary" size="is-medium">
-            <b-button
-                icon-left="plus-circle"
-                class="is-ghost"
-                label="Create new project"
-                @click="showModal"
-            />
+        <b-dropdown-item @click="showModal" aria-role="listitem" type="is-primary" size="is-medium">
+            <b-button icon-left="plus-circle" class="is-ghost" label="Create new project" />
         </b-dropdown-item>
 
         <b-dropdown-item custom aria-role="listitem">
@@ -58,15 +53,16 @@ export default {
     watch: {
         project: function () {
             this.projectId = this.project;
-            this.getProject();
+            this.loadProjects()
+            console.log('proj drpdown', this.projectId);
         },
     },
 
     methods: {
         showModal() {
-            let isMobile = false // check window size
+            let isMobile = false; // check window size
             if (window.innerWidth < 768) {
-                isMobile = true
+                isMobile = true;
             }
             this.$buefy.modal.open({
                 parent: this,
@@ -80,46 +76,26 @@ export default {
                 },
             });
         },
-        projectAdded(id) {
-            this.projectId = id;
-            this.getProject();
-            this.setProject(id);
-        },
-        getProject() {
-            this.projects = this.$store.state.projects
-            if (this.projectId) {
-                for (let project of this.projects) {
-                    if (project.id == this.projectId) {
-                        this.projectName = project.title
-                        this.projectColor = `color: ${project.color}`
-                    }
-                 }
-            }
-        },
-        getProject2() {
-            if (this.projectId) {
-                getAPI
-                    .get("/project-list/" + this.projectId, {
-                        headers: {
-                            Authorization: `Bearer ${this.$store.state.accessToken}`,
-                        },
-                    })
-                    .then((response) => {
-                        this.projectName = response.data.title;
-                        this.projectColor = `color: ${response.data.color}`;
-                    });
-            }
-        },
         setProject(id) {
             if (!(this.project == id)) {
+                this.loadProjects();
                 this.$emit("ProjectChanged", id);
                 this.projectId = id;
-                this.loadProjects();
-                this.getProject();
             }
         },
         loadProjects() {
-            this.projects = this.$store.state.projects
+            this.$store.dispatch('getProjects').then(() => {
+                this.projects = this.$store.state.projects;
+                if (this.projectId) {
+                    for (let project of this.projects) {
+                        if (project.id == this.projectId) {
+                            this.projectName = project.title;
+                            this.projectColor = `color: ${project.color}`;
+                        }
+                    }
+                }
+            });
+
         },
         filteredProjects() {
             return this.projects.filter((project) => {
