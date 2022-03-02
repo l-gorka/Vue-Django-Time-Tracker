@@ -18,7 +18,11 @@
         >
             <!-- PROJECTS DROPDOWN AND CALENDAR DROPDOWN -->
             <ProjectDropdown @ProjectChanged="setProject($event)" :project="dataObj.project" />
-            <CalendarDropdown @dateChanged="dateChanged" v-if="dataObj.start_date" :timestamp="dataObj.start_date" />
+            <CalendarDropdown
+                @dateChanged="dateChanged"
+                v-if="dataObj.start_date"
+                :timestamp="dataObj.start_date"
+            />
         </div>
 
         <!-- TIME STARTED -->
@@ -77,6 +81,7 @@ export default {
     props: ["canCancel", "timeEntryID"],
     mounted() {
         this.loadData();
+        console.log("time entry", this.timeEntryID);
     },
 
     data() {
@@ -100,14 +105,16 @@ export default {
     methods: {
         // COMMON
         loadData() {
-            let storeEntries = this.$store.state.timeEntries
-            for (let entry of storeEntries) {
-                if (entry.id == this.timeEntryID) {
-                    this.dataObj = entry
+            this.$store.dispatch("getTimeEntries").then(() => {
+                let storeEntries = this.$store.state.timeEntries;
+                for (let entry of storeEntries) {
+                    if (entry.id == this.timeEntryID) {
+                        this.dataObj = entry;
+                    }
                 }
-            }
-            this.getDescription()
-            this.getDuration()
+                this.getDescription();
+                this.getDuration();
+            });
         },
         saveData(func, toastMessage) {
             getAPI
@@ -150,9 +157,9 @@ export default {
         },
         // CALENDAR DROPDOWN
         dateChanged(dateDifferenceSeconds) {
-            console.log('calendar')
-            this.dataObj.start_date += dateDifferenceSeconds
-            this.dataObj.end_date += dateDifferenceSeconds
+            console.log("calendar");
+            this.dataObj.start_date += dateDifferenceSeconds;
+            this.dataObj.end_date += dateDifferenceSeconds;
             this.saveData(this.getDuration, "Entry date has been updated");
         },
         // DURATION DROPDOWN

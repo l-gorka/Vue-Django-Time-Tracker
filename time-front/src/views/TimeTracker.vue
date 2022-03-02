@@ -3,7 +3,7 @@
         <div>
             <CurrentTask @timeEntryCreated="getDayEntries" />
         </div>
-        <div class="" v-if="dayEntries">
+        <div class v-if="dayEntries">
             <DayEntry
                 @dataChanged="getDayEntries"
                 :dayEntry="dayEntry"
@@ -11,7 +11,14 @@
                 :key="dayEntry.id"
             />
         </div>
-        <b-pagination :total="numberOfEntries" :current.sync="pageNumber" :per-page="perPage"></b-pagination>
+        <div class="mx-5">
+            <b-pagination
+                size="is-medium"
+                :total="numberOfEntries"
+                :current.sync="pageNumber"
+                :per-page="perPage"
+            ></b-pagination>
+        </div>
     </div>
 </template>
 
@@ -39,8 +46,11 @@ export default {
             return this.dayEntries.length;
         },
         paginatedDayEntries() {
-          let pageNumber = this.pageNumber - 1
-            return this.dayEntries.slice(pageNumber * this.perPage,(pageNumber + 1) * this.perPage);
+            let pageNumber = this.pageNumber - 1;
+            return this.dayEntries.slice(
+                pageNumber * this.perPage,
+                (pageNumber + 1) * this.perPage
+            );
         },
         token() {
             return this.$store.state.accessToken;
@@ -48,6 +58,7 @@ export default {
     },
     methods: {
         getDayEntries() {
+          this.dayEntries = []
             getAPI
                 .get("/day-entries/", {
                     headers: {

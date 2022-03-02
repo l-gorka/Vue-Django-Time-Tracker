@@ -1,5 +1,5 @@
 <template>
-    <div class="panel is-warning mb-4 pt-2 mt-4 mx-2">
+    <div class="panel is-fullwidth is-warning mb-4 pt-2 mt-4 mx-2">
         <div class="panel-body has-background-white">
             <div
                 ref="tEntry"

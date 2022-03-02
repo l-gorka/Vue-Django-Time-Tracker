@@ -23,7 +23,7 @@ def password_change(request):
     if serializer.is_valid():
         check = user.check_password(serializer.validated_data.get("old_password"))
         if check:
-            #user.set_password(serializer.validated_data.get("password"))
+            user.set_password(serializer.validated_data.get("password"))
             user.save()
             return Response('changed', 200)
         else:
@@ -45,8 +45,9 @@ def register_user(request):
     body = json.loads(request.body)
     try:
         created = User.objects.create(
-            username=body['username'], email=body['email'],
-            password=body['password1'])
+            username=body['username'], email=body['email'])
+        created.set_password(body['password1'])
+        created.save()
         return Response('User has been registered', status=202)
     except IntegrityError:
         return Response("User already exists", status=401)
