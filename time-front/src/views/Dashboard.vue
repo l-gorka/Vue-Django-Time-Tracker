@@ -1,75 +1,74 @@
 <template>
-    <div class="container is-fluid mt-5">
-        <div class="level">
-            <div class="level-left">
-                <div class="level-item">
-                    <div class="title">
-                        <b-icon icon="view-dashboard" size="is-small"></b-icon>
-                        <span>Dashboard</span>
+    <div class="page-wrapper mt-5">
+        <div class="">
+            <div class="level is-centered">
+                <div class="level-left">
+                    <div class="level-item">
+                        <h1 class="title is-3 has-text-primary">Dashboard</h1>
                     </div>
                 </div>
-            </div>
-            <div class="level-right">
-                <div class="level-item">
-                    <div class="title">
-                        <date-picker
-                            :largeIcon="true"
-                            v-if="projectsLoaded && entriesLoaded"
-                            @setDate="setDate"
-                        />
-                        <b-button
-                            v-else
-                            type="is-primary is-light"
-                            icon-left="calendar"
-                            label="Set time"
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="columns is-multiline">
-            <div class="column is-8">
-                <div class="columns">
-                    <div class="column is-half">
-                        <div class="box notification is-primary">
-                            <div class="heading">{{ dateLabel }}</div>
-                            <div class="title">{{ timeTotalLabel }}</div>
-                        </div>
-                    </div>
-                    <div class="column is-half">
-                        <div class="box notification is-info">
-                            <div class="heading">Top project</div>
-                            <div class="title">{{ topProjectLabel }}</div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div class="title">
+                            <date-picker
+                                :largeIcon="true"
+                                v-if="projectsLoaded && entriesLoaded"
+                                @setDate="setDate"
+                            />
+                            <b-button
+                                v-else
+                                type="is-primary is-light"
+                                icon-left="calendar"
+                                label="Set time"
+                            />
                         </div>
                     </div>
                 </div>
-                <div class="message">
+            </div>
+            <div class="columns is-multiline">
+                <div class="column is-8">
+                    <div class="columns">
+                        <div class="column is-half">
+                            <div class="box notification is-primary">
+                                <div class="heading">{{ dateLabel }}</div>
+                                <div class="title">{{ timeTotalLabel }}</div>
+                            </div>
+                        </div>
+                        <div class="column is-half">
+                            <div class="box notification is-info">
+                                <div class="heading">Top project</div>
+                                <div class="title">{{ topProjectLabel }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message">
                         <div class="message-header is-flex is-justify-content-space-between">
                             <span>Timeline</span>
                             <b-icon icon="chart-box-outline"></b-icon>
                         </div>
-                    <div class="message-body">
-                        <Bar
-                            v-if="filteredEntries"
-                            :entries="filteredEntries"
-                            :projects="sortedProjects"
-                            :dateStart="dateStart"
-                            :dateEnd="dateEnd"
-                        />
+                        <div class="message-body">
+                            <Bar
+                                v-if="filteredEntries"
+                                :entries="filteredEntries"
+                                :projects="sortedProjects"
+                                :dateStart="dateStart"
+                                :dateEnd="dateEnd"
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="column is-4">
-                <div class="message">
+                <div class="column is-4">
+                    <div class="message">
                         <div class="message-header is-flex is-justify-content-space-between">
-                                <span>Projects</span>
-                                <b-icon  icon="chart-donut"></b-icon>
-                            </div>
-                    <div class="message-body">
-                        <doughnut
-                            v-if="filteredEntries && sortedProjects"
-                            :projects="sortedProjects"
-                        />
+                            <span>Projects</span>
+                            <b-icon icon="chart-donut"></b-icon>
+                        </div>
+                        <div class="message-body">
+                            <doughnut
+                                v-if="filteredEntries && sortedProjects"
+                                :projects="sortedProjects"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

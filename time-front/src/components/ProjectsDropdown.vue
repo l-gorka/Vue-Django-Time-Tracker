@@ -1,12 +1,18 @@
 <template>
     <b-dropdown append-to-body aria-role="menu" scrollable max-height="300" trap-focus>
         <template #trigger>
-            <a :style="projectColor" @click="loadProjects" class="navbar-item p-0" role="button">
-                <span
+            <a>
+                <b-tooltip position="is-top" :delay="500" label="Create new project or select existing">
+                <b-button
                     :style="projectColor"
+                    @click="loadProjects"
+                    :label="projectName"
+                    role="button"
                     v-if="project"
                     class="is-ghost is-size-6"
-                >{{projectName}}</span>
+                    size="is-small"
+                ><b-icon icon="circle-medium"></b-icon>
+                <span>{{projectName}}</span></b-button>
                 <b-button
                     v-else
                     size="is-small"
@@ -14,6 +20,7 @@
                     class="is-ghost is-size-6"
                     label="Project"
                 />
+                </b-tooltip>
             </a>
         </template>
         <b-dropdown-item @click="showModal" aria-role="listitem" type="is-primary" size="is-medium">
@@ -29,7 +36,12 @@
             :key="project.id"
             aria-role="listitem"
             :style="{color: project.color}"
-        >{{ project.title }}</b-dropdown-item>
+            
+        ><div class="is-flex is-align-items-center">
+            <b-icon icon="circle-medium"></b-icon> 
+            <p>{{ project.title }}</p>
+        </div>
+        </b-dropdown-item>
     </b-dropdown>
 </template>
 
@@ -53,10 +65,12 @@ export default {
     watch: {
         project: function () {
             this.projectId = this.project;
-            this.loadProjects()
+            this.loadProjects();
         },
     },
-
+    mounted() {
+        this.loadProjects()
+    },
     methods: {
         showModal() {
             let isMobile = false; // check window size
@@ -66,7 +80,7 @@ export default {
             this.$buefy.modal.open({
                 parent: this,
                 component: AddProject,
-                fullScreen: isMobile, // if window < 768px 
+                fullScreen: isMobile, // if window < 768px
                 hasModalCard: true,
                 customClass: "",
                 trapFocus: true,
@@ -83,7 +97,7 @@ export default {
             }
         },
         loadProjects() {
-            this.$store.dispatch('getProjects').then(() => {
+            this.$store.dispatch("getProjects").then(() => {
                 this.projects = this.$store.state.projects;
                 if (this.projectId) {
                     for (let project of this.projects) {
@@ -94,7 +108,6 @@ export default {
                     }
                 }
             });
-
         },
         filteredProjects() {
             return this.projects.filter((project) => {

@@ -1,13 +1,8 @@
 <template>
     <div class="" id="app">
-        <div id="nav">
-            <NavBar />
-        </div>
-
-        <div>
-            <router-view />
-        </div>
-        
+        <NavBar />
+        <router-view />
+        <Footer id="footer"/>
     </div>
 </template>
 
@@ -20,15 +15,24 @@ export default {
 </script>
 
 <style>
-body,
-html {
-    display: flex;
-    flex-direction: column;
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
-.flex-wrapper {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-    justify-content: space-between;
+#footer {
+  margin-top: auto;
+}
+.page-wrapper {
+  width: 100%;
+  justify-self: center;
+  max-width: 1400px;
+  padding: 0 2rem;
+  margin: 0 auto;
+}
+@media screen and (max-width: 1024px) {
+.page-wrapper {
+  padding: 0.5rem;
+  }
 }
 </style>

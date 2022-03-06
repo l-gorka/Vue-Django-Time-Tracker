@@ -1,5 +1,5 @@
 <template>
-    <div class="panel is-fullwidth is-warning mb-4 pt-2 mt-4 mx-2">
+    <div class="panel is-warning mb-4 pt-2 mt-4 mx-2">
         <div class="panel-body has-background-white">
             <div
                 ref="tEntry"
@@ -29,18 +29,24 @@
                 </div>
                 <div class="column is-1 is-flex is-justify-content-end">
                     <!-- BUTTON -->
-                    <b-button
-                        @click="stopTimer"
-                        v-if="isStarted"
-                        icon-left="clock-outline"
-                        type="is-primary"
-                    >STOP</b-button>
-                    <b-button
-                        @click="startTimer"
-                        v-else
-                        icon-left="clock-outline"
-                        type="is-primary"
-                    >START</b-button>
+                    <b-tooltip
+                        position="is-left"
+                        :delay="500"
+                        :label="isStarted? 'Finish current activity' : 'Start timer for new activity'"
+                    >
+                        <b-button
+                            @click="stopTimer"
+                            v-if="isStarted"
+                            icon-left="clock-outline"
+                            type="is-primary"
+                        >STOP</b-button>
+                        <b-button
+                            @click="startTimer"
+                            v-else
+                            icon-left="clock-outline"
+                            type="is-primary"
+                        >START</b-button>
+                    </b-tooltip>
                 </div>
             </div>
         </div>
@@ -82,60 +88,64 @@ export default {
     },
     // if cookie with start_date is present, set counter to this date
     mounted() {
-        let cookie = this.$store.state.taskStarted
+        let cookie = this.$store.state.taskStarted;
         if (cookie) {
-            this.counterSeconds = (Date.parse(new Date()) / 1000) - cookie
-            this.startTimer()
+            this.counterSeconds = Date.parse(new Date()) / 1000 - cookie;
+            this.startTimer();
         }
     },
     computed: {
         // if updateContinueTask is called, return dataObj
         storeContinue() {
-            return this.$store.state.continueTask
-        }
+            return this.$store.state.continueTask;
+        },
     },
     watch: {
         // updateContinueTask is called, set description and project, then start timer
         storeContinue() {
-            if (this.storeContinue && !(this.isStarted)) {
-                this.description = this.storeContinue.description
-                this.project = this.storeContinue.project
-                this.dataObj.description = this.storeContinue.description
-                this.dataObj.project = this.storeContinue.project
-                this.startTimer()
-                this.$store.commit('deleteContinueTask')    // delete dataObj from store
+            if (this.storeContinue && !this.isStarted) {
+                this.description = this.storeContinue.description;
+                this.project = this.storeContinue.project;
+                this.dataObj.description = this.storeContinue.description;
+                this.dataObj.project = this.storeContinue.project;
+                this.startTimer();
+                this.$store.commit("deleteContinueTask"); // delete dataObj from store
             }
-
-        }
+        },
     },
     methods: {
         // COMMON
         startTimer() {
-            let cookie = this.$store.state.taskStarted
-            this.dataObj.start_date = Date.parse(new Date()) / 1000
-            if (!(cookie)) {    // set new cookie if not present
-                this.$store.commit('updateTaskStarted', this.dataObj.start_date)
+            let cookie = this.$store.state.taskStarted;
+            this.dataObj.start_date = Date.parse(new Date()) / 1000;
+            if (!cookie) {
+                // set new cookie if not present
+                this.$store.commit(
+                    "updateTaskStarted",
+                    this.dataObj.start_date
+                );
             }
 
-            if (this.counterSeconds) { // add seconds from cookie
-                this.dataObj.start_date += this.counterSeconds
+            if (this.counterSeconds) {
+                // add seconds from cookie
+                this.dataObj.start_date += this.counterSeconds;
             }
             this.isStarted = true;
-            this.toast('Timer has been started')
-
+            this.toast("Timer has been started");
         },
         stopTimer() {
             this.isStarted = false;
         },
         // Called to save TimeEntry.
         counterStopped(e) {
-            this.counterSeconds = 0
-            this.$store.dispatch('removeTaskStarted')
+            this.counterSeconds = 0;
+            this.$store.dispatch("removeTaskStarted");
             this.dataObj.end_date = this.dataObj.start_date + e;
             this.saveData(null, "Time entry has been created");
             this.project = null;
             this.description = null;
-            this.dataObj = {  // Reset counter and all inputs.
+            this.dataObj = {
+                // Reset counter and all inputs.
                 owner: this.$store.state.userID,
                 description: "",
                 project: null,
@@ -152,7 +162,8 @@ export default {
                     },
                 })
                 .then((response) => {
-                    if (func) { // If function to update values is passed, call it.
+                    if (func) {
+                        // If function to update values is passed, call it.
                         func();
                     }
                     this.$emit("timeEntryCreated", response.data.id);

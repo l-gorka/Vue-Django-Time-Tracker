@@ -1,5 +1,5 @@
 <template>
-    <div class="container is-fluid mt-5">
+    <div class="page-wrapper mt-5">
         <div class="level">
             <div class="level-left">
                 <div class="level-item">

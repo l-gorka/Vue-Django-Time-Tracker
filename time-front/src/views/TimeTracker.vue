@@ -1,5 +1,5 @@
 <template>
-    <div class="container mb-5 is-fullhd">
+    <div class="page-wrapper">
         <div>
             <CurrentTask @timeEntryCreated="getDayEntries" />
         </div>
@@ -11,7 +11,7 @@
                 :key="dayEntry.id"
             />
         </div>
-        <div class="mx-5">
+        <div class="mx-2 pb-5">
             <b-pagination
                 size="is-medium"
                 :total="numberOfEntries"
@@ -58,7 +58,6 @@ export default {
     },
     methods: {
         getDayEntries() {
-          this.dayEntries = []
             getAPI
                 .get("/day-entries/", {
                     headers: {

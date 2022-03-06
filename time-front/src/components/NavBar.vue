@@ -1,10 +1,11 @@
 <template>
     <b-navbar class shadow  fixed-top>
         <template #brand>
-            <b-navbar-item tag="router-link" :to="{ path: '/' }">
+            <b-navbar-item class="py-0" tag="router-link" :to="{ path: '/' }">
                 <img
-                    src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
-                    alt="Lightweight UI components for Vue.js based on Bulma"
+                
+                    src="https://res.cloudinary.com/dgmcox/image/upload/v1646519282/Tracker500x60_xppaai.png"
+                    alt="Time tracker logo"
                 />
             </b-navbar-item>
         </template>
