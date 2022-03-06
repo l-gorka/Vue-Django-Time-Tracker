@@ -19,6 +19,7 @@
 
         <template #end>
             <b-navbar-item tag="div">
+                
                 <div v-if="isLoggedIn" class="buttons">
                     <a @click="logoutUser" class="button is-ghost">
                         <strong>Log out</strong>
@@ -50,6 +51,19 @@ export default {
         isLoggedIn() {
             return this.$store.getters.loggedIn;
         },
+        loginModalOpen() {
+            return this.$store.state.loginModalOpen;
+        }
+    },
+    watch: {
+        '$store.state.loginModalOpen': {
+            handler(open) {
+                if (open) {
+                    console.log(open)
+                    this.showLoginModal()
+                }
+            }
+        }
     },
     methods: {
         showLoginModal() {
@@ -59,6 +73,10 @@ export default {
                 hasModalCard: true,
                 customClass: "",
                 trapFocus: true,
+                onCancel: () => this.$store.commit('closeLoginModal'),
+                events: {
+                    close: () => this.$store.commit('closeLoginModal'),
+                }
             });
         },
         showRegisterModal() {

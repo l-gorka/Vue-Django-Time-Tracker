@@ -1,13 +1,18 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import store from '../store.js';
 
-Vue.use(VueRouter)
-import Dashboard from '../views/Dashboard.vue'
-import TimeTracker from '../views/TimeTracker.vue'
-import Projects from '../views/Projects.vue'
-import Account from '../views/Account.vue'
-import PageNotFound from '../views/PageNotFound.vue'
+Vue.use(VueRouter);
+import Home from '../views/Home.vue';
+
+const isLoggedIn = (from, to, next) => {
+  if (store.getters.loggedIn) {
+    next();
+  } else {
+    store.commit('openLoginModal')
+  }
+};
+
 const routes = [
   {
     path: '/',
@@ -15,36 +20,43 @@ const routes = [
     component: Home
   },
   {
-    path: '*',
-    name: 'PageNotFound',
-    component: PageNotFound
+    path: '/about',
+    name: 'About',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
     path: '/tracker',
     name: 'TimeTracker',
-    component: TimeTracker
+    component: () => import('../views/TimeTracker.vue'),
+    beforeEnter: isLoggedIn
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: Dashboard
+    component: () => import('../views/Dashboard.vue'),
+    beforeEnter: isLoggedIn
   },
   {
     path: '/projects',
     name: 'Projects',
-    component: Projects
+    component: () => import('../views/Projects.vue'),
+    beforeEnter: isLoggedIn
   },
   {
     path: '/account',
     name: 'Account',
-    component: Account
+    component: () => import('../views/Account.vue'),
+    beforeEnter: isLoggedIn
   },
-]
+];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
+});
 
-export default router
+export default router;
