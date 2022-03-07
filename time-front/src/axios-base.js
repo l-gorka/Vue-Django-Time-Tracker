@@ -17,8 +17,7 @@ getAPI.interceptors.request.use(async config => {
   if (Date.now() / 1000 > token - 10) {
     let access = await store.dispatch('refreshToken')
     config.headers.Authorization = `Bearer ${access}`
-    return Promise.resolve(config)
-    
+    return Promise.resolve(config)    
   } else {
     return Promise.resolve(config)
   }

@@ -18,7 +18,7 @@
         >
             <!-- PROJECTS DROPDOWN AND CALENDAR DROPDOWN -->
             <ProjectDropdown @ProjectChanged="setProject($event)" :project="dataObj.project" />
-            <b-tooltip position="is-top" :delay="500" label="Set date">
+            <b-tooltip position="is-top" :delay="200" label="Set date">
             <CalendarDropdown
                 @dateChanged="dateChanged"
                 v-if="dataObj.start_date"
@@ -57,12 +57,12 @@
         </div>
         <div class="column level is-flex is-justify-content-space-evenly is-justify-content-center-desktop is-1">
             <!-- OPTIONS -->
-            <b-tooltip position="is-left" :delay="500" label="Continue timer for this activity">
+            <b-tooltip position="is-left" :delay="200" label="Continue timer for this activity">
                 <b-button @click="continueActivity" type="is-ghost" size="is-small">
                     <b-icon icon="play-circle" class="is-size-4"></b-icon>
                 </b-button>
             </b-tooltip>
-            <b-tooltip position="is-left" :delay="500" label="Delete time entry">
+            <b-tooltip position="is-left" :delay="200" label="Delete time entry">
                 <b-button @click="deleteTimeEntry" type="is-ghost" size="is-small">
                     <b-icon icon="delete" class="is-size-4"></b-icon>
                 </b-button>
@@ -80,7 +80,7 @@ import CalendarDropdown from "../components/CalendarDropdown.vue";
 export default {
     emits: ["dataChanged"],
     components: { AddProject, TimeInput, ProjectDropdown, CalendarDropdown },
-    props: ["canCancel", "timeEntryID"],
+    props: ["timeEntryID"],
     mounted() {
         this.loadData();
         console.log("time entry", this.timeEntryID);
