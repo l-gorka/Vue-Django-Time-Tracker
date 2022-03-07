@@ -1,35 +1,19 @@
 <template>
-    <div class="about">
-        <div class="section hero has-background-white is-bold">
-            <div class="hero-body has-text-centered">
-                <h2 class="title is-2 is-bold is-spaced">Subscribe for the newsletter</h2>
-                <h3
-                    class="subtitle is-5"
-                >Lorem ipsum sit dolor amet is a dummy text used by typography industry</h3>
-                <!-- CAROUSEL -->
-                <div class="hero-body px-0">
-                    <div class="columns is-multiline has-text-centered is-vcentered">
-                        <div class="column is-12-tablet is-6-desktop">
-                            <h4 class="subtitle is-bold is-3">{{carousel.title}}</h4>
-                            <h4 class="subtitle is-5">{{carousel.subtitle}}</h4>
-                        </div>
-                        <div class="column is-12-tablet is-6-desktop">
-                            <img :src="carousel.url" alt />
-                        </div>
-                    </div>
-                </div>
-                <div class="is-flex mt-4 mt-5-desktop is-justify-content-center">
-                    <b-input
-                        class="mr-4"
-                        placeholder="Email"
-                        v-model="email"
-                        type="email"
-                        icon="email"
-                        :size="isMobile ? '' : 'is-large'"
-                        rounded
-                    ></b-input>
-                    <b-button :size="isMobile ? '' : 'is-large'" rounded type="is-primary">Submit</b-button>
-                </div>
+    <div class="container">
+        <div class="hero is-medium mt-6">
+            <div class="hero-head">
+                <b-button type="is-primary" label="Wait" @click="wait" />
+            </div>
+            <div class="hero-body">
+                <p>{{waiting}}</p>
+                <p v-if="$wait.any">
+                    <b-icon icon="reload" size="is-large"></b-icon>
+                </p>
+                <b-notification :closable="false">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
+                    <b-loading :is-full-page="isFullPage" v-model="waiting" :can-cancel="true">
+                    </b-loading>
+                </b-notification>
             </div>
         </div>
     </div>
@@ -45,7 +29,18 @@ export default {
             color: "#000000",
         };
     },
+    methods: {
+        wait() {
+            this.$wait.start("clicked");
+            setTimeout(() => {
+                this.$wait.end("clicked");
+            }, 5000);
+        },
+    },
     computed: {
+        waiting() {
+            return this.$wait.any;
+        },
         store() {
             return this.$store.state;
         },
