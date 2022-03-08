@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import jwtDecode from 'jwt-decode';
 import { axiosBase, getAPI } from './axios-base';
+import axios from 'axios'
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -28,7 +29,6 @@ export default new Vuex.Store({
 	mutations: {
 		openLoginModal(state) {
 			state.loginModalOpen = true;
-
 		},
 		closeLoginModal(state) {
 			state.loginModalOpen = false;
@@ -39,6 +39,9 @@ export default new Vuex.Store({
 		},
 		updateTimeEntries(state, timeEntries) {
 			state.timeEntries = timeEntries;
+		},
+		updateDayEntries(state, dayEntries) {
+			state.dayEntries = dayEntries
 		},
 		updateContinueTask(state, dataObj) {
 			state.continueTask = dataObj;
@@ -91,7 +94,7 @@ export default new Vuex.Store({
 				});
 			});
 		},
-		getTimeEntries(context) {
+		getTimeEntries1(context) {
 			return new Promise((resolve, reject) => {
 				getAPI.get("/time-entries/", {
 					headers: { Authorization: `Bearer ${context.state.accessToken}`, },
@@ -101,6 +104,28 @@ export default new Vuex.Store({
 				}).catch(err => {
 					reject(err);
 				});
+			});
+		},
+		getTimeEntries(context) {
+			return new Promise((resolve, reject) => {
+				axios.all([
+					getAPI.get("/day-entries/", {
+						headers: { Authorization: `Bearer ${context.state.accessToken}`, },
+					}),
+					getAPI.get("/time-entries/", {
+						headers: { Authorization: `Bearer ${context.state.accessToken}`, },
+					}),
+					getAPI.get("/project-list/", {
+						headers: { Authorization: `Bearer ${context.state.accessToken}`, },
+					}),
+				]).then(axios.spread(function (dayEntriesResponse, timeEntriesResponse, projectsResponse) {
+					
+					context.commit('updateTimeEntries', timeEntriesResponse.data)
+					context.commit('updateDayEntries', dayEntriesResponse.data)
+					context.commit('updateProjects', projectsResponse.data)
+					resolve()
+				})
+				);
 			});
 		},
 		// get a new access token on expiration

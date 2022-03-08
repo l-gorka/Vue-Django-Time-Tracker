@@ -3,7 +3,7 @@
         <div>
             <CurrentTask @timeEntryCreated="getEntries" />
         </div>
-        <div class v-if="dayEntries">
+        <div class v-if="paginatedDayEntries">
             <DayEntry
                 @dataChanged="getEntries"
                 :dayEntry="dayEntry"
@@ -19,9 +19,7 @@
                 :per-page="perPage"
             ></b-pagination>
         </div>
-        <b-notification :closable="false">
-            <b-loading is-full-page="isFullPage" v-model="isLoading" :can-cancel="true"></b-loading>
-        </b-notification>
+        
     </div>
 </template>
 
@@ -41,7 +39,9 @@ export default {
         };
     },
     created() {
-            this.getEntries();
+        this.$store.dispatch('getProjects')
+        this.getEntries();
+        
     },
     computed: {
         numberOfEntries() {
@@ -49,7 +49,7 @@ export default {
         },
         paginatedDayEntries() {
             // return sliced day entries array
-            let pageNumber = this.pageNumber - 1; 
+            let pageNumber = this.pageNumber - 1;
             return this.dayEntries.slice(
                 pageNumber * this.perPage,
                 (pageNumber + 1) * this.perPage
@@ -59,14 +59,27 @@ export default {
             return this.$store.state.accessToken;
         },
         isLoading() {
-            // check if 
-            return this.$wait.any
+            // check if
+            return this.$wait.any;
+        },
+        projects() {
+            return this.$store.state.projects
         }
     },
     methods: {
         getEntries() {
-            this.$wait.start('getEntries')
-            
+            this.$wait.start("getEntries");
+            this.$store.dispatch("getTimeEntries").then(() => {
+                this.dayEntries = this.$store.state.dayEntries;
+                for (let item of this.dayEntries) {
+                    item.time_entries.reverse();
+                }
+                this.$wait.end("getEntries");
+            });
+        },
+        getEntries1() {
+            this.$wait.start("getEntries");
+            this.$store.dispatch("getTimeEntries");
             getAPI
                 .get("/day-entries/", {
                     headers: {
@@ -74,12 +87,12 @@ export default {
                     },
                 })
                 .then((response) => {
-                    this.$store.dispatch("getTimeEntries")
+                    this.$store.dispatch("getTimeEntries");
                     this.dayEntries = response.data;
                     for (let item of this.dayEntries) {
                         item.time_entries.reverse();
                     }
-                    this.$wait.end('getEntries')
+                    this.$wait.end("getEntries");
                 });
         },
     },

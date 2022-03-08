@@ -12,7 +12,7 @@
                         <div class="title">
                             <date-picker
                                 :largeIcon="true"
-                                v-if="projectsLoaded && entriesLoaded"
+                                v-if="dataLoaded"
                                 @setDate="setDate"
                             />
                             <b-button
@@ -65,7 +65,7 @@
                         </div>
                         <div class="message-body">
                             <doughnut
-                                v-if="filteredEntries && sortedProjects"
+                                v-if="dataLoaded"
                                 :projects="sortedProjects"
                             />
                         </div>
@@ -86,8 +86,7 @@ export default {
     components: { Bar, Doughnut, DatePicker },
     data() {
         return {
-            projectsLoaded: false,
-            entriesLoaded: false,
+            dataLoaded: false,
             projects: {},
             sortedProjects: {},
             timeEntries: {},
@@ -99,6 +98,15 @@ export default {
             timeTotalLabel: "",
             topProjectLabel: "",
         };
+    },
+    computed: {
+        token() {
+            return this.$store.state.accessToken;
+        },
+    },
+    mounted() {
+        this.$wait.start('getData')
+        this.getData()
     },
     methods: {
         setDate(dateStart, dateEnd, dateOptionSelected) {
@@ -153,27 +161,15 @@ export default {
             sortedProjects.sort((a, b) => (a.time > b.time ? -1 : 1)); // sort projects by time in seconds
             return sortedProjects;
         },
-        getProjects() {
-            this.$store.dispatch("getProjects").then(() => {
-                this.projects = this.$store.state.projects;
-                this.projectsLoaded = true;
-            });
-        },
-        getTimeEntries() {
+        getData() {
+            // call vuex action to load data
             this.$store.dispatch("getTimeEntries").then(() => {
+                this.projects = this.$store.state.projects;
                 this.timeEntries = this.$store.state.timeEntries;
-                this.entriesLoaded = true;
+                this.$wait.end('getData') // remove waiting state from vuex
+                this.dataLoaded = true // show charts
             });
         },
-    },
-    computed: {
-        token() {
-            return this.$store.state.accessToken;
-        },
-    },
-    mounted() {
-        this.getProjects();
-        this.getTimeEntries();
     },
 };
 </script>

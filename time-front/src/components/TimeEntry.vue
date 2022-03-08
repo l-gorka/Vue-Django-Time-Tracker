@@ -110,7 +110,6 @@ export default {
         // COMMON
         loadData() {
             let storeEntries = this.$store.state.timeEntries;
-            console.log('tentry, store entries',storeEntries)
             for (let entry of storeEntries) {
                 if (entry.id == this.timeEntryID) {
                     this.dataObj = entry;
@@ -160,7 +159,6 @@ export default {
         },
         // CALENDAR DROPDOWN
         dateChanged(dateDifferenceSeconds) {
-            console.log("calendar");
             this.dataObj.start_date += dateDifferenceSeconds;
             this.dataObj.end_date += dateDifferenceSeconds;
             this.saveData(this.getDuration, "Entry date has been updated");
@@ -233,11 +231,10 @@ export default {
                             }
                         )
                         .then((response) => {
-                            console.log("response");
                             this.toast("Time entry has been deleted");
                             this.$emit("dataChanged");
                         })
-                        .then((error) => console.log(error));
+                        .then((error) => {});
                 },
             });
         },

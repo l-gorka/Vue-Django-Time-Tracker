@@ -22,7 +22,7 @@
                     animation="slide"
                     icon="account"
                     v-model="dropdownOpen"
-                    v-if="projectsLoaded && entriesLoaded"
+                    v-if="dataLoaded"
                 >
                     <template #trigger>
                         <div
@@ -166,15 +166,14 @@ import AddProject from "../components/AddProject.vue";
 export default {
     components: { DatePicker, ProjectBar, AddProject },
     mounted() {
-        this.getProjects();
-        this.getEntries();
+        this.$wait.start('getData') 
+        this.getData()
         this.isMobile();
     },
     data() {
         return {
             dropdownOpen: true,
-            projectsLoaded: false,
-            entriesLoaded: false,
+            dataLoaded: false,
             projects: {},
             searchTerm: "",
             selectedProject: null,
@@ -194,18 +193,13 @@ export default {
                 return entry.project == this.selectedProject.id;
             });
         },
-        getProjects() {
-            // call get projects action on store
-            this.$store.dispatch("getProjects").then(() => {
-                this.projects = this.$store.state.projects;
-                this.projectsLoaded = true;
-            });
-        },
-        getEntries() {
-            // call get entries action on store
+        getData() {
+            // call vuex action to load data
             this.$store.dispatch("getTimeEntries").then(() => {
+                this.projects = this.$store.state.projects;
                 this.entries = this.$store.state.timeEntries;
-                this.entriesLoaded = true;
+                this.$wait.end('getData') // remove waiting state from vuex
+                this.dataLoaded = true // show projects menu
             });
         },
         isMobile() {
@@ -260,6 +254,7 @@ export default {
             });
         },
         deleteProject() {
+            // open dialog for confirmation
             this.$buefy.dialog.confirm({
                 title: "Deleting project",
                 message:
@@ -267,6 +262,7 @@ export default {
                 confirmText: "Delete Project",
                 type: "is-danger",
                 hasIcon: true,
+                // if confirmed, hit API with project ID
                 onConfirm: () => {
                     getAPI
                         .post(

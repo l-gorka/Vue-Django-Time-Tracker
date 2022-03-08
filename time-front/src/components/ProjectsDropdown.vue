@@ -2,24 +2,30 @@
     <b-dropdown append-to-body aria-role="menu" scrollable max-height="300" trap-focus>
         <template #trigger>
             <a>
-                <b-tooltip position="is-top" :delay="500" label="Create new project or select existing">
-                <b-button
-                    :style="projectColor"
-                    @click="loadProjects"
-                    :label="projectName"
-                    role="button"
-                    v-if="project"
-                    class="is-ghost is-size-6"
-                    size="is-small"
-                ><b-icon icon="circle-medium"></b-icon>
-                <span>{{projectName}}</span></b-button>
-                <b-button
-                    v-else
-                    size="is-small"
-                    icon-left="plus-circle"
-                    class="is-ghost is-size-6"
-                    label="Project"
-                />
+                <b-tooltip
+                    position="is-top"
+                    :delay="500"
+                    label="Create new project or select existing"
+                >
+                    <b-button
+                        :style="projectColor"
+                        @click="getProjects"
+                        :label="projectName"
+                        role="button"
+                        v-if="project"
+                        class="is-ghost is-size-6"
+                        size="is-small"
+                    >
+                        <b-icon icon="circle-medium"></b-icon>
+                        <span>{{projectName}}</span>
+                    </b-button>
+                    <b-button
+                        v-else
+                        size="is-small"
+                        icon-left="plus-circle"
+                        class="is-ghost is-size-6"
+                        label="Project"
+                    />
                 </b-tooltip>
             </a>
         </template>
@@ -36,11 +42,11 @@
             :key="project.id"
             aria-role="listitem"
             :style="{color: project.color}"
-            
-        ><div class="is-flex is-align-items-center">
-            <b-icon icon="circle-medium"></b-icon> 
-            <p>{{ project.title }}</p>
-        </div>
+        >
+            <div class="is-flex is-align-items-center">
+                <b-icon icon="circle-medium"></b-icon>
+                <p>{{ project.title }}</p>
+            </div>
         </b-dropdown-item>
     </b-dropdown>
 </template>
@@ -69,7 +75,7 @@ export default {
         },
     },
     mounted() {
-        this.loadProjects()
+        this.loadProjects();
     },
     methods: {
         showModal() {
@@ -96,18 +102,21 @@ export default {
                 this.projectId = id;
             }
         },
+        getProjects() {
+            // hit API for updated projects, then load projects
+            this.$store.dispatch("getProjects").then(this.loadProjects());
+        },
         loadProjects() {
-            this.$store.dispatch("getProjects").then(() => {
-                this.projects = this.$store.state.projects;
-                if (this.projectId) {
-                    for (let project of this.projects) {
-                        if (project.id == this.projectId) {
-                            this.projectName = project.title;
-                            this.projectColor = `color: ${project.color}`;
-                        }
+            // get projects from vuex, select current one
+            this.projects = this.$store.state.projects;
+            if (this.projectId) {
+                for (let project of this.projects) {
+                    if (project.id == this.projectId) {
+                        this.projectName = project.title;
+                        this.projectColor = `color: ${project.color}`;
                     }
                 }
-            });
+            }
         },
         filteredProjects() {
             return this.projects.filter((project) => {

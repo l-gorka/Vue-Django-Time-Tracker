@@ -1,5 +1,8 @@
 <template>
     <section class="mb-5">
+        <b-notification v-if="isLoading" :closable="false">
+            <b-loading v-model="isLoading" :can-cancel="true"></b-loading>
+        </b-notification>
         <b-navbar shadow fixed-top>
             <template #brand>
                 <b-navbar-item class="py-0" tag="router-link" :to="{ path: '/' }">
@@ -52,6 +55,10 @@ export default {
         },
         loginModalOpen() {
             return this.$store.state.loginModalOpen;
+        },
+        isLoading() {
+            // check if
+            return this.$wait.any;
         },
     },
     watch: {
