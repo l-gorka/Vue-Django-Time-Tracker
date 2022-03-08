@@ -19,11 +19,11 @@
             <!-- PROJECTS DROPDOWN AND CALENDAR DROPDOWN -->
             <ProjectDropdown @ProjectChanged="setProject($event)" :project="dataObj.project" />
             <b-tooltip position="is-top" :delay="200" label="Set date">
-            <CalendarDropdown
-                @dateChanged="dateChanged"
-                v-if="dataObj.start_date"
-                :timestamp="dataObj.start_date"
-            />
+                <CalendarDropdown
+                    @dateChanged="dateChanged"
+                    v-if="dataObj.start_date"
+                    :timestamp="dataObj.start_date"
+                />
             </b-tooltip>
         </div>
 
@@ -55,7 +55,9 @@
                 </b-dropdown-item>
             </b-dropdown>
         </div>
-        <div class="column level is-flex is-justify-content-space-evenly is-justify-content-center-desktop is-1">
+        <div
+            class="column level is-flex is-justify-content-space-evenly is-justify-content-center-desktop is-1"
+        >
             <!-- OPTIONS -->
             <b-tooltip position="is-left" :delay="200" label="Continue timer for this activity">
                 <b-button @click="continueActivity" type="is-ghost" size="is-small">
@@ -81,9 +83,9 @@ export default {
     emits: ["dataChanged"],
     components: { AddProject, TimeInput, ProjectDropdown, CalendarDropdown },
     props: ["timeEntryID"],
+    created() {},
     mounted() {
         this.loadData();
-        console.log("time entry", this.timeEntryID);
     },
 
     data() {
@@ -107,16 +109,15 @@ export default {
     methods: {
         // COMMON
         loadData() {
-            this.$store.dispatch("getTimeEntries").then(() => {
-                let storeEntries = this.$store.state.timeEntries;
-                for (let entry of storeEntries) {
-                    if (entry.id == this.timeEntryID) {
-                        this.dataObj = entry;
-                    }
+            let storeEntries = this.$store.state.timeEntries;
+            console.log('tentry, store entries',storeEntries)
+            for (let entry of storeEntries) {
+                if (entry.id == this.timeEntryID) {
+                    this.dataObj = entry;
                 }
                 this.getDescription();
                 this.getDuration();
-            });
+            }
         },
         saveData(func, toastMessage) {
             getAPI

@@ -11,8 +11,9 @@ export default new Vuex.Store({
 		refreshToken: localStorage.getItem('refresh_token') || null,
 		taskStarted: localStorage.getItem('task_started') || null,
 		userID: localStorage.getItem('userID') || null,
-		projects: {},
-		timeEntries: {},
+		projects: [],
+		timeEntries: [],
+		dayEntries: [],
 		continueTask: null,
 		loginModalOpen: false
 	},
@@ -123,8 +124,8 @@ export default new Vuex.Store({
 				axiosBase.post('/register/', {
 					email: data.email,
 					username: data.username,
-					password1: data.password1,
-					password2: data.password2
+					password: data.password1,
+				
 				})
 					.then(response => {
 						resolve(response);

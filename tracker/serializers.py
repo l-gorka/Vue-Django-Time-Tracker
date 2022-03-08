@@ -1,13 +1,39 @@
+from django.db import IntegrityError
 from rest_framework import serializers
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
 from .models import DayEntry, Project, TimeEntry
 import time
 
+
 class UserSelrializer(serializers.ModelSerializer):
     class Meta():
         model = User
         fields = ['email', 'date_joined', 'last_login']
+
+
+class UserCreateSerializer(serializers.ModelSerializer):
+
+    username = serializers.CharField(required=True)
+    email = serializers.CharField(required=True)
+    password = serializers.CharField(
+        required=True, validators=[validate_password])
+
+    class Meta():
+        model = User
+        fields = ['username', 'email', 'password']
+
+    def create(self, validated_data):
+        print(validated_data)
+        user = User.objects.create_user(
+                username=validated_data['username'],
+                email=validated_data['email']
+            )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
+
 
 class TimestampField(serializers.Field):
     def to_representation(self, value):
@@ -22,14 +48,17 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
 class TimeEntrySerializer(serializers.ModelSerializer):
-    
+
     class Meta():
         model = TimeEntry
         fields = '__all__'
 
 # return day etries list with date in timestamp format
+
+
 class TimestampDayEntrySerializer(serializers.ModelSerializer):
     timestamp = TimestampField(source='date')
+
     class Meta():
         model = DayEntry
         fields = ['timestamp', 'time_total']
@@ -42,7 +71,8 @@ class DayEntrySerializer(serializers.ModelSerializer):
 
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password = serializers.CharField(
+        write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
     old_password = serializers.CharField(write_only=True, required=True)
 

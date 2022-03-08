@@ -1,3 +1,4 @@
+from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth.models import User
@@ -7,17 +8,18 @@ from django.db.models import Q
 from datetime import datetime
 import time
 
+from rest_framework.permissions import AllowAny
+
 import json
 
 from .models import DayEntry, Project, TimeEntry
-from .serializers import DayEntrySerializer, ProjectSerializer, TimeEntrySerializer, UserSelrializer, ChangePasswordSerializer
+from .serializers import DayEntrySerializer, ProjectSerializer, TimeEntrySerializer, UserCreateSerializer, UserSelrializer, ChangePasswordSerializer
 from tracker import serializers
 # Create your views here.
 
 
 @api_view(['POST'])
 def password_change(request):
-    time.sleep(1)
     user = User.objects.get(id=request.user.id)
     serializer = ChangePasswordSerializer(data=request.data)
     if serializer.is_valid():
@@ -39,9 +41,28 @@ def user_data(request):
     serializer = UserSelrializer(user)
     return Response(serializer.data)
 
-
 @api_view(['POST'])
 def register_user(request):
+    print(request.data)
+    try:    
+        serializer = UserCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+    except Exception as e:
+        print(e)
+    try:
+        user = User.objects.create(**request.data)
+        return Response('created', 200)
+    except IntegrityError:
+        return Response('User with that username or email already exist.', 400)
+        
+class RegisterUser(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserCreateSerializer
+    permission_classes = (AllowAny,)  
+
+    
+@api_view(['POST'])
+def register_user1(request):
     body = json.loads(request.body)
     try:
         created = User.objects.create(

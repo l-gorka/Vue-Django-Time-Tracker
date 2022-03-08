@@ -1,42 +1,41 @@
 <template>
-    <b-navbar class shadow  fixed-top>
-        <template #brand>
-            <b-navbar-item class="py-0" tag="router-link" :to="{ path: '/' }">
-                <img
-                
-                    src="https://res.cloudinary.com/dgmcox/image/upload/v1646519282/Tracker500x60_xppaai.png"
-                    alt="Time tracker logo"
-                />
-            </b-navbar-item>
-        </template>
-        <template #start>
-            <b-navbar-item v-if="isLoggedIn" tag="router-link" :to="{ path: '/about/' }">About</b-navbar-item>
-            <b-navbar-item tag="router-link" :to="{ path: '/tracker/' }">Tracker</b-navbar-item>
-            <b-navbar-item tag="router-link" :to="{ path: '/dashboard' }">Dashboard</b-navbar-item>
-            <b-navbar-item tag="router-link" :to="{ path: '/projects' }">Projects</b-navbar-item>
-            <b-navbar-item tag="router-link" :to="{ path: '/account' }">Account</b-navbar-item>
-        </template>
+    <section class="mb-5">
+        <b-navbar shadow fixed-top>
+            <template #brand>
+                <b-navbar-item class="py-0" tag="router-link" :to="{ path: '/' }">
+                    <img
+                        src="https://res.cloudinary.com/dgmcox/image/upload/v1646519282/Tracker500x60_xppaai.png"
+                        alt="Time tracker logo"
+                    />
+                </b-navbar-item>
+            </template>
+            <template #start>
+                <b-navbar-item v-if="isLoggedIn" tag="router-link" :to="{ path: '/about/' }">About</b-navbar-item>
+                <b-navbar-item tag="router-link" :to="{ path: '/tracker/' }">Tracker</b-navbar-item>
+                <b-navbar-item tag="router-link" :to="{ path: '/dashboard' }">Dashboard</b-navbar-item>
+                <b-navbar-item tag="router-link" :to="{ path: '/projects' }">Projects</b-navbar-item>
+                <b-navbar-item tag="router-link" :to="{ path: '/account' }">Account</b-navbar-item>
+            </template>
 
-        <template #end>
-            <b-navbar-item tag="div">
-                
-                <div v-if="isLoggedIn" class="buttons">
-                    <a @click="logoutUser" class="button is-ghost">
-                        <strong>Log out</strong>
-                    </a>
-    
-                </div>
-                <div v-else class="buttons">
-                    <a class="button is-primary" @click="showRegisterModal">
-                        <strong>Sign up</strong>
-                    </a>
-                    <a class="button is-light" @click="showLoginModal">
-                        <strong>Log In</strong>
-                    </a>
-                </div>
-            </b-navbar-item>
-        </template>
-    </b-navbar>
+            <template #end>
+                <b-navbar-item tag="div">
+                    <div v-if="isLoggedIn" class="buttons">
+                        <a @click="logoutUser" class="button is-ghost">
+                            <strong>Log out</strong>
+                        </a>
+                    </div>
+                    <div v-else class="buttons">
+                        <a class="button is-primary" @click="showRegisterModal">
+                            <strong>Sign up</strong>
+                        </a>
+                        <a class="button is-light" @click="showLoginModal">
+                            <strong>Log In</strong>
+                        </a>
+                    </div>
+                </b-navbar-item>
+            </template>
+        </b-navbar>
+    </section>
 </template>
 
 <script>
@@ -53,17 +52,17 @@ export default {
         },
         loginModalOpen() {
             return this.$store.state.loginModalOpen;
-        }
+        },
     },
     watch: {
-        '$store.state.loginModalOpen': {
+        "$store.state.loginModalOpen": {
             handler(open) {
                 if (open) {
-                    console.log(open)
-                    this.showLoginModal()
+                    console.log(open);
+                    this.showLoginModal();
                 }
-            }
-        }
+            },
+        },
     },
     methods: {
         showLoginModal() {
@@ -73,16 +72,16 @@ export default {
                 hasModalCard: true,
                 customClass: "",
                 trapFocus: true,
-                onCancel: () => this.$store.commit('closeLoginModal'),
+                onCancel: () => this.$store.commit("closeLoginModal"),
                 events: {
-                    close: () => this.$store.commit('closeLoginModal'),
-                }
+                    close: () => this.$store.commit("closeLoginModal"),
+                },
             });
         },
         showRegisterModal() {
-            let isMobile = false
+            let isMobile = false;
             if (window.innerWidth < 768) {
-                isMobile = true
+                isMobile = true;
             }
             this.$buefy.modal.open({
                 parent: this,
@@ -92,12 +91,12 @@ export default {
                 customClass: "",
                 trapFocus: true,
                 events: {
-                    userRegistered: () => this.showLoginModal()
-                }
-            })
+                    userRegistered: () => this.showLoginModal(),
+                },
+            });
         },
         logoutUser() {
-            this.$store.dispatch('logoutUser')
+            this.$store.dispatch("logoutUser");
             this.$router.push({ name: "Home" });
         },
     },
