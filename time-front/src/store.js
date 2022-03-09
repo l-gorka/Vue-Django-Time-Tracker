@@ -32,7 +32,6 @@ export default new Vuex.Store({
 		},
 		closeLoginModal(state) {
 			state.loginModalOpen = false;
-			console.log('close login modal', state.loginModalOpen);
 		},
 		updateProjects(state, projects) {
 			state.projects = projects;

@@ -1,6 +1,8 @@
 from rest_framework import generics
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError, APIException
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
@@ -23,7 +25,8 @@ def password_change(request):
     user = User.objects.get(id=request.user.id)
     serializer = ChangePasswordSerializer(data=request.data)
     if serializer.is_valid():
-        check = user.check_password(serializer.validated_data.get("old_password"))
+        check = user.check_password(
+            serializer.validated_data.get("old_password"))
         if check:
             user.set_password(serializer.validated_data.get("password"))
             user.save()
@@ -31,8 +34,7 @@ def password_change(request):
         else:
             return Response('Password you entered is incorrect. Please retype your current password.', status=401)
     else:
-        return Response("Password can't be a commonly used password or similar to your other personal information. ", 400)
-
+        return Response("Password can't be a commonly used password or similar to your other personal information.", 400)
 
 
 @api_view(['GET'])
@@ -41,26 +43,25 @@ def user_data(request):
     serializer = UserSelrializer(user)
     return Response(serializer.data)
 
-@api_view(['POST'])
-def register_user(request):
-    print(request.data)
-    try:    
-        serializer = UserCreateSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-    except Exception as e:
-        print(e)
-    try:
-        user = User.objects.create(**request.data)
-        return Response('created', 200)
-    except IntegrityError:
-        return Response('User with that username or email already exist.', 400)
-        
+
 class RegisterUser(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserCreateSerializer
-    permission_classes = (AllowAny,)  
+    permission_classes = (AllowAny,)
 
-    
+    def post(self, request):
+        try:
+            serializer = UserCreateSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+        except IntegrityError as e:
+            print(e)
+            return Response('Username already taken', 400)
+        except Exception as e:
+            return Response('Password incorrect', 400)
+        return Response('created', 201)
+
+
 @api_view(['POST'])
 def register_user1(request):
     body = json.loads(request.body)

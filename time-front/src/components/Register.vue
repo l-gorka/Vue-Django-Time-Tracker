@@ -8,12 +8,7 @@
             <b-field v-if="usernameIsValid" label="Username">
                 <b-input @blur="validateUsername" v-model="registerData.username"></b-input>
             </b-field>
-            <b-field
-                v-else
-                type="is-danger"
-                message="3-20 characters, starting with letter. No special characters allowed."
-                label="Username"
-            >
+            <b-field v-else type="is-danger" :message="usernameErrorPhrase" label="Username">
                 <b-input @input="validateUsername" v-model="registerData.username"></b-input>
             </b-field>
             <!-- EMAIL -->
@@ -35,7 +30,7 @@
             <b-field
                 v-else
                 type="is-danger"
-                message="Your password must contain at least 8 characters."
+                :message="passwordErrorPhrase"
                 label="Password"
             >
                 <b-input
@@ -88,9 +83,7 @@
 export default {
     name: "login",
     components: {},
-    mounted() {
-        
-    },
+    mounted() {},
     data() {
         return {
             registerData: {
@@ -104,6 +97,9 @@ export default {
 
             passwordIsValid: true,
             passwordsMatch: true,
+
+            usernameErrorPhrase: "",
+            passwordErrorPhrase: "",
         };
     },
     methods: {
@@ -112,7 +108,9 @@ export default {
             let loginRegex = /^(?=^\w{3,20}$)[a-zA-Z][a-zA-Z0-9]+$/;
             if (!loginRegex.test(this.registerData.username)) {
                 this.usernameIsValid = false;
-                return false
+                this.usernameErrorPhrase =
+                    "3-20 characters, starting with letter. No special characters allowed.";
+                return false;
             }
         },
 
@@ -121,47 +119,59 @@ export default {
             let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(this.registerData.email)) {
                 this.emailIsValid = false;
-                return false
+                return false;
             }
         },
         validatePassword() {
             this.passwordIsValid = true;
             this.passwordsMatch = true;
+            // check if password has more than 8 characters
             if (this.registerData.password1.length < 8) {
+                this.passwordErrorPhrase = "Your password must contain at least 8 characters."
                 this.passwordIsValid = false;
-                return false
+                return false;
             }
+            // check if passwords are matching
             if (!(this.registerData.password1 == this.registerData.password2)) {
                 this.passwordsMatch = false;
-                return false
+                return false;
             }
-
         },
         registerUser() {
             // Check if data is valid.
-            this.validateUsername()
-            this.validateEmail()
-            this.validatePassword()
-            if (this.usernameIsValid && this.emailIsValid && this.passwordIsValid && this.passwordsMatch) {
-
+            this.validateUsername();
+            this.validateEmail();
+            this.validatePassword();
+            if (
+                this.usernameIsValid &&
+                this.emailIsValid &&
+                this.passwordIsValid &&
+                this.passwordsMatch
+            ) {
                 this.$store
                     .dispatch("registerUser", this.registerData) // call registerUser action in store
                     .then(() => {
                         this.$buefy.toast.open({
                             duration: 5000,
-                            message: 'Account has been created',
+                            message: "Account has been created",
                             position: "is-bottom",
                             type: "is-success",
                         });
-                        //this.$emit('userRegistered')
+                        this.$emit("userRegistered");
                         this.$emit("close");
-
                     })
                     .catch((err) => {
-
-
+                        // get error msg and display it as input message
+                        console.log(err.response);
+                        if (err.response.data == "Username already taken") {
+                            this.usernameErrorPhrase = "Username already taken";
+                            this.usernameIsValid = false;
+                        } else if (err.response.data == "Password incorrect") {
+                            this.passwordErrorPhrase = "Password can't be a commonly used password or similar to your other personal information."
+                            this.passwordIsValid = false;
+                        }
                     });
-            } else return false
+            } else return false;
         },
     },
 };

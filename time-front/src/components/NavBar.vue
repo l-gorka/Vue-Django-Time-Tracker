@@ -1,8 +1,6 @@
 <template>
-    <section class="mb-5">
-        <b-notification v-if="isLoading" :closable="false">
+    <section class="mb-5">        
             <b-loading v-model="isLoading" :can-cancel="true"></b-loading>
-        </b-notification>
         <b-navbar shadow fixed-top>
             <template #brand>
                 <b-navbar-item class="py-0" tag="router-link" :to="{ path: '/' }">
@@ -65,7 +63,6 @@ export default {
         "$store.state.loginModalOpen": {
             handler(open) {
                 if (open) {
-                    console.log(open);
                     this.showLoginModal();
                 }
             },

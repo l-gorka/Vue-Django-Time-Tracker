@@ -247,7 +247,7 @@ export default {
                 events: {
                     projectAdded: (project) => {
                         // if project added, call store action for list of projects
-                        this.getProjects();
+                        this.getData();
                         this.selectedProject = project;
                     },
                 },
