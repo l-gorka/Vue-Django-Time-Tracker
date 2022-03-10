@@ -29,7 +29,7 @@
                         <a class="button is-primary" @click="showRegisterModal">
                             <strong>Sign up</strong>
                         </a>
-                        <a class="button is-light" @click="showLoginModal">
+                        <a class="button is-light" @click="showLoginModal(isRedirected=false)">
                             <strong>Log In</strong>
                         </a>
                     </div>
@@ -63,14 +63,17 @@ export default {
         "$store.state.loginModalOpen": {
             handler(open) {
                 if (open) {
-                    this.showLoginModal();
+                    let isRedirected=true
+                    this.showLoginModal(isRedirected);
                 }
             },
         },
     },
     methods: {
-        showLoginModal() {
+        showLoginModal(isRedirected) {
             this.$buefy.modal.open({
+                
+                props: {isRedirected: isRedirected},
                 parent: this,
                 component: Login,
                 hasModalCard: true,

@@ -1,65 +1,94 @@
 <template>
-  <div class="modal-card" style="">
-    <header class="modal-card-head">
-      <h2 class="modal-card-title">Log In</h2>
-    </header>
-    <section class="modal-card-body">
-      <b-field label="Username">
-        <b-input @keyup.native.enter="loginUser" v-model="username" value=""></b-input>
-      </b-field>
-      <b-field label="Password">
-        <b-input @keyup.native.enter="loginUser" v-model="password" type="password" password-reveal></b-input>
-      </b-field>
-      <b-notification
-        v-if="wrongCred"
-        type="is-danger"
-        aria-close-label="Close notification"
-        role="alert"
-      >
-        Sorry, Invalid credentials. Please try again.
-      </b-notification>
-    </section>
-    <footer class="modal-card-foot">
-      <b-button label="Close" @click="$emit('close')" />
-      <b-button @click="loginUser" label="Login" type="is-primary" />
-    </footer>
-  </div>
+    <div class="modal-card" style>
+        <header class="modal-card-head">
+            <h2 class="modal-card-title is-bolder">Log In</h2>
+        </header>
+        <section class="modal-card-body">
+            <b-message
+            class="p-0"
+                v-if="isRedirected"
+                closable="false"
+                aria-close-label="Close notification"
+            >To visit this section, you must be logged in.</b-message>
+            <form @submit.prevent="loginUser">
+                <!-- USERNAME -->
+                <b-field v-if="credentialsAreValid" label="Username">
+                    <b-input @keyup.native.enter="loginUser" v-model="username" value></b-input>
+                </b-field>
+                <b-field v-else type="is-danger" :message="credentialsErrorPhrase" label="Username">
+                    <b-input @input="clearError" v-model="username" value></b-input>
+                </b-field>
+                <!-- PASSWORD -->
+                <b-field v-if="credentialsAreValid" label="Password">
+                    <b-input
+                        @keyup.native.enter="loginUser"
+                        v-model="password"
+                        type="password"
+                        password-reveal
+                    ></b-input>
+                </b-field>
+                <b-field v-else type="is-danger" label="Password">
+                    <b-input @input="clearError" v-model="password" type="password" password-reveal></b-input>
+                </b-field>
+            </form>
+        </section>
+        <footer class="modal-card-foot">
+            <b-button label="Close" @click="$emit('close')" />
+            <b-button :loading="isLoading" @click="loginUser" label="Login" type="is-primary" />
+        </footer>
+    </div>
 </template>
 
 <script>
 export default {
-  name: "login",
-  components: {},
-  mounted() {
-  },
-  data() {
-    return {
-      username: "",
-      password: "",
-      wrongCred: false, // activate appropriate message if set to true
-    };
-  },
-  methods: {
-    loginUser() {
-      // Call loginUser action.
-      this.wrongCred = false;
-      this.$store
-        .dispatch("loginUser", {
-          username: this.username,
-          password: this.password,
-        })
-        .then(() => {
-          this.$emit("close");
-          this.wrongCred = false;
-          this.$router.push({ name: "TimeTracker" });
-        })
-        .catch((err) => {
-          console.log(err);
-          alert(err)
-          this.wrongCred = true; // if the credentials were wrong set wrongCred to true
-        });
+    name: "login",
+    props: ['isRedirected'],
+    components: {},
+    mounted() {
+      console.log('login', this.isRedirected)
     },
-  },
+    data() {
+        return {
+            username: "",
+            password: "",
+            credentialsErrorPhrase: "",
+            credentialsAreValid: true, // activate appropriate message if set to true
+            isLoading: false,
+        };
+    },
+    methods: {
+        clearError() {
+            this.credentialsAreValid = true;
+        },
+        loginUser() {
+            // check if username and password are entered
+            if (!this.username || !this.password) {
+                this.credentialsErrorPhrase = "Enter username and password";
+                this.credentialsAreValid = false;
+                return false;
+            }
+            // set loading state
+            this.isLoading = true;
+            // Call loginUser action.
+            this.$store
+                .dispatch("loginUser", {
+                    username: this.username,
+                    password: this.password,
+                })
+                .then(() => {
+                    this.$emit("close");
+                    this.wrongCred = false;
+                    this.$router.push({ name: "TimeTracker" });
+                })
+                .catch((err) => {
+                    console.log(err.response);
+                    this.credentialsErrorPhrase =
+                        "Either username or password is incorrect. Please retype your credentials.";
+                    this.credentialsAreValid = false; // if the credentials were wrong set wrongCred to true
+                })
+                .finally(() => (this.isLoading = false));
+        },
+    },
 };
 </script>
 
