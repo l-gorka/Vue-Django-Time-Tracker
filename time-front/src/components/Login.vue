@@ -4,12 +4,13 @@
             <h2 class="modal-card-title is-bolder">Log In</h2>
         </header>
         <section class="modal-card-body">
-            <b-message
-            class="p-0"
+            <b-notification
+            class="is-light"
+            type="is-info"
                 v-if="isRedirected"
                 closable="false"
                 aria-close-label="Close notification"
-            >To visit this section, you must be logged in.</b-message>
+            >To visit this section, you must be logged in.</b-notification>
             <form @submit.prevent="loginUser">
                 <!-- USERNAME -->
                 <b-field v-if="credentialsAreValid" label="Username">
