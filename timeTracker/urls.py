@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from unicodedata import name
 from django.contrib import admin
 from django.urls import path
 from tracker import views
@@ -24,12 +25,12 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('register/', views.RegisterUser.as_view()),
-    path('account/', views.user_data),
-    path('change-password/', views.password_change),
+    path('register/', views.RegisterUser.as_view(), name='register'),
+    path('account/', views.user_data, name='login'),
+    path('change-password/', views.password_change, name='password-change'),
 
     path('admin/', admin.site.urls),
-    path('project-list/', views.project_list),
+    path('project-list/', views.project_list, name='project-list'),
     path('project-list/<str:pk>/', views.ProjectView),
     path('project-list/<str:pk>/update/', views.project_update),
     path('project-list/<str:pk>/delete/', views.project_delete),

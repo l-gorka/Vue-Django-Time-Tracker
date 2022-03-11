@@ -105,6 +105,24 @@ export default new Vuex.Store({
 				});
 			});
 		},
+		getTimeEntries1(context) {
+			return new Promise((resolve, reject) => {
+				axios.all([
+					getAPI.get("/time-entries/", {
+						headers: { Authorization: `Bearer ${context.state.accessToken}`, },
+					}),
+					getAPI.get("/project-list/", {
+						headers: { Authorization: `Bearer ${context.state.accessToken}`, },
+					}),
+				]).then(axios.spread(function (timeEntriesResponse, projectsResponse) {
+					
+					context.commit('updateTimeEntries', timeEntriesResponse.data)
+					context.commit('updateProjects', projectsResponse.data)
+					resolve()
+				})
+				);
+			});
+		},
 		getTimeEntries(context) {
 			return new Promise((resolve, reject) => {
 				axios.all([

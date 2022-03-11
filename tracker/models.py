@@ -4,8 +4,6 @@ from unixtimestampfield import UnixTimeStampField
 from django.db.models.signals import post_save, pre_save, pre_delete, post_delete
 from datetime import datetime
 
-# Create your models here.
-
 
 class Project(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)

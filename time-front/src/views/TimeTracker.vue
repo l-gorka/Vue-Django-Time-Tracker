@@ -71,9 +71,6 @@ export default {
             this.$wait.start("getEntries");
             this.$store.dispatch("getTimeEntries").then(() => {
                 this.dayEntries = this.$store.state.dayEntries;
-                for (let item of this.dayEntries) {
-                    item.time_entries.reverse();
-                }
                 this.$wait.end("getEntries");
             });
         },
