@@ -1,22 +1,20 @@
-from rest_framework import generics
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.exceptions import ValidationError, APIException
+import json
+import time
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Q
-from datetime import datetime
-import time
-
+from rest_framework import generics
+from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny
-
-import json
+from rest_framework.response import Response
 
 from .models import DayEntry, Project, TimeEntry
-from .serializers import DayEntrySerializer, ProjectSerializer, TimeEntrySerializer, UserCreateSerializer, UserSelrializer, ChangePasswordSerializer
-from tracker import serializers
+from .serializers import (ChangePasswordSerializer, DayEntrySerializer,
+                          ProjectSerializer, TimeEntrySerializer,
+                          UserCreateSerializer, UserSelrializer)
+
 # Create your views here.
 
 
@@ -30,7 +28,7 @@ def password_change(request):
         if check:
             user.set_password(serializer.validated_data.get("password"))
             user.save()
-            return Response('changed', 200)
+            return Response('Password changed', 200)
         else:
             return Response('Password you entered is incorrect. Please retype your current password.', status=401)
     else:
@@ -55,11 +53,10 @@ class RegisterUser(generics.CreateAPIView):
             serializer.is_valid(raise_exception=True)
             serializer.save()
         except IntegrityError as e:
-            print(e)
             return Response('Username already taken', 400)
         except Exception as e:
             return Response('Password incorrect', 400)
-        return Response('created', 201)
+        return Response('Created', 201)
 
 
 @api_view(['POST'])

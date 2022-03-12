@@ -31,17 +31,17 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('project-list/', views.project_list, name='project-list'),
-    path('project-list/<str:pk>/', views.ProjectView),
-    path('project-list/<str:pk>/update/', views.project_update),
-    path('project-list/<str:pk>/delete/', views.project_delete),
-    path('project-create/', views.project_create),
+    path('project-list/<str:pk>/', views.ProjectView, name='project-view'),
+    path('project-list/<str:pk>/update/', views.project_update, name='project-update'),
+    path('project-list/<str:pk>/delete/', views.project_delete, name='project-delete'),
+    path('project-create/', views.project_create, name='project-create'),
 
-    path('time-entries/', views.time_entry_list),
-    path('time-entries/<str:pk>/', views.TimeEntryView),
-    path('time-entries/<str:pk>/update/', views.TimeEntryUpdate),
-    path('time-entries/<str:pk>/delete/', views.time_entry_delete),
-    path('time-entry-create/', views.time_entry_create),
+    path('time-entries/', views.time_entry_list, name='time-entries'),
+    path('time-entries/<str:pk>/', views.TimeEntryView, name='time-entry'),
+    path('time-entries/<str:pk>/update/', views.TimeEntryUpdate, name='time-entry-update'),
+    path('time-entries/<str:pk>/delete/', views.time_entry_delete, name='time-entry-delete'),
+    path('time-entry-create/', views.time_entry_create, name='time-entry-create'),
 
-    path('day-entries/', views.day_entries_list),
-    path('filtered-day-entries/', views.filtered_day_entry_list),
+    path('day-entries/', views.day_entries_list, name='day-entries'),
+    path('filtered-day-entries/', views.filtered_day_entry_list,),
 ]

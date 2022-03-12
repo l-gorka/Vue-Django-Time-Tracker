@@ -8,7 +8,7 @@
             class="is-light"
             type="is-info"
                 v-if="isRedirected"
-                closable="false"
+                
                 aria-close-label="Close notification"
             >To visit this section, you must be logged in.</b-notification>
             <form @submit.prevent="loginUser">
@@ -46,7 +46,6 @@ export default {
     props: ['isRedirected'],
     components: {},
     mounted() {
-      console.log('login', this.isRedirected)
     },
     data() {
         return {
@@ -85,7 +84,7 @@ export default {
                     console.log(err.response);
                     this.credentialsErrorPhrase =
                         "Either username or password is incorrect. Please retype your credentials.";
-                    this.credentialsAreValid = false; // if the credentials were wrong set wrongCred to true
+                    this.credentialsAreValid = false;
                 })
                 .finally(() => (this.isLoading = false));
         },
