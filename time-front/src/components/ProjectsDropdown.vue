@@ -1,5 +1,12 @@
 <template>
-    <b-dropdown append-to-body aria-role="menu" scrollable max-height="300" trap-focus>
+    <b-dropdown
+        class="projects-dropdown"
+        append-to-body
+        aria-role="menu"
+        scrollable
+        max-height="300"
+        trap-focus
+    >
         <template #trigger>
             <a>
                 <b-tooltip
@@ -29,7 +36,13 @@
                 </b-tooltip>
             </a>
         </template>
-        <b-dropdown-item @click="showModal" aria-role="listitem" type="is-primary" size="is-medium">
+        <b-dropdown-item
+            class="create-project-btn"
+            @click="showModal"
+            aria-role="listitem"
+            type="is-primary"
+            size="is-medium"
+        >
             <b-button icon-left="plus-circle" class="is-ghost" label="Create new project" />
         </b-dropdown-item>
 
@@ -97,14 +110,25 @@ export default {
         },
         setProject(id) {
             if (!(this.project == id)) {
-                this.loadProjects();
-                this.$emit("ProjectChanged", id);
                 this.projectId = id;
+                this.getProjects();
+                console.log("projects dropdwon", this.projects);
+                this.$emit("ProjectChanged", id);
             }
         },
         getProjects() {
             // hit API for updated projects, then load projects
-            this.$store.dispatch("getProjects").then(this.loadProjects());
+            this.$store.dispatch("getProjects").then(() => {
+                this.projects = this.$store.state.projects;
+                if (this.projectId) {
+                    for (let project of this.projects) {
+                        if (project.id == this.projectId) {
+                            this.projectName = project.title;
+                            this.projectColor = `color: ${project.color}`;
+                        }
+                    }
+                }
+            });
         },
         loadProjects() {
             // get projects from vuex, select current one

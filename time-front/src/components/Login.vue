@@ -14,10 +14,10 @@
             <form @submit.prevent="loginUser">
                 <!-- USERNAME -->
                 <b-field v-if="credentialsAreValid" label="Username">
-                    <b-input @keyup.native.enter="loginUser" v-model="username" value></b-input>
+                    <b-input class="login-input" @keyup.native.enter="loginUser" v-model="username" value></b-input>
                 </b-field>
                 <b-field v-else type="is-danger" :message="credentialsErrorPhrase" label="Username">
-                    <b-input @input="clearError" v-model="username" value></b-input>
+                    <b-input class="login-input" @input="clearError" v-model="username" value></b-input>
                 </b-field>
                 <!-- PASSWORD -->
                 <b-field v-if="credentialsAreValid" label="Password">
@@ -34,8 +34,8 @@
             </form>
         </section>
         <footer class="modal-card-foot">
-            <b-button label="Close" @click="$emit('close')" />
-            <b-button :loading="isLoading" @click="loginUser" label="Login" type="is-primary" />
+            <b-button class="btn-close" label="Close" @click="$emit('close')" />
+            <b-button class="btn-submit" :loading="isLoading" @click="loginUser" label="Login" type="is-primary" />
         </footer>
     </div>
 </template>

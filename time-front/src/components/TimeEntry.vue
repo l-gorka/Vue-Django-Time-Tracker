@@ -31,6 +31,7 @@
         <!-- TIME STARTED -->
         <div class="column is-6-mobile is-2-tablet is-1-widescreen">
             <TimeInput
+                class="time-input-start"
                 @timeChanged="setStartTime($event)"
                 v-if="dataObj.start_date"
                 :timestamp="dataObj.start_date"
@@ -39,6 +40,7 @@
         <!-- TIME ENDED -->
         <div class="column is-6-mobile is-2-tablet is-1-widescreen">
             <TimeInput
+            class="time-input-end"
                 @timeChanged="setEndTime($event)"
                 v-if="dataObj.end_date"
                 :timestamp="dataObj.end_date"

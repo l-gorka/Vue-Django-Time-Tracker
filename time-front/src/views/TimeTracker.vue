@@ -1,14 +1,15 @@
 <template>
     <div class="page-wrapper">
         <div>
-            <CurrentTask @timeEntryCreated="getEntries" />
+            <CurrentTask v-if="isLoaded" @timeEntryCreated="getEntries" />
         </div>
-        <div class v-if="paginatedDayEntries">
+        <div v-if="paginatedDayEntries">
             <DayEntry
+                :class="`day-entry-${index}`"
                 @dataChanged="getEntries"
                 :dayEntry="dayEntry"
-                v-for="dayEntry in paginatedDayEntries"
-                :key="dayEntry.id"
+                v-for="(dayEntry, index) in paginatedDayEntries"
+                :key="index"
             />
         </div>
         <div class="mx-2 pb-5">
@@ -19,7 +20,6 @@
                 :per-page="perPage"
             ></b-pagination>
         </div>
-        
     </div>
 </template>
 
@@ -36,12 +36,12 @@ export default {
             dayEntries: [],
             pageNumber: 1,
             perPage: 5,
+            isLoaded: false,
         };
     },
     created() {
-        this.$store.dispatch('getProjects')
+        this.$store.dispatch("getProjects");
         this.getEntries();
-        
     },
     computed: {
         numberOfEntries() {
@@ -63,34 +63,20 @@ export default {
             return this.$wait.any;
         },
         projects() {
-            return this.$store.state.projects
-        }
+            return this.$store.state.projects;
+        },
     },
     methods: {
         getEntries() {
             this.$wait.start("getEntries");
-            this.$store.dispatch("getTimeEntries").then(() => {
-                this.dayEntries = this.$store.state.dayEntries;
-                this.$wait.end("getEntries");
-            });
-        },
-        getEntries1() {
-            this.$wait.start("getEntries");
-            this.$store.dispatch("getTimeEntries");
-            getAPI
-                .get("/day-entries/", {
-                    headers: {
-                        Authorization: `Bearer ${this.token}`,
-                    },
-                })
-                .then((response) => {
-                    this.$store.dispatch("getTimeEntries");
-                    this.dayEntries = response.data;
-                    for (let item of this.dayEntries) {
-                        item.time_entries.reverse();
-                    }
+            this.$store
+                .dispatch("getTimeEntries")
+                .then(() => {
+                    this.dayEntries = this.$store.state.dayEntries;
                     this.$wait.end("getEntries");
-                });
+                })
+                .catch((error) => console.log("time tracker", error))
+                .finally(() => this.isLoaded = true)
         },
     },
 };

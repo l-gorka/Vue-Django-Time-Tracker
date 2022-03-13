@@ -276,7 +276,7 @@ export default {
                         )
                         .then((response) => {
                             this.toast("Project has been deleted");
-                            this.getProjects();
+                            this.getData();
                             this.selectedProject = null;
                         })
                         .then((error) => console.log(error));

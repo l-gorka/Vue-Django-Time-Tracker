@@ -7,10 +7,11 @@
       </div>
       <div class="panel-body">
         <TimeEntry
+          :class="`time-entry-${index}`"
           @dataChanged="dataChanged"
           :timeEntryID="id"
-          v-for="id in timeEntries"
-          :key="id"
+          v-for="(id, index) in timeEntries"
+          :key="index"
         />
       </div>
     </div>

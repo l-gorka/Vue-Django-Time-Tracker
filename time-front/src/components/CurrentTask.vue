@@ -1,5 +1,5 @@
 <template>
-    <div class="panel is-warning mb-4 pt-2 mt-4 mx-2">
+    <div class="current-task panel is-warning mb-4 pt-2 mt-4 mx-2">
         <div class="panel-body has-background-white">
             <div
                 ref="tEntry"
@@ -8,6 +8,7 @@
                 <div class="column is-12-mobile">
                     <!-- DESCRIPTION -->
                     <b-input
+                        class="description-input"
                         placeholder="What are you working on?"
                         v-on:keyup.native.enter="$event.target.blur()"
                         @focus="copyValue(description)"
@@ -17,11 +18,12 @@
                 </div>
                 <div class="column is-12-mobile is-2">
                     <!-- PROJECTS DROPDOWN -->
-                    <ProjectDropdown @ProjectChanged="setProject" :project="project" />
+                    <ProjectDropdown class="projects-dropdown" @ProjectChanged="setProject" :project="project" />
                 </div>
                 <div class="column is-2-fullhd is-2-desktop">
                     <!-- COUNTER -->
                     <Counter
+                        class="counter"
                         @counterStopped="counterStopped"
                         :isCounterStarted="isStarted"
                         :counterTimeSeconds="counterSeconds"
@@ -30,17 +32,20 @@
                 <div class="column is-1 is-flex is-justify-content-end">
                     <!-- BUTTON -->
                     <b-tooltip
+                        class="tooltip-btn-counter"
                         position="is-left"
                         :delay="500"
                         :label="isStarted? 'Finish current activity' : 'Start timer for new activity'"
                     >
                         <b-button
+                            class="btn-start"
                             @click="stopTimer"
                             v-if="isStarted"
                             icon-left="clock-outline"
                             type="is-primary"
                         >STOP</b-button>
                         <b-button
+                            class="btn-start"
                             @click="startTimer"
                             v-else
                             icon-left="clock-outline"
@@ -88,6 +93,7 @@ export default {
     },
     // if cookie with start_date is present, set counter to this date
     mounted() {
+        this.projects = this.$store.state.projects
         let cookie = this.$store.state.taskStarted;
         if (cookie) {
             this.counterSeconds = Date.parse(new Date()) / 1000 - cookie;
