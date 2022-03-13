@@ -6,6 +6,7 @@
         <div class="column is-12-mobile">
             <!-- DESCRIPTION -->
             <b-input
+                class="desc-input"
                 placeholder="Add description."
                 v-on:keyup.native.enter="$event.target.blur()"
                 @focus="copyValue(description)"
@@ -135,7 +136,9 @@ export default {
                     }
                     this.toast(toastMessage);
                     this.$emit("dataChanged");
-                });
+                }).catch((error) => {
+                    console.log(error.data)
+                })
         },
         // DESCRIPTION
         getDescription() {
@@ -234,7 +237,9 @@ export default {
                             this.toast("Time entry has been deleted");
                             this.$emit("dataChanged");
                         })
-                        .then((error) => {});
+                        .catch((error) => {
+                            console.log(error.data)
+                        });
                 },
             });
         },
