@@ -59,16 +59,16 @@
             </b-dropdown>
         </div>
         <div
-            class="column level is-flex is-justify-content-space-evenly is-justify-content-center-desktop is-1"
+            class="options column level is-flex is-justify-content-space-evenly is-justify-content-center-desktop is-1"
         >
             <!-- OPTIONS -->
             <b-tooltip position="is-left" :delay="200" label="Continue timer for this activity">
-                <b-button @click="continueActivity" type="is-ghost" size="is-small">
-                    <b-icon icon="play-circle" class="is-size-4"></b-icon>
+                <b-button class="btn-continue" @click="continueActivity" type="is-ghost" size="is-small">
+                    <b-icon icon="play-circle" class=" is-size-4"></b-icon>
                 </b-button>
             </b-tooltip>
             <b-tooltip position="is-left" :delay="200" label="Delete time entry">
-                <b-button @click="deleteTimeEntry" type="is-ghost" size="is-small">
+                <b-button class="btn-delete" @click="deleteTimeEntry" type="is-ghost" size="is-small">
                     <b-icon icon="delete" class="is-size-4"></b-icon>
                 </b-button>
             </b-tooltip>
@@ -191,23 +191,28 @@ export default {
             this.dataObj.start_date = e;
             // If time entry passing the midnight, set end_date to the next day by adding 86400 seconds = 24 hours.
             if (this.dataObj.start_date > this.dataObj.end_date) {
+                console.log('set start time', this.dataObj.start_date, this.dataObj.end_date )
                 this.dataObj.end_date += 86400;
             }
             // Check if there is more than 24h difference between dates, if so, set end_date to the day before by substraction 86400 seconds.
-            this.saveData(this.getDuration, "Start time has been updated");
+            
             if (this.dataObj.end_date - this.dataObj.start_date > 86400) {
+                console.log('set start time2', this.dataObj.start_date, this.dataObj.end_date )
                 this.dataObj.end_date -= 86400;
             }
+            this.saveData(this.getDuration, "Start time has been updated");
         },
         setEndTime(e) {
             this.dataObj.end_date = e;
             // If time entry passing the midnight, set end_date to the next day by adding 86400 seconds = 24 hours.
             if (this.dataObj.start_date > this.dataObj.end_date) {
+                console.log('set start time3', this.dataObj.start_date, this.dataObj.end_date )
                 this.dataObj.end_date += 86400;
             }
             // Check if there is more than 24h difference between dates, if so, set end_date to the day before by substraction 86400 seconds.
             //this.saveData(this.getDuration, "Start time has been updated");
             if (this.dataObj.end_date - this.dataObj.start_date > 86400) {
+                console.log('set start time4', this.dataObj.start_date, this.dataObj.end_date )
                 this.dataObj.end_date -= 86400;
             }
             this.saveData(this.getDuration, "End time has been updated");

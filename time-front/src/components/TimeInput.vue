@@ -40,6 +40,7 @@ export default {
                 if (hours && minutes) {
                     // if valid, emit 'changed'
                     let newTimestamp = this.timeStrToTimestamp(hours, minutes);
+                    console.log('new timestamp', newTimestamp)
                     this.$emit("timeChanged", newTimestamp);
                     // display new time
                     this.timeStr = this.displayTime(this.timeStr);

@@ -5,7 +5,7 @@
     "fields": {
         "password": "pbkdf2_sha256$320000$AwcowhSWmR6VxZtKRAlPGD$mscT19Xq2g76NkHHjbupNce+3xCXu882CJUDYMZSmnU=",
         "last_login": null,
-        "is_superuser": false,
+        "is_superuser": true,
         "username": "tests",
         "first_name": "",
         "last_name": "",

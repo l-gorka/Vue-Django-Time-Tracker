@@ -11,7 +11,7 @@
           @dataChanged="dataChanged"
           :timeEntryID="id"
           v-for="(id, index) in timeEntries"
-          :key="index"
+          :key="id"
         />
       </div>
     </div>

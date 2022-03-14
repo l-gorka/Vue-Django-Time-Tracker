@@ -3,13 +3,13 @@
         <div>
             <CurrentTask v-if="isLoaded" @timeEntryCreated="getEntries" />
         </div>
-        <div v-if="paginatedDayEntries">
+        <div class v-if="paginatedDayEntries">
             <DayEntry
                 :class="`day-entry-${index}`"
                 @dataChanged="getEntries"
                 :dayEntry="dayEntry"
                 v-for="(dayEntry, index) in paginatedDayEntries"
-                :key="index"
+                :key="dayEntry.id"
             />
         </div>
         <div class="mx-2 pb-5">

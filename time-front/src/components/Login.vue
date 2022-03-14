@@ -14,14 +14,15 @@
             <form @submit.prevent="loginUser">
                 <!-- USERNAME -->
                 <b-field v-if="credentialsAreValid" label="Username">
-                    <b-input class="login-input" @keyup.native.enter="loginUser" v-model="username" value></b-input>
+                    <b-input class="input-username" @keyup.native.enter="loginUser" v-model="username" value></b-input>
                 </b-field>
                 <b-field v-else type="is-danger" :message="credentialsErrorPhrase" label="Username">
-                    <b-input class="login-input" @input="clearError" v-model="username" value></b-input>
+                    <b-input class="input-username" @input="clearError" v-model="username" value></b-input>
                 </b-field>
                 <!-- PASSWORD -->
                 <b-field v-if="credentialsAreValid" label="Password">
                     <b-input
+                        class="input-password"
                         @keyup.native.enter="loginUser"
                         v-model="password"
                         type="password"
@@ -29,13 +30,13 @@
                     ></b-input>
                 </b-field>
                 <b-field v-else type="is-danger" label="Password">
-                    <b-input @input="clearError" v-model="password" type="password" password-reveal></b-input>
+                    <b-input class="input-password" @input="clearError" v-model="password" type="password" password-reveal></b-input>
                 </b-field>
             </form>
         </section>
         <footer class="modal-card-foot">
             <b-button class="btn-close" label="Close" @click="$emit('close')" />
-            <b-button class="btn-submit" :loading="isLoading" @click="loginUser" label="Login" type="is-primary" />
+            <b-button class="btn-login-submit" :loading="isLoading" @click="loginUser" label="Login" type="is-primary" />
         </footer>
     </div>
 </template>

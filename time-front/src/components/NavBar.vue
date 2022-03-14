@@ -26,10 +26,10 @@
                         </a>
                     </div>
                     <div v-else class="buttons">
-                        <a class="button is-primary" @click="showRegisterModal">
+                        <a class="nav-btn-register button is-primary" @click="showRegisterModal">
                             <strong>Sign up</strong>
                         </a>
-                        <a class="button is-light" @click="showLoginModal(isRedirected=false)">
+                        <a class="nav-btn-login button is-light" @click="showLoginModal(isRedirected=false)">
                             <strong>Log In</strong>
                         </a>
                     </div>

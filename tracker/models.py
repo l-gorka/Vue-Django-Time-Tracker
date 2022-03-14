@@ -111,14 +111,8 @@ def time_entry_pre_save(sender, instance, **kwargs):
 
 
 def time_entry_delete(sender, instance, **kwargs):
-    # in case of delting time entry, calculate total time of coresponding day entry again
-    date = datetime.fromtimestamp(instance.start_date)
-    try:
-        day_entry = DayEntry.objects.get(date=date, owner=instance.owner)
-    except DayEntry.DoesNotExist:
-        return False
-    day_entry.get_time_total()
-    day_entry.save()
+    
+    
 
     # remove time entry from associated project
     if instance.project:
@@ -132,7 +126,10 @@ def time_entry_post_delete(sender, instance, **kwargs):
     # if no, delete day entry
     date = datetime.fromtimestamp(instance.start_date)
     try:
+        # in case of delting time entry, calculate total time of coresponding day entry again
         day_entry = DayEntry.objects.get(date=date, owner=instance.owner)
+        day_entry.get_time_total()
+        day_entry.save()
     except DayEntry.DoesNotExist:
         return False
     if day_entry.time_entries.count() == 0:
