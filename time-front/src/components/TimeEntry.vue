@@ -194,8 +194,7 @@ export default {
                 console.log('set start time', this.dataObj.start_date, this.dataObj.end_date )
                 this.dataObj.end_date += 86400;
             }
-            // Check if there is more than 24h difference between dates, if so, set end_date to the day before by substraction 86400 seconds.
-            
+            // Check if there is more than 24h difference between dates, if so, set end_date to the day before by substraction 86400 seconds.            
             if (this.dataObj.end_date - this.dataObj.start_date > 86400) {
                 console.log('set start time2', this.dataObj.start_date, this.dataObj.end_date )
                 this.dataObj.end_date -= 86400;

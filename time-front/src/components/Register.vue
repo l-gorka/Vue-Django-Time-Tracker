@@ -6,34 +6,39 @@
         <section class="modal-card-body">
             <!-- USERNAME -->
             <b-field v-if="usernameIsValid" label="Username">
-                <b-input @blur="validateUsername" v-model="registerData.username"></b-input>
+                <b-input
+                    class="input-username"
+                    @blur="validateUsername"
+                    v-model="registerData.username"
+                ></b-input>
             </b-field>
             <b-field v-else type="is-danger" :message="usernameErrorPhrase" label="Username">
-                <b-input @input="validateUsername" v-model="registerData.username"></b-input>
+                <b-input
+                    class="input-username"
+                    @input="validateUsername"
+                    v-model="registerData.username"
+                ></b-input>
             </b-field>
             <!-- EMAIL -->
             <b-field v-if="emailIsValid" label="Email">
-                <b-input @blur="validateEmail" v-model="registerData.email"></b-input>
+                <b-input class="input-email" @blur="validateEmail" v-model="registerData.email"></b-input>
             </b-field>
             <b-field v-else type="is-danger" message="Enter valid e-mail address." label="Email">
-                <b-input @input="validateEmail" v-model="registerData.email"></b-input>
+                <b-input class="input-email" @input="validateEmail" v-model="registerData.email"></b-input>
             </b-field>
             <!-- PASSWORD1 -->
             <b-field v-if="passwordIsValid" label="Password">
                 <b-input
+                    class="input-password"
                     @blur="validatePassword"
                     v-model="registerData.password1"
                     type="password"
                     password-reveal
                 ></b-input>
             </b-field>
-            <b-field
-                v-else
-                type="is-danger"
-                :message="passwordErrorPhrase"
-                label="Password"
-            >
+            <b-field v-else type="is-danger" :message="passwordErrorPhrase" label="Password">
                 <b-input
+                    class="input-password"
                     @input="validatePassword"
                     v-model="registerData.password1"
                     type="password"
@@ -43,6 +48,7 @@
             <!-- PASSWORD2 -->
             <b-field v-if="passwordsMatch" label="Re-enter password">
                 <b-input
+                    class="input-password2"
                     @blur="validatePassword"
                     @keyup.native.enter="registerUser"
                     v-model="registerData.password2"
@@ -58,6 +64,7 @@
                 label="Re-enter password"
             >
                 <b-input
+                    class="input-password2"
                     @input="validatePassword"
                     v-model="registerData.password2"
                     type="password"
@@ -73,15 +80,14 @@
             </b-field>
         </section>
         <footer class="modal-card-foot">
-            <b-button label="Close" @click="$emit('close')" />
-            <b-button @click="registerUser" label="Register" type="is-primary" />
+            <b-button class="btn-close" label="Close" @click="$emit('close')" />
+            <b-button class="btn-register-submit" @click="registerUser" label="Register" type="is-primary" />
         </footer>
     </div>
 </template>
 
 <script>
 export default {
-    name: "login",
     components: {},
     mounted() {},
     data() {
@@ -127,7 +133,8 @@ export default {
             this.passwordsMatch = true;
             // check if password has more than 8 characters
             if (this.registerData.password1.length < 8) {
-                this.passwordErrorPhrase = "Your password must contain at least 8 characters."
+                this.passwordErrorPhrase =
+                    "Your password must contain at least 8 characters.";
                 this.passwordIsValid = false;
                 return false;
             }
@@ -167,7 +174,8 @@ export default {
                             this.usernameErrorPhrase = "Username already taken";
                             this.usernameIsValid = false;
                         } else if (err.response.data == "Password incorrect") {
-                            this.passwordErrorPhrase = "Password can't be a commonly used password or similar to your other personal information."
+                            this.passwordErrorPhrase =
+                                "Password can't be a commonly used password or similar to your other personal information.";
                             this.passwordIsValid = false;
                         }
                     });

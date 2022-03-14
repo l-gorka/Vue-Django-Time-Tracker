@@ -12,7 +12,7 @@ describe('TimeTracker tests', () => {
 
     it('the user can create a project', () => {
         cy.get('.current-task').contains('Project').click();
-        cy.get('.is-active > .dropdown-menu > .dropdown-content > .create-project-btn').click();
+        cy.get('.is-active .btn-open-project-modal').click();
         cy.get('.input-title').type('Test_project12');
         cy.get('[aria-label="#1CA085"]').click();
         cy.get('.modal-card-foot .btn-create-project').click();
@@ -57,8 +57,17 @@ describe('TimeTracker tests', () => {
     it('the user can delete time entry', () => {
         cy.get('.day-entry-0 .time-entry-0 .mdi-delete').click();
         cy.get('.is-danger').click();
-        cy.get('.day-entry-0 .panel > .panel-heading').contains('01:00:02');
+        cy.get('.day-entry-0 .panel > .panel-heading').contains('00:00:01');
     });
+
+    it('the user can create and change project of time enry',() => {
+        cy.get('.day-entry-0 .time-entry-0').contains('Test_project12').click();
+        cy.get('.is-active .btn-open-project-modal').click()
+        cy.get('.input-title').type('New_project121');
+        cy.get('[aria-label="#2ECC70"]').click();
+        cy.get('.modal-card-foot .btn-create-project').click();
+        cy.get('.day-entry-0 .time-entry-0').contains('New_project121');
+    })
 
 
 });

@@ -37,7 +37,7 @@
             </a>
         </template>
         <b-dropdown-item
-            class="create-project-btn"
+            class="btn-open-project-modal"
             @click="showModal"
             aria-role="listitem"
             type="is-primary"
