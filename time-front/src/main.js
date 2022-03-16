@@ -17,11 +17,6 @@ Vue.use(VueAxios, axios, store, jwt_decode, VueLuxon);
 
 Vue.config.productionTip = false;
 
-Vue.config.errorHandler = (err, vm, info) => {
-	console.log('global error handler', err, vm, info)
-
-};
-
 new Vue({
 	router,
 	store,

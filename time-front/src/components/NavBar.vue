@@ -1,5 +1,5 @@
 <template>
-    <section class="mb-5">        
+    <section class="">        
             <b-loading v-model="isLoading" :can-cancel="true"></b-loading>
         <b-navbar shadow fixed-top>
             <template #brand>
@@ -11,11 +11,11 @@
                 </b-navbar-item>
             </template>
             <template #start>
-                <b-navbar-item v-if="isLoggedIn" tag="router-link" :to="{ path: '/about/' }">About</b-navbar-item>
+                <b-navbar-item tag="router-link" :to="{ path: '/' }">Home</b-navbar-item>
                 <b-navbar-item tag="router-link" :to="{ path: '/tracker/' }">Tracker</b-navbar-item>
-                <b-navbar-item tag="router-link" :to="{ path: '/dashboard' }">Dashboard</b-navbar-item>
-                <b-navbar-item tag="router-link" :to="{ path: '/projects' }">Projects</b-navbar-item>
-                <b-navbar-item tag="router-link" :to="{ path: '/account' }">Account</b-navbar-item>
+                <b-navbar-item v-if="isLoggedIn" tag="router-link" :to="{ path: '/dashboard' }">Dashboard</b-navbar-item>
+                <b-navbar-item v-if="isLoggedIn" tag="router-link" :to="{ path: '/projects' }">Projects</b-navbar-item>
+                <b-navbar-item v-if="isLoggedIn" tag="router-link" :to="{ path: '/account' }">Account</b-navbar-item>
             </template>
 
             <template #end>

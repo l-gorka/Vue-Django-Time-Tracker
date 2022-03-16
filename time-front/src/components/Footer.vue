@@ -19,5 +19,7 @@ data () {
 </script>
 
 <style>
-
+.footer {
+  border-top: 1px solid lightgray;
+}
 </style>

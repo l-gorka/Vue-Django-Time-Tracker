@@ -88,41 +88,11 @@ export default new Vuex.Store({
 				}).then((response) => {
 					context.commit('updateProjects', response.data);
 					resolve(response.data.access);
-				}).catch(err => {
-					reject(err);
+				}).catch(error => {
+					reject(error);
 				});
 			});
-		},
-		getTimeEntries1(context) {
-			return new Promise((resolve, reject) => {
-				getAPI.get("/time-entries/", {
-					headers: { Authorization: `Bearer ${context.state.accessToken}`, },
-				}).then((response) => {
-					context.commit('updateTimeEntries', response.data);
-					resolve(response.data.access);
-				}).catch(err => {
-					reject(err);
-				});
-			});
-		},
-		getTimeEntries1(context) {
-			return new Promise((resolve, reject) => {
-				axios.all([
-					getAPI.get("/time-entries/", {
-						headers: { Authorization: `Bearer ${context.state.accessToken}`, },
-					}),
-					getAPI.get("/project-list/", {
-						headers: { Authorization: `Bearer ${context.state.accessToken}`, },
-					}),
-				]).then(axios.spread(function (timeEntriesResponse, projectsResponse) {
-					
-					context.commit('updateTimeEntries', timeEntriesResponse.data)
-					context.commit('updateProjects', projectsResponse.data)
-					resolve()
-				})
-				);
-			});
-		},
+		},		
 		getTimeEntries(context) {
 			return new Promise((resolve, reject) => {
 				axios.all([
@@ -142,7 +112,7 @@ export default new Vuex.Store({
 					context.commit('updateProjects', projectsResponse.data)
 					resolve()
 				})
-				);
+				).catch(error => reject(error))
 			});
 		},
 		// get a new access token on expiration
@@ -206,9 +176,7 @@ export default new Vuex.Store({
 				})
 					// if successful update local storage:
 					.then(response => {
-						console.log('store', response)
 						let user = jwtDecode(response.data.access).user_id;
-
 						context.commit('updateLocalStorage', { access: response.data.access, refresh: response.data.refresh, userID: user }); // store the access and refresh token in localstorage
 						resolve();
 					})
