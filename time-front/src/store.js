@@ -16,7 +16,7 @@ export default new Vuex.Store({
 		timeEntries: [],
 		dayEntries: [],
 		continueTask: null,
-		loginModalOpen: false
+		loginModalOpen: false,
 	},
 	getters: {
 		loggedIn(state) {
@@ -24,7 +24,7 @@ export default new Vuex.Store({
 		},
 		loginModalOpen(state) {
 			return state.openLoginModal;
-		}
+		},
 	},
 	mutations: {
 		openLoginModal(state) {
@@ -206,6 +206,7 @@ export default new Vuex.Store({
 				})
 					// if successful update local storage:
 					.then(response => {
+						console.log('store', response)
 						let user = jwtDecode(response.data.access).user_id;
 
 						context.commit('updateLocalStorage', { access: response.data.access, refresh: response.data.refresh, userID: user }); // store the access and refresh token in localstorage

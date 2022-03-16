@@ -5,16 +5,20 @@
         </header>
         <section class="modal-card-body">
             <b-notification
-            class="is-light"
-            type="is-info"
+                class="is-light"
+                type="is-info"
                 v-if="isRedirected"
-                
                 aria-close-label="Close notification"
             >To visit this section, you must be logged in.</b-notification>
             <form @submit.prevent="loginUser">
                 <!-- USERNAME -->
                 <b-field v-if="credentialsAreValid" label="Username">
-                    <b-input class="input-username" @keyup.native.enter="loginUser" v-model="username" value></b-input>
+                    <b-input
+                        class="input-username"
+                        @keyup.native.enter="loginUser"
+                        v-model="username"
+                        value
+                    ></b-input>
                 </b-field>
                 <b-field v-else type="is-danger" :message="credentialsErrorPhrase" label="Username">
                     <b-input class="input-username" @input="clearError" v-model="username" value></b-input>
@@ -30,13 +34,25 @@
                     ></b-input>
                 </b-field>
                 <b-field v-else type="is-danger" label="Password">
-                    <b-input class="input-password" @input="clearError" v-model="password" type="password" password-reveal></b-input>
+                    <b-input
+                        class="input-password"
+                        @input="clearError"
+                        v-model="password"
+                        type="password"
+                        password-reveal
+                    ></b-input>
                 </b-field>
             </form>
         </section>
         <footer class="modal-card-foot">
             <b-button class="btn-close" label="Close" @click="$emit('close')" />
-            <b-button class="btn-login-submit" :loading="isLoading" @click="loginUser" label="Login" type="is-primary" />
+            <b-button
+                class="btn-login-submit"
+                :loading="isLoading"
+                @click="loginUser"
+                label="Login"
+                type="is-primary"
+            />
         </footer>
     </div>
 </template>
@@ -44,10 +60,9 @@
 <script>
 export default {
     name: "login",
-    props: ['isRedirected'],
+    props: ["isRedirected"],
     components: {},
-    mounted() {
-    },
+    mounted() {},
     data() {
         return {
             username: "",
@@ -82,10 +97,13 @@ export default {
                     this.$router.push({ name: "TimeTracker" });
                 })
                 .catch((err) => {
-                    console.log(err.response);
-                    this.credentialsErrorPhrase =
-                        "Either username or password is incorrect. Please retype your credentials.";
-                    this.credentialsAreValid = false;
+                    // display error message if credentials are wrong
+                    // dont display if there is problem internet connection
+                    if (err.response) {
+                        this.credentialsErrorPhrase =
+                            "Either username or password is incorrect. Please retype your credentials.";
+                        this.credentialsAreValid = false;
+                    }
                 })
                 .finally(() => (this.isLoading = false));
         },
