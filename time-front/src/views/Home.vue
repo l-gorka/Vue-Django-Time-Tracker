@@ -11,7 +11,7 @@
                                     class="subtitle is-5 is-muted"
                                 >Lorem ipsum sit dolor amet is a dummy text used by typography industry</h2>
                                 <div class="button-wrap">
-                                    <a  
+                                    <a
                                         @click="$router.push('/tracker')"
                                         v-if="isLoggedIn"
                                         class="button is-rounded is-primary raised mr-2"
@@ -35,26 +35,39 @@
                     </div>
                 </div>
             </div>
-
-            <div>
-                <div class="hero is-fullheight-with-navbar is-bold">
+        </div>
+        <div class="section px-0 is-primary has-background-primary">
+            <div class="page-wrapper">
+                <div class="hero is-bold">
                     <div class="hero-head has-text-centered">
-                        <h2 ref="howItWorks" class="title is-2 is-bold is-spaced">How it works:</h2>
+                        <h2
+                            ref="howItWorks"
+                            class="title has-text-white pt-6 is-1 is-bold is-spaced"
+                        >How it works:</h2>
                     </div>
                     <div class="hero-body is-vcentered px-0">
                         <b-carousel>
                             <b-carousel-item v-for="(carousel, i) in carousels" :key="i">
-                                <div class="hero">
-                                    <div class="hero-body px-0">
+                                <div class="hero carousel-body">
+                                    <div class="hero-body px-2">
                                         <div
                                             class="columns is-multiline has-text-centered is-vcentered"
                                         >
-                                            <div class="column is-12-tablet is-6-desktop">
-                                                <h4 class="subtitle is-bold is-3">{{carousel.title}}</h4>
-                                                <h4 class="subtitle is-5">{{carousel.subtitle}}</h4>
+                                            <div
+                                                class="carousel-caption column is-12-tablet is-6-desktop"
+                                            >
+                                                <div class="hero">
+                                                    <h4
+                                                        class="subtitle has-text-white is-bold is-3"
+                                                    >{{carousel.title}}</h4>
+                                                    <h4
+                                                        class="subtitle has-text-white is-5"
+                                                    >{{carousel.subtitle}}</h4>
+                                                </div>
                                             </div>
+
                                             <div class="column is-12-tablet is-6-desktop">
-                                                <img :src="carousel.url" alt />
+                                                <img :src="carousel.url" alt="carousel-image" />
                                             </div>
                                         </div>
                                     </div>
@@ -64,7 +77,9 @@
                     </div>
                 </div>
             </div>
-            <div class="hero is-fullheight-with-navbar">
+        </div>
+        <div class="page-wrapper">
+            <div class="section px-0 hero is-fullheight-with-navbar">
                 <div class="hero-head">
                     <div class="hero-head has-text-centered">
                         <h2 class="title is-2 is-bold is-spaced">Blah blah:</h2>
@@ -77,7 +92,7 @@
                     />
                 </div>
             </div>
-            <div>
+            <div class="section">
                 <div class="hero">
                     <div class="hero-head">
                         <div class="hero-head has-text-centered">
@@ -128,7 +143,6 @@ export default {
     },
     data() {
         return {
-            email: "",
             carousels: [
                 {
                     title: "Track your time using stopwatch",
@@ -167,6 +181,9 @@ export default {
 </script>
 
 <style>
+.carousel-body {
+    height: 70vh;
+}
 body {
     background: #f5f5f5;
 }
