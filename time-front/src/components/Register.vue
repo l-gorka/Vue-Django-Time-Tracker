@@ -4,84 +4,94 @@
             <h2 class="modal-card-title">Register new Account</h2>
         </header>
         <section class="modal-card-body">
-            <!-- USERNAME -->
-            <b-field v-if="usernameIsValid" label="Username">
-                <b-input
-                    class="input-username"
-                    @blur="validateUsername"
-                    v-model="registerData.username"
-                ></b-input>
-            </b-field>
-            <b-field v-else type="is-danger" :message="usernameErrorPhrase" label="Username">
-                <b-input
-                    class="input-username"
-                    @input="validateUsername"
-                    v-model="registerData.username"
-                ></b-input>
-            </b-field>
-            <!-- EMAIL -->
-            <b-field v-if="emailIsValid" label="Email">
-                <b-input class="input-email" @blur="validateEmail" v-model="registerData.email"></b-input>
-            </b-field>
-            <b-field v-else type="is-danger" message="Enter valid e-mail address." label="Email">
-                <b-input class="input-email" @input="validateEmail" v-model="registerData.email"></b-input>
-            </b-field>
-            <!-- PASSWORD1 -->
-            <b-field v-if="passwordIsValid" label="Password">
-                <b-input
-                    class="input-password"
-                    @blur="validatePassword"
-                    v-model="registerData.password1"
-                    type="password"
-                    password-reveal
-                ></b-input>
-            </b-field>
-            <b-field v-else type="is-danger" :message="passwordErrorPhrase" label="Password">
-                <b-input
-                    class="input-password"
-                    @input="validatePassword"
-                    v-model="registerData.password1"
-                    type="password"
-                    password-reveal
-                ></b-input>
-            </b-field>
-            <!-- PASSWORD2 -->
-            <b-field v-if="passwordsMatch" label="Re-enter password">
-                <b-input
-                    class="input-password2"
-                    @blur="validatePassword"
-                    @keyup.native.enter="registerUser"
-                    v-model="registerData.password2"
-                    type="password"
-                    password-reveal
-                ></b-input>
-            </b-field>
+            <form @submit.prevent="registerUser()" action>
+                <!-- USERNAME -->
+                <b-field v-if="usernameIsValid" label="Username">
+                    <b-input
+                        class="input-username"
+                        @blur="validateUsername"
+                        v-model="registerData.username"
+                    ></b-input>
+                </b-field>
+                <b-field v-else type="is-danger" :message="usernameErrorPhrase" label="Username">
+                    <b-input
+                        class="input-username"
+                        @input="validateUsername"
+                        v-model="registerData.username"
+                    ></b-input>
+                </b-field>
+                <!-- EMAIL -->
+                <b-field v-if="emailIsValid" label="Email">
+                    <b-input class="input-email" @blur="validateEmail" v-model="registerData.email"></b-input>
+                </b-field>
+                <b-field
+                    v-else
+                    type="is-danger"
+                    message="Please enter a valid email address."
+                    label="Email"
+                >
+                    <b-input
+                        class="input-email"
+                        @input="validateEmail"
+                        v-model="registerData.email"
+                    ></b-input>
+                </b-field>
+                <!-- PASSWORD1 -->
+                <b-field v-if="passwordIsValid" label="Password">
+                    <b-input
+                        class="input-password"
+                        @blur="validatePassword"
+                        v-model="registerData.password1"
+                        type="password"
+                        password-reveal
+                    ></b-input>
+                </b-field>
+                <b-field v-else type="is-danger" :message="passwordErrorPhrase" label="Password">
+                    <b-input
+                        class="input-password"
+                        @input="validatePassword"
+                        v-model="registerData.password1"
+                        type="password"
+                        password-reveal
+                    ></b-input>
+                </b-field>
+                <!-- PASSWORD2 -->
+                <b-field v-if="passwordsMatch" label="Re-enter password">
+                    <b-input
+                        class="input-password2"
+                        @blur="validatePassword"
+                        @keyup.native.enter="registerUser"
+                        v-model="registerData.password2"
+                        type="password"
+                        password-reveal
+                    ></b-input>
+                </b-field>
 
-            <b-field
-                type="is-danger"
-                message="Passwords must be the same."
-                v-else
-                label="Re-enter password"
-            >
-                <b-input
-                    class="input-password2"
-                    @input="validatePassword"
-                    v-model="registerData.password2"
-                    type="password"
-                    password-reveal
-                ></b-input>
-            </b-field>
+                <b-field
+                    type="is-danger"
+                    message="Passwords must be the same."
+                    v-else
+                    label="Re-enter password"
+                >
+                    <b-input
+                        class="input-password2"
+                        @input="validatePassword"
+                        v-model="registerData.password2"
+                        type="password"
+                        password-reveal
+                    ></b-input>
+                </b-field>
+            </form>
             <!-- CHECKBOX -->
-            <b-field>
-                <b-checkbox>
-                    I accept
-                    <span>terms and conditions.</span>
-                </b-checkbox>
-            </b-field>
         </section>
         <footer class="modal-card-foot">
             <b-button class="btn-close" label="Close" @click="$emit('close')" />
-            <b-button class="btn-register-submit" @click="registerUser" label="Register" type="is-primary" />
+            <b-button
+                class="btn-register-submit"
+                @click="registerUser"
+                label="Register"
+                type="is-primary"
+            />
         </footer>
     </div>
 </template>
@@ -157,7 +167,7 @@ export default {
             ) {
                 this.$store
                     .dispatch("registerUser", this.registerData) // call registerUser action in store
-                    .then(() => {
+                    .then((response) => {
                         this.$buefy.toast.open({
                             duration: 5000,
                             message: "Account has been created",
@@ -169,7 +179,6 @@ export default {
                     })
                     .catch((err) => {
                         // get error msg and display it as input message
-                        console.log(err.response);
                         if (err.response.data == "Username already taken") {
                             this.usernameErrorPhrase = "Username already taken";
                             this.usernameIsValid = false;

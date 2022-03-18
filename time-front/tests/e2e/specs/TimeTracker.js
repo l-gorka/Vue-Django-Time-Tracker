@@ -1,4 +1,4 @@
-describe('TimeTracker tests', () => {
+describe('TimeTracker tests.', () => {
 
     it('the user can log in', () => {
         cy.visit('/');

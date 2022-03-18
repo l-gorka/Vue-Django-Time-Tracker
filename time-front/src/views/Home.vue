@@ -16,7 +16,8 @@
                                         v-if="isLoggedIn"
                                         class="button is-rounded is-primary raised mr-2"
                                     >Go to tracker</a>
-                                    <a
+                                    <a  
+                                        @click="showRegisterModal()"
                                         v-else
                                         class="button is-rounded is-primary raised mr-2"
                                     >Get Started</a>
@@ -36,12 +37,12 @@
                 </div>
             </div>
         </div>
-        <div class="section px-0 is-primary has-background-primary">
+        <div ref="howItWorks" class="section px-0 is-primary has-background-primary">
             <div class="page-wrapper">
                 <div class="hero is-bold">
                     <div class="hero-head has-text-centered">
                         <h2
-                            ref="howItWorks"
+                            
                             class="title has-text-white pt-6 is-1 is-bold is-spaced"
                         >How it works:</h2>
                     </div>
@@ -82,7 +83,7 @@
             <div class="section px-0 hero is-fullheight-with-navbar">
                 <div class="hero-head">
                     <div class="hero-head has-text-centered">
-                        <h2 class="title is-2 is-bold is-spaced">Blah blah:</h2>
+                        <h2 class="title is-2 is-bold is-spaced">Responsive design</h2>
                     </div>
                 </div>
                 <div class="hero-body">
@@ -175,6 +176,9 @@ export default {
             console.log(element);
             element.scrollIntoView({ behavior: "smooth" });
         },
+        showRegisterModal() {
+            this.$store.commit('openRegisterModal');
+        }
     },
     components: {},
 };

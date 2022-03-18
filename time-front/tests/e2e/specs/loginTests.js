@@ -1,6 +1,6 @@
 // https://docs.cypress.io/api/introduction/api.html
 
-describe('Login modal test', () => {
+describe('Login modal tests.', () => {
   it('user can open login modal', () => {
     cy.visit('/')
     cy.contains('h1', 'Time tracker')    

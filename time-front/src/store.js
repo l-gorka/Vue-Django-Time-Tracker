@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import jwtDecode from 'jwt-decode';
 import { axiosBase, getAPI } from './axios-base';
-import axios from 'axios'
+import axios from 'axios';
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -17,6 +17,7 @@ export default new Vuex.Store({
 		dayEntries: [],
 		continueTask: null,
 		loginModalOpen: false,
+		registerModalOpen: false,
 	},
 	getters: {
 		loggedIn(state) {
@@ -25,8 +26,17 @@ export default new Vuex.Store({
 		loginModalOpen(state) {
 			return state.openLoginModal;
 		},
+		registerModalpen(state) {
+			return state.registerModalOpen;
+		}
 	},
 	mutations: {
+		openRegisterModal(state) {
+			state.registerModalOpen = true;
+		},
+		closeRegisterModal(state) {
+			state.registerModalOpen = false;
+		},
 		openLoginModal(state) {
 			state.loginModalOpen = true;
 		},
@@ -40,7 +50,7 @@ export default new Vuex.Store({
 			state.timeEntries = timeEntries;
 		},
 		updateDayEntries(state, dayEntries) {
-			state.dayEntries = dayEntries
+			state.dayEntries = dayEntries;
 		},
 		updateContinueTask(state, dataObj) {
 			state.continueTask = dataObj;
@@ -92,7 +102,7 @@ export default new Vuex.Store({
 					reject(error);
 				});
 			});
-		},		
+		},
 		getTimeEntries(context) {
 			return new Promise((resolve, reject) => {
 				axios.all([
@@ -106,13 +116,13 @@ export default new Vuex.Store({
 						headers: { Authorization: `Bearer ${context.state.accessToken}`, },
 					}),
 				]).then(axios.spread(function (dayEntriesResponse, timeEntriesResponse, projectsResponse) {
-					
-					context.commit('updateTimeEntries', timeEntriesResponse.data)
-					context.commit('updateDayEntries', dayEntriesResponse.data)
-					context.commit('updateProjects', projectsResponse.data)
-					resolve()
+
+					context.commit('updateTimeEntries', timeEntriesResponse.data);
+					context.commit('updateDayEntries', dayEntriesResponse.data);
+					context.commit('updateProjects', projectsResponse.data);
+					resolve();
 				})
-				).catch(error => reject(error))
+				).catch(error => reject(error));
 			});
 		},
 		// get a new access token on expiration
@@ -137,9 +147,12 @@ export default new Vuex.Store({
 					email: data.email,
 					username: data.username,
 					password: data.password1,
-				
+
 				})
 					.then(response => {
+						if (!response) {
+							throw 'No response error.';
+						}
 						resolve(response);
 					})
 					.catch(error => {
