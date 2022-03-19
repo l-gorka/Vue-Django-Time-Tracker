@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="numberOfEntries" class="mx-2 pb-5">
+        <div v-if="numberOfEntries > 5" class="mx-2 pb-5">
             <b-pagination
                 size="is-medium"
                 :total="numberOfEntries"

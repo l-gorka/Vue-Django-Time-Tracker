@@ -40,7 +40,7 @@
         <!-- TIME ENDED -->
         <div class="column is-6-mobile is-2-tablet is-1-widescreen">
             <TimeInput
-            class="time-input-end"
+                class="time-input-end"
                 @timeChanged="setEndTime($event)"
                 v-if="dataObj.end_date"
                 :timestamp="dataObj.end_date"
@@ -49,26 +49,31 @@
 
         <div class="column is-2-tablet is-1-widescreen">
             <!-- DURATION DROPDOWN -->
-            <b-dropdown ref="dropdown">
-                <button class="button is-ghost has-text-black" slot="trigger">
-                    <span class="is-size-4">{{ duration }}</span>
-                </button>
-                <b-dropdown-item custom>
-                    <b-input @focus="focusOnDuration($event)" v-model="duration"></b-input>
-                </b-dropdown-item>
-            </b-dropdown>
+            <button class="button is-ghost has-text-black" slot="trigger">
+                <span class="is-size-4">{{ duration }}</span>
+            </button>
         </div>
         <div
             class="options column level is-flex is-justify-content-space-evenly is-justify-content-center-desktop is-1"
         >
             <!-- OPTIONS -->
             <b-tooltip position="is-left" :delay="200" label="Continue timer for this activity">
-                <b-button class="btn-continue" @click="continueActivity" type="is-ghost" size="is-small">
-                    <b-icon icon="play-circle" class=" is-size-4"></b-icon>
+                <b-button
+                    class="btn-continue"
+                    @click="continueActivity"
+                    type="is-ghost"
+                    size="is-small"
+                >
+                    <b-icon icon="play-circle" class="is-size-4"></b-icon>
                 </b-button>
             </b-tooltip>
             <b-tooltip position="is-left" :delay="200" label="Delete time entry">
-                <b-button class="btn-delete" @click="deleteTimeEntry" type="is-ghost" size="is-small">
+                <b-button
+                    class="btn-delete"
+                    @click="deleteTimeEntry"
+                    type="is-ghost"
+                    size="is-small"
+                >
                     <b-icon icon="delete" class="is-size-4"></b-icon>
                 </b-button>
             </b-tooltip>
@@ -138,9 +143,10 @@ export default {
                     }
                     this.toast(toastMessage);
                     this.$emit("dataChanged");
-                }).catch((error) => {
-                    console.log(error.data)
                 })
+                .catch((error) => {
+                    console.log(error.data);
+                });
         },
         // DESCRIPTION
         getDescription() {
@@ -191,12 +197,20 @@ export default {
             this.dataObj.start_date = e;
             // If time entry passing the midnight, set end_date to the next day by adding 86400 seconds = 24 hours.
             if (this.dataObj.start_date > this.dataObj.end_date) {
-                console.log('set start time', this.dataObj.start_date, this.dataObj.end_date )
+                console.log(
+                    "set start time",
+                    this.dataObj.start_date,
+                    this.dataObj.end_date
+                );
                 this.dataObj.end_date += 86400;
             }
-            // Check if there is more than 24h difference between dates, if so, set end_date to the day before by substraction 86400 seconds.            
+            // Check if there is more than 24h difference between dates, if so, set end_date to the day before by substraction 86400 seconds.
             if (this.dataObj.end_date - this.dataObj.start_date > 86400) {
-                console.log('set start time2', this.dataObj.start_date, this.dataObj.end_date )
+                console.log(
+                    "set start time2",
+                    this.dataObj.start_date,
+                    this.dataObj.end_date
+                );
                 this.dataObj.end_date -= 86400;
             }
             this.saveData(this.getDuration, "Start time has been updated");
@@ -205,13 +219,21 @@ export default {
             this.dataObj.end_date = e;
             // If time entry passing the midnight, set end_date to the next day by adding 86400 seconds = 24 hours.
             if (this.dataObj.start_date > this.dataObj.end_date) {
-                console.log('set start time3', this.dataObj.start_date, this.dataObj.end_date )
+                console.log(
+                    "set start time3",
+                    this.dataObj.start_date,
+                    this.dataObj.end_date
+                );
                 this.dataObj.end_date += 86400;
             }
             // Check if there is more than 24h difference between dates, if so, set end_date to the day before by substraction 86400 seconds.
             //this.saveData(this.getDuration, "Start time has been updated");
             if (this.dataObj.end_date - this.dataObj.start_date > 86400) {
-                console.log('set start time4', this.dataObj.start_date, this.dataObj.end_date )
+                console.log(
+                    "set start time4",
+                    this.dataObj.start_date,
+                    this.dataObj.end_date
+                );
                 this.dataObj.end_date -= 86400;
             }
             this.saveData(this.getDuration, "End time has been updated");
@@ -244,7 +266,7 @@ export default {
                             this.$emit("dataChanged");
                         })
                         .catch((error) => {
-                            console.log(error.data)
+                            console.log(error.data);
                         });
                 },
             });

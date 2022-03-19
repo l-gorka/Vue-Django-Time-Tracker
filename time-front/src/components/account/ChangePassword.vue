@@ -83,7 +83,7 @@
                     </b-field>
 
                     <b-button
-                        class="btn-change-password"
+                        class="btn-change-password my-1"
                         :loading="isLoading"
                         @click="changePassword"
                         type="is-primary"
