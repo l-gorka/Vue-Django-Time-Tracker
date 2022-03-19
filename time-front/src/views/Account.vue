@@ -9,11 +9,11 @@
                 </div>
             </div>
         </div>
-        <div class="columns is-multiline is-centered">
-            <div class="column is-12 is-8-desktop is-6-fullhd">
+        <div class="columns is-multiline is-centered mb-6">
+            <div class="column is-12 is-8-desktop is-7-fullhd my-6">
                 <change-password />
             </div>
-            <div class="column is-12 is-8-desktop is-6-fullhd">
+            <div class="column is-12 is-8-desktop is-7-fullhd">
                 <account-info />
             </div>
         </div>

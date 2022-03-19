@@ -4,7 +4,7 @@
 
 describe('Dashboard tests', () => {
 
-    it('the user can log in and redirects to dashboard', () => {
+    it('the user can log in and navigate to dashboard', () => {
         cy.visit('/');
         cy.contains('h1', 'Time tracker');
         cy.get('.nav-btn-login').click();

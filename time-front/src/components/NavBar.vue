@@ -33,7 +33,7 @@
             <template #end>
                 <b-navbar-item tag="div">
                     <div v-if="isLoggedIn" class="buttons">
-                        <a @click="logoutUser" class="button is-ghost">
+                        <a @click="logoutUser" class="button is-ghost nav-btn-logout">
                             <strong>Log out</strong>
                         </a>
                     </div>

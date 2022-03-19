@@ -69,7 +69,7 @@
 
                 <b-field
                     type="is-danger"
-                    message="Passwords must be the same."
+                    message="Password must be the same."
                     v-else
                     label="Re-enter password"
                 >

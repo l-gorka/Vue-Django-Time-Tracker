@@ -1,5 +1,5 @@
 <template>
-    <div class="section">
+    <div class="">
         <div v-if="isUserDataLoaded" class="panel is-dark has-background-white">
             <div class="panel-heading is-flex is-justify-content-space-between">
                 <span>Profile Info</span>

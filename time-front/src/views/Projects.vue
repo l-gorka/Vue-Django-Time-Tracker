@@ -43,25 +43,33 @@
                         />
                     </div>
                     <div class="panel-block">
-                        <b-input icon="magnify" v-model="searchTerm" placeholder="search" expanded />
+                        <b-input class="cy-input-search" icon="magnify" v-model="searchTerm" placeholder="search" expanded />
                     </div>
-                    <a
-                        @click="selectProject(project)"
-                        v-for="project in filteredProjects()"
-                        :key="project.id"
-                        class="panel-block is-flex is-justify-content-space-between"
-                    >
-                        <div :style="{color: project.color}" class="is-flex has-text-weight-normal">
-                            <b-icon icon="circle-medium"></b-icon>
-                            <p class>{{project.title}}</p>
-                        </div>
-                        <div>
-                            <p class="is-family-primary">{{ displayTime(project.time_total) }}</p>
-                        </div>
-                    </a>
+                    <div id="projects-menu">
+                        <a
+                            @click="selectProject(project)"
+                            v-for="project in filteredProjects()"
+                            :key="project.id"
+                            class="panel-block is-flex is-justify-content-space-between"
+                        >
+                            <div
+                                :style="{color: project.color}"
+                                class="is-flex cy-project-colored has-text-weight-normal"
+                            >
+                                <b-icon icon="circle-medium"></b-icon>
+                                <p class>{{project.title}}</p>
+                            </div>
+                            <div>
+                                <p class="is-family-primary">{{ displayTime(project.time_total) }}</p>
+                            </div>
+                        </a>
+                    </div>
                 </b-collapse>
             </div>
-            <div v-if="selectedProject" class="cy-selected-project column is-12-tablet is-8-desktop">
+            <div
+                v-if="selectedProject"
+                class="cy-selected-project column is-12-tablet is-8-desktop"
+            >
                 <div class="level">
                     <!-- PROJECT TITLE -->
                     <div class="level-left">
@@ -82,16 +90,13 @@
                                     type="is-primary"
                                     icon-left="circle-edit-outline"
                                     label="Edit"
-                                >
-                                    
-                                </b-button>
+                                ></b-button>
                                 <b-button
                                     @click="deleteProject"
                                     class="cy-btn-delete"
                                     type="is-primary"
                                     icon-left="delete"
                                     label="Delete"
-                                    
                                 >
                                     <b-icon icon="delete" class="is-size-4"></b-icon>
                                     <span>Delete</span>
@@ -167,8 +172,8 @@ import AddProject from "../components/AddProject.vue";
 export default {
     components: { DatePicker, ProjectBar, AddProject },
     mounted() {
-        this.$wait.start('getData') 
-        this.getData()
+        this.$wait.start("getData");
+        this.getData();
         this.isMobile();
     },
     data() {
@@ -199,8 +204,8 @@ export default {
             this.$store.dispatch("getTimeEntries").then(() => {
                 this.projects = this.$store.state.projects;
                 this.entries = this.$store.state.timeEntries;
-                this.$wait.end('getData') // remove waiting state from vuex
-                this.dataLoaded = true // show projects menu
+                this.$wait.end("getData"); // remove waiting state from vuex
+                this.dataLoaded = true; // show projects menu
             });
         },
         isMobile() {
@@ -235,7 +240,7 @@ export default {
                     projectID: this.selectedProject.id,
                     projectTitle: this.selectedProject.title,
                     projectColor: this.selectedProject.color,
-                    showUpdateModal: true
+                    showUpdateModal: true,
                 };
             }
             this.$buefy.modal.open({
@@ -258,6 +263,7 @@ export default {
         deleteProject() {
             // open dialog for confirmation
             this.$buefy.dialog.confirm({
+                customClass: "cy-delete-prompt",
                 title: "Deleting project",
                 message:
                     "Are you sure you want to <b>delete</b> this project? This action cannot be undone.",
@@ -298,6 +304,10 @@ export default {
 </script>
 
 <style>
+#projects-menu {
+    max-height: 50vh;
+    overflow-y: auto;
+}
 .level-left {
     flex-shrink: 1;
 }
