@@ -1,8 +1,10 @@
-from django.db import models
-from django.contrib.auth.models import User
-from unixtimestampfield import UnixTimeStampField
-from django.db.models.signals import post_save, pre_save, pre_delete, post_delete
 from datetime import datetime
+
+from django.contrib.auth.models import User
+from django.db import models
+from django.db.models.signals import (post_delete, post_save, pre_delete,
+                                      pre_save)
+from unixtimestampfield import UnixTimeStampField
 
 
 class Project(models.Model):
@@ -46,6 +48,7 @@ class TimeEntry(models.Model):
         verbose_name_plural = 'Time entries'
 
     def time_difference(self):
+        # return duration of time entry
         return self.end_date - self.start_date
 
     def __str__(self):
@@ -65,6 +68,7 @@ class DayEntry(models.Model):
         return str(self.date)
 
     def get_time_total(self):
+        # compute total day's duration
         self.time_total = 0
         for time_entry in self.time_entries.all():
             self.time_total += time_entry.time_difference()
@@ -80,6 +84,7 @@ def time_entry_save(sender, instance, **kwargs):
     day_entry.get_time_total()
     day_entry.save()
     if instance.project:
+        # add time entry to project
         project = Project.objects.get(id=instance.project.id)
         project.add_entry(instance)
         project.save()
@@ -111,8 +116,6 @@ def time_entry_pre_save(sender, instance, **kwargs):
 
 
 def time_entry_delete(sender, instance, **kwargs):
-    
-    
 
     # remove time entry from associated project
     if instance.project:

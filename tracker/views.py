@@ -1,10 +1,5 @@
-import json
-import time
-from datetime import datetime
-
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny
@@ -15,7 +10,29 @@ from .serializers import (ChangePasswordSerializer, DayEntrySerializer,
                           ProjectSerializer, TimeEntrySerializer,
                           UserCreateSerializer, UserSelrializer)
 
-# Create your views here.
+
+@api_view(['GET'])
+def user_data(request):
+    user = User.objects.get(id=request.user.id)
+    serializer = UserSelrializer(user)
+    return Response(serializer.data)
+
+
+class RegisterUser(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserCreateSerializer
+    permission_classes = (AllowAny,)
+
+    def post(self, request):
+        try:
+            serializer = UserCreateSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+        except IntegrityError:
+            return Response('Username already taken', 400)
+        except Exception as e:
+            return Response('Password incorrect', 400)
+        return Response('Created', 201)
 
 
 @api_view(['POST'])
@@ -36,54 +53,9 @@ def password_change(request):
 
 
 @api_view(['GET'])
-def user_data(request):
-    user = User.objects.get(id=request.user.id)
-    serializer = UserSelrializer(user)
-    return Response(serializer.data)
-
-
-class RegisterUser(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserCreateSerializer
-    permission_classes = (AllowAny,)
-
-    def post(self, request):
-        try:
-            serializer = UserCreateSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-        except IntegrityError as e:
-            return Response('Username already taken', 400)
-        except Exception as e:
-            return Response('Password incorrect', 400)
-        return Response('Created', 201)
-
-
-@api_view(['POST'])
-def register_user1(request):
-    body = json.loads(request.body)
-    try:
-        created = User.objects.create(
-            username=body['username'], email=body['email'])
-        created.set_password(body['password1'])
-        created.save()
-        return Response('User has been registered', status=202)
-    except IntegrityError:
-        return Response("User already exists", status=401)
-
-
-@csrf_exempt
-@api_view(['GET'])
 def project_list(request):
     projects = Project.objects.filter(owner=request.user).order_by('title')
     serializer = ProjectSerializer(projects, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-def ProjectView(request, pk):
-    project = Project.objects.get(id=pk)
-    serializer = ProjectSerializer(project)
     return Response(serializer.data)
 
 
@@ -116,13 +88,6 @@ def project_delete(request, pk):
         return Response('Item has been deleted', status=202)
     else:
         return Response('Forbidden', 403)
-
-
-@api_view(['GET'])
-def TimeEntryView(request, pk):
-    entry = TimeEntry.objects.get(id=pk)
-    serializer = TimeEntrySerializer(entry)
-    return Response(serializer.data)
 
 
 @api_view(['POST'])
@@ -166,14 +131,3 @@ def day_entries_list(request):
     entries = DayEntry.objects.filter(owner=request.user).order_by('-date')
     serializer = DayEntrySerializer(entries, many=True)
     return Response(serializer.data)
-
-
-@api_view(['GET'])
-def filtered_day_entry_list(request):
-    start_timestamp = int(request.query_params['start'])
-    start_date = datetime.fromtimestamp(start_timestamp)
-    end = request.query_params['end']
-
-    #entries = DayEntry.objects.filter(owner=request.user & date)
-
-    return Response([start_date, end], 200)

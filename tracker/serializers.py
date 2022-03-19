@@ -1,10 +1,11 @@
-from django.db import IntegrityError
-from rest_framework import serializers
-from django.contrib.auth.hashers import make_password
-from django.contrib.auth.password_validation import validate_password
-from django.contrib.auth.models import User
-from .models import DayEntry, Project, TimeEntry
+
 import time
+
+from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
+from rest_framework import serializers
+
+from .models import DayEntry, Project, TimeEntry
 
 
 class UserSelrializer(serializers.ModelSerializer):
@@ -51,8 +52,6 @@ class TimeEntrySerializer(serializers.ModelSerializer):
     class Meta():
         model = TimeEntry
         fields = '__all__'
-
-# return day etries list with date in timestamp format
 
 
 class TimestampDayEntrySerializer(serializers.ModelSerializer):

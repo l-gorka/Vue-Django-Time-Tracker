@@ -1,8 +1,9 @@
-from .base_test_data import BaseTestCase
-from django.test import TestCase
-from tracker.models import TimeEntry, Project, DayEntry
-from django.contrib.auth.models import User
 import datetime
+
+from django.contrib.auth.models import User
+from tracker.models import DayEntry, Project, TimeEntry
+
+from .base_test_data import BaseTestCase
 
 
 class TestModelsCreated(BaseTestCase):
