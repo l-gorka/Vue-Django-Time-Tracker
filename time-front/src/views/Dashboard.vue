@@ -29,13 +29,13 @@
                 <div class="column is-8">
                     <div class="columns">
                         <div class="column is-half">
-                            <div class="box notification is-primary">
+                            <div class="box box-time-total notification is-primary">
                                 <div class="heading">{{ dateLabel }}</div>
                                 <div class="title">{{ timeTotalLabel }}</div>
                             </div>
                         </div>
                         <div class="column is-half">
-                            <div class="box notification is-info">
+                            <div class="box box-top-project notification is-info">
                                 <div class="heading">Top project</div>
                                 <div class="title">{{ topProjectLabel }}</div>
                             </div>

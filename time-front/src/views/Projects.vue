@@ -18,7 +18,7 @@
                 <!-- PROJECTS MENU -->
                 <b-collapse
                     aria-id="contentIdForA11y2"
-                    class="panel is-shadowless is-primary has-background-white"
+                    class="panel cy-panel-select-project is-shadowless is-primary has-background-white"
                     animation="slide"
                     icon="account"
                     v-model="dropdownOpen"
@@ -61,7 +61,7 @@
                     </a>
                 </b-collapse>
             </div>
-            <div v-if="selectedProject" class="column is-12-tablet is-8-desktop">
+            <div v-if="selectedProject" class="cy-selected-project column is-12-tablet is-8-desktop">
                 <div class="level">
                     <!-- PROJECT TITLE -->
                     <div class="level-left">
@@ -78,19 +78,20 @@
                             <div class="title is-flex is-justify-content-space-evenly">
                                 <b-button
                                     @click="showAddProjectModal(edit=true)"
-                                    class="mr-2"
-                                    outlined
+                                    class="mr-2 cy-btn-edit"
                                     type="is-primary"
-                                    size="is-medium"
+                                    icon-left="circle-edit-outline"
+                                    label="Edit"
                                 >
-                                    <b-icon icon="circle-edit-outline" class="is-size-4"></b-icon>
-                                    <span>Edit</span>
+                                    
                                 </b-button>
                                 <b-button
                                     @click="deleteProject"
-                                    outlined
+                                    class="cy-btn-delete"
                                     type="is-primary"
-                                    size="is-medium"
+                                    icon-left="delete"
+                                    label="Delete"
+                                    
                                 >
                                     <b-icon icon="delete" class="is-size-4"></b-icon>
                                     <span>Delete</span>
@@ -104,13 +105,13 @@
                     <div class="column">
                         <div class="columns is-multiline">
                             <div class="column is-half">
-                                <div class="box notification is-primary">
+                                <div class="box cy-box-total-entries notification is-primary">
                                     <div class="heading">Nubmer of entries</div>
                                     <div class="title">{{selectedProject.time_entries.length }}</div>
                                 </div>
                             </div>
                             <div class="column is-half">
-                                <div class="box notification is-primary">
+                                <div class="box cy-box-total-time notification is-primary">
                                     <div class="heading">Time total</div>
                                     <div class="title">{{ displayTime(selectedProject.time_total) }}</div>
                                 </div>
@@ -234,6 +235,7 @@ export default {
                     projectID: this.selectedProject.id,
                     projectTitle: this.selectedProject.title,
                     projectColor: this.selectedProject.color,
+                    showUpdateModal: true
                 };
             }
             this.$buefy.modal.open({

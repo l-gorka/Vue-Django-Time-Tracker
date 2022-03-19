@@ -27,6 +27,7 @@
                         <span>{{projectName}}</span>
                     </b-button>
                     <b-button
+                        @click="getProjects"
                         v-else
                         size="is-small"
                         icon-left="plus-circle"

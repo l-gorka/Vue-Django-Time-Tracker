@@ -53,7 +53,7 @@ export default {
         ("00" + seconds).slice(-2)
       );
     },
-    timeEntries: function () {
+    timeEntries() {
       return this.dayEntry.time_entries;
     },
   },

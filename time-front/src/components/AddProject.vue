@@ -1,7 +1,7 @@
 <template>
     <div class="modal-card" style>
         <header class="modal-card-head">
-            <h2 class="modal-card-title">Create new project</h2>
+            <h2 class="modal-card-title">{{ showUpdateModal ? 'Update project' : 'Create new project' }}</h2>
         </header>
         <section class="modal-card-body">
             <div class="columns">
@@ -44,7 +44,7 @@ import { getAPI } from "../axios-base";
 import 'vue-swatches/dist/vue-swatches.css';
 import VSwatches from 'vue-swatches';
 export default {
-    props: ["projectID", "projectTitle", "projectColor"],
+    props: ["projectID", "projectTitle", "projectColor", "showUpdateModal"],
     components: {
         VSwatches
     },

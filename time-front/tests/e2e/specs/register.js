@@ -1,3 +1,6 @@
+// before runnning any of tests, execute 'python3 manage.py testserver users'
+// to load user data
+
 describe('Registaration test.', () => {
 
     it('the user can open registration modal by clicking at navbar icon', () => {

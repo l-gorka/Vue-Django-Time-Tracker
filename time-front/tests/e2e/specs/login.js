@@ -1,4 +1,5 @@
-// https://docs.cypress.io/api/introduction/api.html
+// before runnning any of tests, execute 'python3 manage.py testserver users'
+// to load user data
 
 describe('Login modal tests.', () => {
   it('user can open login modal', () => {

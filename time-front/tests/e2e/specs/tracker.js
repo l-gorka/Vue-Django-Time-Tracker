@@ -1,3 +1,6 @@
+// before runnning any of tests, execute 'python3 manage.py testserver users'
+// to load user data
+
 describe('TimeTracker tests.', () => {
 
     it('the user can log in', () => {
@@ -67,6 +70,10 @@ describe('TimeTracker tests.', () => {
         cy.get('[aria-label="#2ECC70"]').click();
         cy.get('.modal-card-foot .btn-create-project').click();
         cy.get('.day-entry-0 .time-entry-0').contains('New_project121');
+    })
+
+    it('the user can display dashboard', () => {
+        cy.get('[href="/dashboard"]').click()
     })
 
 

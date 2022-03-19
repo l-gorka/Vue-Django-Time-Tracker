@@ -3,6 +3,7 @@
         <b-dropdown ref="dropdown" mobile-modal position="is-bottom-left" aria-role="list">
             <template #trigger="{}">
                 <b-button
+                class="cy-date-picker"
                     v-if="largeIcon"
                     :label="dateOptionSelected"
                     type="is-primary"
@@ -14,13 +15,13 @@
             </template>
 
             <b-dropdown-item custom aria-role="listitem">
-                <div class="columns">
+                <div class="columns cy-date-options">
                     <div
                         class="column is-flex is-flex-direction-column is-align-self-baseline is-align-content-stretch"
                     >
                         <div class="mb-3" v-for="option in dateOptions" :key="option.id">
                             <b-button
-                                class="is-fullwidth"
+                                :class="is-fullwidth"
                                 v-if="option == dateOptionSelected"
                                 type="is-primary"
                             >{{ option }}</b-button>
