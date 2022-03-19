@@ -21,7 +21,7 @@
                     >
                         <div class="mb-3" v-for="option in dateOptions" :key="option.id">
                             <b-button
-                                :class="is-fullwidth"
+                                class="is-fullwidth"
                                 v-if="option == dateOptionSelected"
                                 type="is-primary"
                             >{{ option }}</b-button>

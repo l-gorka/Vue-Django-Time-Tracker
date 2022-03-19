@@ -14,14 +14,23 @@ export default {
             counterStr: "00:00:00",
         };
     },
+    beforeDestroy() {
+      document.title = 'Trackerrr'
+    },
     watch: {
-        isCounterStarted: function () {
+        isCounterStarted() {
             if (this.isCounterStarted) {
                 this.startCounter();
             } else {
                 this.stopCounter();
             }
         },
+        counterStr() {
+          console.log('counter')
+          if (this.counterStr == '00:00:00') {
+            document.title = 'Trackerrr'
+          } else document.title = `${this.counterStr} - Trackerrr`
+        }
     },
     methods: {
         startCounter() {
@@ -33,7 +42,7 @@ export default {
             this.counterSeconds = 0;
             this.counterStr = "00:00:00";
             clearInterval(this.counter);
-            document.title = "Tracker";
+            
         },
         displayCounter() {
             this.counterSeconds += 1;
@@ -51,7 +60,7 @@ export default {
                 ("00" + minutes).slice(-2) +
                 ":" +
                 ("00" + seconds).slice(-2);
-            document.title = `Tracker: ${this.counterStr}`;
+            ;
         },
     },
 };
