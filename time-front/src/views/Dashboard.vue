@@ -79,7 +79,7 @@
 <script>
 import { DateTime, Duration } from "luxon";
 import { getAPI } from "@/axios-base.js";
-import Bar from "../components/charts/Bar.vue";
+import Bar from "../components/charts/StackedBar.vue";
 import Doughnut from "../components/charts/Doughnut.vue";
 import DatePicker from "../components/dashboard/DatePicker.vue";
 export default {

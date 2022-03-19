@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import TimeEntry from "../components/TimeEntry.vue";
+import TimeEntry from "./TimeEntry.vue";
 export default {
   props: ["dayEntry"],
   components: { TimeEntry },

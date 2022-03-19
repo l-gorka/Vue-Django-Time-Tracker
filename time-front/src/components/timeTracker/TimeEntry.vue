@@ -82,11 +82,11 @@
 </template>
 
 <script>
-import { getAPI } from "../axios-base";
-import AddProject from "../components/AddProject.vue";
-import TimeInput from "../components/TimeInput.vue";
-import ProjectDropdown from "../components/ProjectsDropdown.vue";
-import CalendarDropdown from "../components/CalendarDropdown.vue";
+import { getAPI } from "../../axios-base";
+import AddProject from "../common/AddProject.vue";
+import TimeInput from "./TimeInput.vue";
+import ProjectDropdown from "../common/ProjectsDropdown.vue";
+import CalendarDropdown from "./CalendarDropdown.vue";
 export default {
     emits: ["dataChanged"],
     components: { AddProject, TimeInput, ProjectDropdown, CalendarDropdown },

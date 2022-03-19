@@ -59,9 +59,9 @@
 </template>
 
 <script>
-import { getAPI } from "../axios-base";
-import ProjectDropdown from "../components/ProjectsDropdown.vue";
-import Counter from "../components/Counter.vue";
+import { getAPI } from "../../axios-base";
+import ProjectDropdown from "../common/ProjectsDropdown.vue";
+import Counter from "./Counter.vue";
 export default {
     components: { ProjectDropdown, Counter },
     data() {

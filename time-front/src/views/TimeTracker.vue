@@ -35,9 +35,9 @@
 
 <script>
 import { getAPI } from "../axios-base";
-import TimeEntry from "../components/TimeEntry.vue";
-import DayEntry from "../components/DayEntry.vue";
-import CurrentTask from "../components/CurrentTask.vue";
+import TimeEntry from "../components/timeTracker/TimeEntry.vue";
+import DayEntry from "../components/timeTracker/DayEntry.vue";
+import CurrentTask from "../components/timeTracker/CurrentTask.vue";
 import axios from "axios";
 export default {
     components: { DayEntry, TimeEntry, CurrentTask },

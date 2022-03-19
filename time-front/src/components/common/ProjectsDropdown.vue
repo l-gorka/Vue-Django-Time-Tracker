@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { getAPI } from "../axios-base";
+import { getAPI } from "../../axios-base";
 import AddProject from "./AddProject.vue";
 export default {
     emits: ["ProjectChanged"],

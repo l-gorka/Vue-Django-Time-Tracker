@@ -11,11 +11,6 @@
                 </b-field>
             </div>
             <div class="panel-block">
-                <b-field label="Date joined">
-                    <p>{{ dateJoined }}</p>
-                </b-field>
-            </div>
-            <div class="panel-block">
                 <b-field label="Email">
                     <p>{{ email }}</p>
                 </b-field>

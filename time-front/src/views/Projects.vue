@@ -167,8 +167,8 @@
 import { Duration } from "luxon";
 import { getAPI } from "../axios-base";
 import DatePicker from "../components/dashboard/DatePicker.vue";
-import ProjectBar from "../components/charts/ProjectBar.vue";
-import AddProject from "../components/AddProject.vue";
+import ProjectBar from "../components/charts/Bar.vue";
+import AddProject from "../components/common/AddProject.vue";
 export default {
     components: { DatePicker, ProjectBar, AddProject },
     mounted() {

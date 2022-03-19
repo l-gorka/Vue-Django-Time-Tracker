@@ -87,6 +87,7 @@
         <footer class="modal-card-foot">
             <b-button class="btn-close" label="Close" @click="$emit('close')" />
             <b-button
+                :loading="isLoading"
                 class="btn-register-submit"
                 @click="registerUser"
                 label="Register"
@@ -108,6 +109,8 @@ export default {
                 password1: "",
                 password2: "",
             },
+            isLoading: false,
+
             usernameIsValid: true,
             emailIsValid: true,
 
@@ -165,6 +168,7 @@ export default {
                 this.passwordIsValid &&
                 this.passwordsMatch
             ) {
+                this.isLoading = true;
                 this.$store
                     .dispatch("registerUser", this.registerData) // call registerUser action in store
                     .then((response) => {
@@ -187,7 +191,7 @@ export default {
                                 "Password can't be a commonly used password or similar to your other personal information.";
                             this.passwordIsValid = false;
                         }
-                    });
+                    }).finally(() => this.isLoading = false)
             } else return false;
         },
     },

@@ -1,13 +1,19 @@
 <template>
     <div class="modal-card" style>
         <header class="modal-card-head">
-            <h2 class="modal-card-title">{{ showUpdateModal ? 'Update project' : 'Create new project' }}</h2>
+            <h2
+                class="modal-card-title"
+            >{{ showUpdateModal ? 'Update project' : 'Create new project' }}</h2>
         </header>
         <section class="modal-card-body">
             <div class="columns">
                 <div class="column">
                     <b-field v-if="title" label="Project name">
-                        <b-input class="input-title" @keyup.native.enter="createProject" v-model="projectData.title"></b-input>
+                        <b-input
+                            class="input-title"
+                            @keyup.native.enter="createProject"
+                            v-model="projectData.title"
+                        ></b-input>
                     </b-field>
                     <b-field
                         v-else
@@ -26,10 +32,9 @@
             </div>
         </section>
         <footer class="modal-card-foot">
+            <b-button class="btn-close" label="Close" @click="$emit('close')" />
             <b-button
-                class="btn-close"
-             label="Close" @click="$emit('close')" />
-            <b-button
+                :loading="isLoading"
                 class="btn-create-project"
                 @click="createProject"
                 :label="projectID ? 'Update project' : 'Create project' "
@@ -40,7 +45,7 @@
 </template>
 
 <script>
-import { getAPI } from "../axios-base";
+import { getAPI } from "../../axios-base";
 import 'vue-swatches/dist/vue-swatches.css';
 import VSwatches from 'vue-swatches';
 export default {
@@ -62,6 +67,7 @@ export default {
                 title: "",
                 color: "#000000",
             },
+            isLoading: false,
             title: true,
         };
     },
@@ -72,6 +78,7 @@ export default {
                 this.title = false
                 return null
             }
+            this.isLoading = true;
             if (this.projectID) {
                 // if ID passed as prop, update existing project
                 getAPI
@@ -84,7 +91,9 @@ export default {
                         this.$emit("projectAdded", response.data);
                         this.$emit("close");
                         this.toast("Project has been updated");
-                    });
+                        
+                    }).catch((err) => console.log(err))
+                    .finally(() => this.isLoading = false)
             } else {
                 // if no ID passed, just create project
                 getAPI
@@ -97,7 +106,8 @@ export default {
                         this.$emit("projectAdded", response.data);
                         this.$emit("close");
                         this.toast("Project has been created");
-                    });
+                    }).catch((err) => console.log(err))
+                    .finally(() => this.isLoading = false)
             }
         },
         toast(toastMessage) {
