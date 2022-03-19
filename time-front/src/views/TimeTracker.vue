@@ -3,7 +3,7 @@
         <div>
             <CurrentTask v-if="isLoaded" @timeEntryCreated="getEntries" />
         </div>
-        <div class v-if="paginatedDayEntries">
+        <div class v-if="numberOfEntries">
             <DayEntry
                 :class="`day-entry-${index}`"
                 @dataChanged="getEntries"
@@ -12,7 +12,17 @@
                 :key="dayEntry.id"
             />
         </div>
-        <div class="mx-2 pb-5">
+        <div v-else>
+            <div class="hero is-halfheight">
+                <div class="hero-body">
+                    <div class="container has-text-centered">
+                        <h2 class="title muted">You don't have any entries yet</h2>
+                        <h3 class="subtitle muted mt-2">Click START button to begin new activity.</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="numberOfEntries" class="mx-2 pb-5">
             <b-pagination
                 size="is-medium"
                 :total="numberOfEntries"
@@ -76,13 +86,16 @@ export default {
                     this.$wait.end("getEntries");
                 })
                 .catch((error) => console.log("time tracker", error))
-                .finally(() => this.isLoaded = true)
+                .finally(() => (this.isLoaded = true));
         },
     },
 };
 </script>
 
 <style>
+.muted {
+    color: darkgray;
+}
 .input-text-center input {
     text-align: center;
 }

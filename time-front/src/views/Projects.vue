@@ -152,7 +152,7 @@
                         <div class="hero is-halfheight">
                             <div class="hero-body">
                                 <div class="container has-text-centered">
-                                    <p class="title">No project selected</p>
+                                    <p class="title muted">No project selected</p>
                                 </div>
                             </div>
                         </div>
