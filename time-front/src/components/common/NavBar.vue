@@ -5,7 +5,7 @@
             <template #brand>
                 <b-navbar-item class="py-0" tag="router-link" :to="{ path: '/' }">
                     <img
-                        src="https://res.cloudinary.com/dgmcox/image/upload/v1646519282/Tracker500x60_xppaai.png"
+                        src="https://res.cloudinary.com/dgmcox/image/upload/v1646519282/Tracker500x60_xppaai.webp"
                         alt="Time tracker logo"
                     />
                 </b-navbar-item>

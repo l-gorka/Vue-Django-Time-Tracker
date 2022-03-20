@@ -25,9 +25,9 @@
                                 </div>
                             </div>
                             <div class="column is-5">
-                                <figure class="image">
+                                <figure class="image is-square">
                                     <img
-                                        src="https://res.cloudinary.com/dgmcox/image/upload/v1646557492/15_1_qdsmnx.png"
+                                        src="https://res.cloudinary.com/dgmcox/image/upload/v1646557492/15_1_qdsmnx.webp"
                                         alt="Description"
                                     />
                                 </figure>
@@ -88,7 +88,7 @@
                 </div>
                 <div class="hero-body">
                     <img
-                        src="https://res.cloudinary.com/dgmcox/image/upload/v1646586865/screens_s8daxt.png"
+                        src="https://res.cloudinary.com/dgmcox/image/upload/v1647803166/screens_s8daxt.webp"
                         alt
                     />
                 </div>
@@ -102,21 +102,21 @@
                     </div>
                     <div class="hero-body">
                         <div class="columns is-centered is-mobile">
-                            <div class="column is-3 has-text-centered">
+                            <div class="column is-3  has-text-centered">
                                 <img
-                                    src="https://res.cloudinary.com/dgmcox/image/upload/c_pad,h_120,w_120/v1646426610/1184px-Vue.js_Logo_2.svg_njfaal.png"
+                                    src="https://res.cloudinary.com/dgmcox/image/upload/c_pad,h_120,w_120/v1646426610/1184px-Vue.js_Logo_2.svg_njfaal.webp"
                                     alt
                                 />
                             </div>
                             <div class="column is-3 has-text-centered">
                                 <img
-                                    src="https://res.cloudinary.com/dgmcox/image/upload/c_pad,h_120,w_120/v1646426480/26799900_tnwy94.png"
+                                    src="https://res.cloudinary.com/dgmcox/image/upload/c_pad,h_120,w_120/v1646426480/26799900_tnwy94.webp"
                                     alt
                                 />
                             </div>
                             <div class="column is-3 has-text-centered">
                                 <img
-                                    src="https://res.cloudinary.com/dgmcox/image/upload/c_pad,h_120,w_120/v1646425651/bulma-logo_ixsvyd.png"
+                                    src="https://res.cloudinary.com/dgmcox/image/upload/c_pad,h_120,w_120/v1646425651/bulma-logo_ixsvyd.webp"
                                     alt
                                 />
                             </div>
@@ -149,23 +149,23 @@ export default {
                     title: "Track your time using stopwatch",
                     subtitle:
                         "Type what you're working on, select project and start the timer",
-                    url: "https://res.cloudinary.com/dgmcox/image/upload/v1646582252/timeTracker1_w3rbos.png",
+                    url: "https://res.cloudinary.com/dgmcox/image/upload/c_scale,w_1080/v1647802625/timeTracker1_w3rbos.webp",
                 },
                 {
                     title: "Enter or edit time entries manually",
                     subtitle:
                         "Set time and date, continue activity with one click",
-                    url: "https://res.cloudinary.com/dgmcox/image/upload/v1646582252/timeTrackerSetDate_lkpfcd.png",
+                    url: "https://res.cloudinary.com/dgmcox/image/upload/c_scale,w_1080/v1647802782/timeTrackerSetDate_lkpfcd.webp",
                 },
                 {
                     title: "See where you spend time",
                     subtitle: "",
-                    url: "https://res.cloudinary.com/dgmcox/image/upload/v1646582252/dashboard_wuohd8.png",
+                    url: "https://res.cloudinary.com/dgmcox/image/upload/c_scale,w_1080/v1647802919/dashboard_wuohd8.webp",
                 },
                 {
                     title: "Track time on projects, and keep an eye on progress",
                     subtitle: "",
-                    url: "https://res.cloudinary.com/dgmcox/image/upload/v1646582252/projects_okzlet.png",
+                    url: "https://res.cloudinary.com/dgmcox/image/upload/c_scale,w_1080/v1647803067/projects_okzlet.webp",
                 },
             ],
         };
@@ -194,4 +194,5 @@ body {
 .level-item {
     flex-shrink: 1;
 }
+
 </style>
