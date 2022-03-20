@@ -13,10 +13,6 @@ import os
 from pathlib import Path
 from corsheaders.defaults import default_headers
 
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -121,7 +117,16 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'search',
+        'USER': 'postgres',
+        'PASSWORD': 'Pass2020!',
+        'HOST': '127.0.0.1',
+        'PORT': '5432'
+    }
+}
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
@@ -141,3 +146,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_HEADERS = default_headers + (
     'contenttype',
 )
+
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES = ['default'].update(db_from_env)
