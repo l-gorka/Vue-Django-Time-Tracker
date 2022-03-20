@@ -17,35 +17,35 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import(/* webpackChunkName: "Home" */'../views/Home.vue')
   },
   {
     path: '*',
     name: 'PageNotFound',    
-    component: () => import('../views/PageNotFound.vue')
+    component: () => import(/* webpackChunkName: "NotFound" */'../views/PageNotFound.vue')
   },
   {
     path: '/tracker',
     name: 'TimeTracker',
-    component: () => import('../views/TimeTracker.vue'),
+    component: () => import(/* webpackChunkName: "Tracker" */'../views/TimeTracker.vue'),
     beforeEnter: isLoggedIn
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import('../views/Dashboard.vue'),
+    component: () => import(/* webpackChunkName: "Dashboard" */'../views/Dashboard.vue'),
     beforeEnter: isLoggedIn
   },
   {
     path: '/projects',
     name: 'Projects',
-    component: () => import('../views/Projects.vue'),
+    component: () => import(/* webpackChunkName: "Project" */'../views/Projects.vue'),
     beforeEnter: isLoggedIn
   },
   {
     path: '/account',
     name: 'Account',
-    component: () => import('../views/Account.vue'),
+    component: () => import(/* webpackChunkName: "Account" */'../views/Account.vue'),
     beforeEnter: isLoggedIn
   },
 ];
