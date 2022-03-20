@@ -27,7 +27,7 @@ FIXTURE_DIRS = [
 # SECRET_KEY = 'django-insecure-2r0-em5**(by06f+&y5qj#3zs^s3^47hhci$o%p4fy@6(ttj(&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
