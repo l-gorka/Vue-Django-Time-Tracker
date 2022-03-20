@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 from corsheaders.defaults import default_headers
+import django_on_heroku
+django_on_heroku.settings(locals())
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -97,17 +99,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'search',
-#         'USER': 'postgres',
-#         'PASSWORD': 'Pass2020!',
-#         'HOST': '127.0.0.1',
-#         'PORT': '5432'
-#     }
-# }
 
 
 # Password validation
