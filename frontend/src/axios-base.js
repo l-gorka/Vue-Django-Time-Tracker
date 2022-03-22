@@ -1,7 +1,8 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import store from './store';
-const APIUrl = 'http://127.0.0.1:8000';
+//const APIUrl = 'http://127.0.0.1:8000';
+const APIUrl = 'https://limitless-refuge-32819.herokuapp.com/';
 import { SnackbarProgrammatic as snackbar } from "buefy";
 
 const axiosBase = axios.create({
