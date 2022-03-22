@@ -7,13 +7,12 @@ import Buefy from 'buefy';
 import store from './store';
 import 'buefy/dist/buefy.css';
 import jwt_decode from "jwt-decode";
-import VueLuxon from "vue-luxon";
 import VueWait from 'vue-wait';
 
 
 Vue.use(Buefy);
 Vue.use(VueWait);
-Vue.use(VueAxios, axios, store, jwt_decode, VueLuxon);
+Vue.use(VueAxios, axios, store, jwt_decode);
 
 Vue.config.productionTip = false;
 

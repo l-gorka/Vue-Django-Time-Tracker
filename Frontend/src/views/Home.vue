@@ -9,7 +9,7 @@
                                 <h1 class="title is-1 is-bold is-spaced">Time tracker</h1>
                                 <h2
                                     class="subtitle is-5 is-muted"
-                                >Lorem ipsum sit dolor amet is a dummy text used by typography industry</h2>
+                                >Capture every task you work on. Take control over time intervals.</h2>
                                 <div class="button-wrap">
                                     <a
                                         @click="$router.push('/tracker')"
@@ -101,22 +101,28 @@
                         </div>
                     </div>
                     <div class="hero-body">
-                        <div class="columns is-centered is-mobile">
-                            <div class="column is-3  has-text-centered">
+                        <div class="columns is-centered is-mobile is-multiline">
+                            <div class="column is-3-mobile is-2-desktop  has-text-centered">
                                 <img
                                     src="https://res.cloudinary.com/dgmcox/image/upload/c_pad,h_120,w_120/v1646426610/1184px-Vue.js_Logo_2.svg_njfaal.webp"
                                     alt
                                 />
                             </div>
-                            <div class="column is-3 has-text-centered">
+                            <div class="column is-3-mobile is-2-desktop has-text-centered">
                                 <img
                                     src="https://res.cloudinary.com/dgmcox/image/upload/c_pad,h_120,w_120/v1646426480/26799900_tnwy94.webp"
                                     alt
                                 />
                             </div>
-                            <div class="column is-3 has-text-centered">
+                            <div class="column is-3-mobile is-2-desktop has-text-centered">
                                 <img
                                     src="https://res.cloudinary.com/dgmcox/image/upload/c_pad,h_120,w_120/v1646425651/bulma-logo_ixsvyd.webp"
+                                    alt
+                                />
+                            </div>
+                            <div class="column is-6-mobile is-5-tablet is-4-desktop is-3-widescreen has-text-centered">
+                                <img
+                                    src="https://res.cloudinary.com/dgmcox/image/upload/c_scale,h_120/v1647974074/logo_u81zno.png"
                                     alt
                                 />
                             </div>
@@ -129,7 +135,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 
 export default {
     computed: {
@@ -148,23 +153,23 @@ export default {
                 {
                     title: "Track your time using stopwatch",
                     subtitle:
-                        "Type what you're working on, select project and start the timer",
+                        "Hit start button to begin tracking your activity",
                     url: "https://res.cloudinary.com/dgmcox/image/upload/c_scale,w_1080/v1647802625/timeTracker1_w3rbos.webp",
                 },
                 {
                     title: "Enter or edit time entries manually",
                     subtitle:
-                        "Set time and date, continue activity with one click",
+                        "Set time and date, project and description. Continue past activity with just one click",
                     url: "https://res.cloudinary.com/dgmcox/image/upload/c_scale,w_1080/v1647802782/timeTrackerSetDate_lkpfcd.webp",
                 },
                 {
                     title: "See where you spend time",
-                    subtitle: "",
+                    subtitle: "You can see all your activities in a given period, and how much time you've spent on each one.",
                     url: "https://res.cloudinary.com/dgmcox/image/upload/c_scale,w_1080/v1647802919/dashboard_wuohd8.webp",
                 },
                 {
-                    title: "Track time on projects, and keep an eye on progress",
-                    subtitle: "",
+                    title: "Manage projects",
+                    subtitle: "Projects make it easier to analyze data, generate more useful reports, and see where and how you spend time.",
                     url: "https://res.cloudinary.com/dgmcox/image/upload/c_scale,w_1080/v1647803067/projects_okzlet.webp",
                 },
             ],
