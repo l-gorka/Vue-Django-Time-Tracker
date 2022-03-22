@@ -5,7 +5,7 @@
                 <span>Change password</span>
                 <b-icon icon="lock"></b-icon>
             </div>
-            <div class="panel-body p-3 is-expanded">
+            <div class="panel-body p-4 is-expanded">
                 <form @submit.prevent="changePassword">
                     <!-- OLD PASSWORD -->
                     <b-field v-if="oldPasswordIsValid" label="Old password">

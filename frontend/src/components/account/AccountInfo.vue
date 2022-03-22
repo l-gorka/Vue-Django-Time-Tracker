@@ -1,19 +1,21 @@
 <template>
-    <div class="">
+    <div class>
         <div v-if="isUserDataLoaded" class="panel is-dark has-background-white">
             <div class="panel-heading is-flex is-justify-content-space-between">
                 <span>Profile Info</span>
                 <b-icon icon="account"></b-icon>
             </div>
-            <div class="panel-block">
-                <b-field label="Last logged in">
-                    <p>{{lastLogin}}</p>
-                </b-field>
-            </div>
-            <div class="panel-block">
-                <b-field label="Email">
-                    <p>{{ email }}</p>
-                </b-field>
+            <div class="panel-body p-2">
+                <div class="panel-block">
+                    <b-field label="Date joined">
+                        <p>{{dateJoined}}</p>
+                    </b-field>
+                </div>
+                <div class="panel-block">
+                    <b-field label="Email">
+                        <p>{{ email }}</p>
+                    </b-field>
+                </div>
             </div>
         </div>
     </div>

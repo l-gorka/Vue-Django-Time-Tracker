@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
+
 from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -57,6 +59,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ]
+}
+
+SIMPLE_JWT = {
+    'REFRESH_TOKEN_LIFETIME': timedelta(months=1),
 }
 
 MIDDLEWARE = [
@@ -150,4 +156,5 @@ CORS_ALLOW_HEADERS = default_headers + (
  )
 
 import django_on_heroku
+
 django_on_heroku.settings(locals())
