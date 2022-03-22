@@ -10,6 +10,12 @@ from .serializers import (ChangePasswordSerializer, DayEntrySerializer,
                           ProjectSerializer, TimeEntrySerializer,
                           UserCreateSerializer, UserSelrializer)
 
+@api_view(['GET'])
+def wake_up(request):
+    # as soon as frontend is loaded, it will hit this view to run heroku dyno
+    # to save the users time
+    return Response('Heroku backend is running.', status=200)
+
 
 @api_view(['GET'])
 def user_data(request):

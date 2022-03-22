@@ -16,7 +16,7 @@
                                         v-if="isLoggedIn"
                                         class="button is-rounded is-primary raised mr-2"
                                     >Go to tracker</a>
-                                    <a  
+                                    <a
                                         @click="showRegisterModal()"
                                         v-else
                                         class="button is-rounded is-primary raised mr-2"
@@ -41,10 +41,7 @@
             <div class="page-wrapper">
                 <div class="hero is-bold">
                     <div class="hero-head has-text-centered">
-                        <h2
-                            
-                            class="title has-text-white pt-6 is-1 is-bold is-spaced"
-                        >How it works:</h2>
+                        <h2 class="title has-text-white pt-6 is-1 is-bold is-spaced">How it works:</h2>
                     </div>
                     <div class="hero-body is-vcentered px-0">
                         <b-carousel>
@@ -102,7 +99,7 @@
                     </div>
                     <div class="hero-body">
                         <div class="columns is-centered is-mobile is-multiline">
-                            <div class="column is-3-mobile is-2-desktop  has-text-centered">
+                            <div class="column is-3-mobile is-2-desktop has-text-centered">
                                 <img
                                     src="https://res.cloudinary.com/dgmcox/image/upload/c_pad,h_120,w_120/v1646426610/1184px-Vue.js_Logo_2.svg_njfaal.webp"
                                     alt
@@ -120,7 +117,9 @@
                                     alt
                                 />
                             </div>
-                            <div class="column is-6-mobile is-5-tablet is-4-desktop is-3-widescreen has-text-centered">
+                            <div
+                                class="column is-6-mobile is-5-tablet is-4-desktop is-3-widescreen has-text-centered"
+                            >
                                 <img
                                     src="https://res.cloudinary.com/dgmcox/image/upload/c_scale,h_120/v1647974074/logo_u81zno.png"
                                     alt
@@ -135,8 +134,17 @@
 </template>
 
 <script>
-
+import { axiosBase } from "../axios-base";
 export default {
+    created() {
+        axiosBase
+            .get("wake-up/")
+            .then((response) => {
+                this.isBackendOn = true;
+                console.log('home', response);
+            })
+            .catch((err) => console.log(err));
+    },
     computed: {
         isMobile() {
             if (window.innerWidth < 768) {
@@ -149,6 +157,7 @@ export default {
     },
     data() {
         return {
+            isBackendOn: false,
             carousels: [
                 {
                     title: "Track your time using stopwatch",
@@ -164,12 +173,14 @@ export default {
                 },
                 {
                     title: "See where you spend time",
-                    subtitle: "You can see all your activities in a given period, and how much time you've spent on each one.",
+                    subtitle:
+                        "You can see all your activities in a given period, and how much time you've spent on each one.",
                     url: "https://res.cloudinary.com/dgmcox/image/upload/c_scale,w_1080/v1647802919/dashboard_wuohd8.webp",
                 },
                 {
                     title: "Manage projects",
-                    subtitle: "Projects make it easier to analyze data, generate more useful reports, and see where and how you spend time.",
+                    subtitle:
+                        "Projects make it easier to analyze data, generate more useful reports, and see where and how you spend time.",
                     url: "https://res.cloudinary.com/dgmcox/image/upload/c_scale,w_1080/v1647803067/projects_okzlet.webp",
                 },
             ],
@@ -182,8 +193,8 @@ export default {
             element.scrollIntoView({ behavior: "smooth" });
         },
         showRegisterModal() {
-            this.$store.commit('openRegisterModal');
-        }
+            this.$store.commit("openRegisterModal");
+        },
     },
     components: {},
 };
@@ -199,5 +210,4 @@ body {
 .level-item {
     flex-shrink: 1;
 }
-
 </style>
