@@ -163,25 +163,25 @@ export default {
                     title: "Track your time using stopwatch",
                     subtitle:
                         "Hit start button to begin tracking your activity",
-                    url: "https://res.cloudinary.com/dgmcox/image/upload/c_scale,w_1080/v1647802625/timeTracker1_w3rbos.webp",
+                    url: "https://res.cloudinary.com/dgmcox/image/upload/v1647802625/timeTracker1_w3rbos.webp",
                 },
                 {
                     title: "Enter or edit time entries manually",
                     subtitle:
                         "Set time and date, project and description. Continue past activity with just one click",
-                    url: "https://res.cloudinary.com/dgmcox/image/upload/c_scale,w_1080/v1647802782/timeTrackerSetDate_lkpfcd.webp",
+                    url: "https://res.cloudinary.com/dgmcox/image/upload/v1647802782/timeTrackerSetDate_lkpfcd.webp",
                 },
                 {
                     title: "See where you spend time",
                     subtitle:
                         "You can see all your activities in a given period, and how much time you've spent on each one.",
-                    url: "https://res.cloudinary.com/dgmcox/image/upload/c_scale,w_1080/v1647802919/dashboard_wuohd8.webp",
+                    url: "https://res.cloudinary.com/dgmcox/image/upload/v1647802919/dashboard_wuohd8.webp",
                 },
                 {
                     title: "Manage projects",
                     subtitle:
                         "Projects make it easier to analyze data, generate more useful reports, and see where and how you spend time.",
-                    url: "https://res.cloudinary.com/dgmcox/image/upload/c_scale,w_1080/v1647803067/projects_okzlet.webp",
+                    url: "https://res.cloudinary.com/dgmcox/image/upload/v1647803067/projects_okzlet.webp",
                 },
             ],
         };

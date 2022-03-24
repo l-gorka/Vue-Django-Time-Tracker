@@ -1,25 +1,53 @@
-# Vue-Django-Time-Tracker
 
-## TODO
+# Trackerrr - simple, but fully functional time tracker app
 
-- [x] Add registration page.
-- [x] Add cookie to save started time entry.
-- [x] Add colored text in projects dropdown.
-- [x] Add delete TimeEntry funcionality.
-- [x] Add continue activity funcionality
-- [x] Add change date feature to TimeEntry
-- [x] 
+## Table of contents
 
-## Changelog
+- [General info](#general-info)  
+- [Features](#features)
+- [Technologies](#technologies)
+- [Setup & testing](#setup)  
 
-### 0.1
+  
+<a name="general-info"/></a>
+# General info
 
-#### Created TimeEntry component with funcionality listed below:
+I created this project for educational purposes, to get familiar with some of the front-end technologies, practice establishing connection between backend and frontend. 
+The time tracker app is one of my favorite productivity booster, so I decided to design one by myself. Dealing with time and date can become pretty tricky, so it was a really good programming exercise to me.
 
-+ Description field 
-+ Projects dropdown allows to choose from existing projects, search for project or create new. Project titles are displayed in colors upon user's choice.
-+ Time input fields - display start and end time in format HH:MM. User can manually adjust time, which is saved on @blur event. Input is validated, and if user types incorrect data, the previous value is restored from temporary variable. Before saving, the time is converted to Unix timestamp. In case when timeStart > timeEnd, the timeEnd date passes to the next day.
-+ Duration dropdown - displays duration of TimeEntry in format HH:MM:SS. User can manually adjust duration which will be added to startTime. If invalid, input is restored from temporary variable.
-+ Play button - starts new TimeEnry, with same Project and description.
-+ Options button - allows to duplicate or delete TimeEntry.
-+ Toast - pops up when user do some changes.
+
+<a name="features"></a>
+# Features:
+A few of the things you can do with Trackerrr:
+
+- create account 
+- track your activities using stopwatch
+- keep the counter alive even if the page is closed - thanks to cookie saved in your browser
+- manually add and delete time entries, change hours and date
+- add descriptions to time entries
+- see recent activities groupped by days
+- create project and assign time entries to it, you can also choose the color in which your project will be displayed
+- see dashboard with charts displaying entries from a given period
+- create, update and delete projects, see how much time you spent on each
+
+
+<a name="technologies"></a>
+# Technologies:
+
+The project uses Django with Django Rest Framework and PostgreSQL on the backend, Vue2 and Buefy on the frontend. Authetication is handled by JWT token. Deployed to Heroku and Netlify.
+
+Short list of used technologies:
+- Python 3.10.3
+- Django 4.1
+- Django Rest Framework 3.13.1
+- Django Rest Framework SimpleJWT 4.8.0
+- Vue 2.6.11
+- Vue Router 3.2.0
+- Vuex 3.6.2
+- Chart.js 2.9.4
+- Axios 0.25
+- Buefy 0.9.14
+- Bulma 0.9.0
+
+
+<a name="setup & testing"></a>
