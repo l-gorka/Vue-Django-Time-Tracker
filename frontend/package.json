@@ -9,6 +9,7 @@
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
+    "@mdi/font": "^6.5.95",
     "axios": "^0.25.0",
     "buefy": "^0.9.14",
     "chart.js": "^2.9.4",
