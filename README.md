@@ -6,7 +6,7 @@
 - [General info](#general-info)  
 - [Features](#features)
 - [Technologies](#technologies)
-- [Setup & testing](#setup)  
+- [Setup](#setup)  
 
   
 <a name="general-info"/></a>
@@ -36,9 +36,9 @@ A few of the things you can do with Trackerrr:
 
 The project uses Django with Django Rest Framework and PostgreSQL on the backend, Vue2 and Buefy on the frontend. Authetication is handled by JWT token. Deployed to Heroku and Netlify.
 
-Short list of used technologies:
+List of used technologies:
 - Python 3.10.3
-- Django 4.1
+- Django 4.0.3
 - Django Rest Framework 3.13.1
 - Django Rest Framework SimpleJWT 4.8.0
 - Vue 2.6.11
@@ -48,6 +48,9 @@ Short list of used technologies:
 - Axios 0.25
 - Buefy 0.9.14
 - Bulma 0.9.0
+- unittest
+- Jest
+- Cypress
 
 
-<a name="setup & testing"></a>
+<a name="setup"></a>

@@ -128,6 +128,6 @@ class TestDayEntries(BaseAPITestCase):
 
     def test_user_can_fetch_day_entries(self):
         response = self.client.get(self.day_entires_url)
-
+        print(DayEntry.objects.all())
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data[0]['id'], 1)
+        self.assertEqual(response.data[0]['id'], 2)
