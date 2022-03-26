@@ -26,7 +26,7 @@ FIXTURE_DIRS = [
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-2r0-em5**(by06f+&y5qj#3zs^s3^47hhci$o%p4fy@6(ttj(&'
+SECRET_KEY = 'django-insecure-2r0-em5**(by06f+&y5qj#3zs^s3^47hhci$o%p4fy@6(ttj(&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -147,7 +147,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    'https://determined-benz-4c7ce5.netlify.app/'    
+    'https://determined-benz-4c7ce5.netlify.app/',
+    'http://localhost:8080',
 ]
 
 #CORS_ALLOW_ALL_ORIGINS = True

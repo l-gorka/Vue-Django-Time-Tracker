@@ -54,3 +54,6 @@ List of used technologies:
 
 
 <a name="setup"></a>
+# Setup:
+
+To run this project locally
