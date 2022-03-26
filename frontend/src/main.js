@@ -3,14 +3,14 @@ import App from './App.vue';
 import router from './router';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
-import {
-	Button, Navbar, Modal, Carousel, Field, Input, Loading, Dropdown,
-	Icon, Tooltip, Toast, Notification, Datepicker, Collapse, Dialog
-} from 'buefy';
 import store from './store';
 import 'buefy/dist/buefy.css';
 import jwt_decode from "jwt-decode";
 import VueWait from 'vue-wait';
+import {
+	Button, Navbar, Modal, Carousel, Field, Input, Loading, Dropdown,
+	Icon, Tooltip, Toast, Notification, Datepicker, Collapse, Dialog
+} from 'buefy';
 
 
 Vue.use(Button);
