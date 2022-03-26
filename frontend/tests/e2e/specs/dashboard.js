@@ -4,6 +4,7 @@
 
 describe('Dashboard tests', () => {
 
+
     it('the user can log in and navigate to dashboard', () => {
         cy.visit('/');
         cy.contains('h1', 'Time tracker');
@@ -16,6 +17,7 @@ describe('Dashboard tests', () => {
     });
 
     it('the user can see total time this week', () => {
+        cy.clock(1647369815000)
         cy.get('.box-time-total').should('contain', 'This week')
         cy.get('.box-time-total').should('contain', '02:13:01')
     })
@@ -25,6 +27,7 @@ describe('Dashboard tests', () => {
     })
 
     it('the user can adjust displayed data to "Last week"', () => {
+        cy.clock(1647369815000)
         cy.get('.cy-date-picker').click()
         cy.get('.cy-date-options').contains('Last week').click()
         cy.get('.box-time-total').should('contain', 'Last week')
