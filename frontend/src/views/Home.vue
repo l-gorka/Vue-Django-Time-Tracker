@@ -141,7 +141,7 @@ export default {
             .get("wake-up/")
             .then((response) => {
                 this.isBackendOn = true;
-                console.log('home', response);
+                console.log("home", response);
             })
             .catch((err) => console.log(err));
     },

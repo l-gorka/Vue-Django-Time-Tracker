@@ -30,7 +30,6 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^3.0.0",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-e2e-cypress": "~4.5.15",
     "@vue/cli-plugin-router": "~4.5.0",
@@ -41,12 +40,6 @@
     "identity-obj-proxy": "^3.0.0",
     "jest-localstorage-mock": "^2.4.19",
     "jest-transform-stub": "^2.0.0",
-    "node-sass": "^6.0.1",
-    "postcss": "^7.0.35",
-    "postcss-loader": "6.2.1",
-    "purgecss-webpack-plugin": "^4.1.3",
-    "sass-loader": "^10.2.1",
-    "vue-template-compiler": "^2.6.11",
     "webpack": "^4.46.0",
     "webpack-bundle-analyzer": "^4.5.0"
   },
