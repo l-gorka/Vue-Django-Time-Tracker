@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  backend:
+    build: backend/.
+    command: sh -c "python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - type: bind
+        source: .
+        target: /backend/.
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - db
+  frontend:
+    volumes:
+      - type: bind
+        source: ./frontend/
+        target: /app/frontend/
+    build: frontend/.
+    command: npm run serve
+    ports:
+      - "8080:8080"
