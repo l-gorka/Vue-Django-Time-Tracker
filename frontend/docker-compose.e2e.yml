@@ -7,10 +7,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.e2e
-    ports:
-      - '3000:3000'
     environment:
       - CYPRESS_baseUrl=http://localhost:3000
     volumes:
       - ./tests/e2e/:/app/tests/e2e
       - ./tests/server:/app/tests/server
+    shm_size: 1024M
+    network_mode: host

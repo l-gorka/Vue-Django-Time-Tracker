@@ -129,11 +129,11 @@ USE_TZ = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'trackerrr',
-        'USER': 'postgres',
-        'PASSWORD': 'somePassword',
-        'HOST': '127.0.0.1',
-        'PORT': '5432'
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 # Static files (CSS, JavaScript, Images)
@@ -156,6 +156,6 @@ CORS_ALLOW_HEADERS = default_headers + (
      'contenttype',
  )
 
-import django_on_heroku
+# import django_on_heroku
 
-django_on_heroku.settings(locals())
+# django_on_heroku.settings(locals())

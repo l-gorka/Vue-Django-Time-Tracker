@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "test:e2e": "vue-cli-service test:e2e"
+    "test:e2e": "vue-cli-service test:e2e",
+    "docker:test:e2e": "docker-compose -f docker-compose.e2e.yml -f cy-open.yml up cypress"
   },
   "dependencies": {
     "@mdi/font": "^6.5.95",
