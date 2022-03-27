@@ -12,8 +12,8 @@
 <a name="general-info"/></a>
 # General info
 
-I created this project for educational purposes, to get familiar with some of the front-end technologies, practice establishing connection between backend and frontend. 
-The time tracker app is one of my favorite productivity booster, so I decided to design one by myself. Dealing with time and date can become pretty tricky, so it was a really good programming exercise to me.
+I created this project for educational purposes, to get familiar with some of the front-end technologies and practice establishing connection between backend and frontend. 
+The time tracker app is one of my favorite productivity booster, so I decided to design one by myself. Dealing with time and date can become pretty tricky, so it was a really good programming exercise for me.
 
 
 <a name="features"></a>

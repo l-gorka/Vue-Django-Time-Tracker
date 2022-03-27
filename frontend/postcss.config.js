@@ -1,4 +1,4 @@
-// 
+module.exports = {}
 
 // const purgecss = require("@fullhuman/postcss-purgecss");
 
