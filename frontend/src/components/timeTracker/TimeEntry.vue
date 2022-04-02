@@ -127,6 +127,7 @@ export default {
             }
         },
         saveData(func, toastMessage) {
+            this.$wait.start('timeEntryUpdate')
             getAPI
                 .post(
                     `time-entries/${this.timeEntryID}/update/`,
@@ -146,7 +147,8 @@ export default {
                 })
                 .catch((error) => {
                     console.log(error.data);
-                });
+                })
+                .finally(() => this.$wait.stop('timeEntryUpdate'))
         },
         // DESCRIPTION
         getDescription() {
