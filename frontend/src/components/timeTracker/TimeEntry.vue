@@ -148,7 +148,7 @@ export default {
                 .catch((error) => {
                     console.log(error.data);
                 })
-                .finally(() => this.$wait.stop('timeEntryUpdate'))
+                .finally(() => this.$wait.end('timeEntryUpdate'))
         },
         // DESCRIPTION
         getDescription() {
