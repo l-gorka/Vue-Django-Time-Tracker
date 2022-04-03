@@ -2,10 +2,10 @@ FROM node:lts-alpine
 
 WORKDIR /app/frontend/
 
+COPY package.json .
+COPY package-lock.json .
 
-COPY . .
-
-RUN npm i
+RUN npm ci
 
 
 EXPOSE 8080

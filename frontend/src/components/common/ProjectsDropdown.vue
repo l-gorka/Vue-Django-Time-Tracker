@@ -14,18 +14,20 @@
                     :delay="500"
                     label="Create new project or select existing"
                 >
-                    <b-button
+                    <a
                         :style="projectColor"
                         @click="getProjects"
-                        :label="projectName"
                         role="button"
                         v-if="project"
                         class="is-ghost is-size-6"
-                        size="is-small"
                     >
-                        <b-icon icon="circle-medium"></b-icon>
-                        <span>{{projectName}}</span>
-                    </b-button>
+                        <div class="is-flex is-align-items-center">
+                            <b-icon icon="circle-medium"></b-icon>
+                            <p>{{ projectName }}</p>
+                        </div>
+                        <!-- <b-icon icon="circle-medium"></b-icon>
+                        <span>{{projectName}}</span> -->
+                    </a>
                     <b-button
                         @click="getProjects"
                         v-else
