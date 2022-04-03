@@ -16,8 +16,8 @@ services:
                     "
     volumes:
       - type: bind
-        source: .
-        target: /backend/.
+        source: ./backend/
+        target: /app/backend/
     ports:
       - "8000:8000"
     environment:

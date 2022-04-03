@@ -147,8 +147,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    'https://determined-benz-4c7ce5.netlify.app/',
+    'https://determined-benz-4c7ce5.netlify.app',
     'http://localhost:8080',
+    'http://localhost:8081',
 ]
 
 #CORS_ALLOW_ALL_ORIGINS = True
