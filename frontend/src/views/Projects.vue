@@ -5,7 +5,7 @@
             <div class="level-left">
                 <div class="level-item">
                     <div class="title has-text-primary">
-                        <span>Projects asd</span>
+                        <span>Projects</span>
                     </div>
                 </div>
             </div>
