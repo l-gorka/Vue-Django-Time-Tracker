@@ -9,7 +9,7 @@ import jwt_decode from "jwt-decode";
 import VueWait from 'vue-wait';
 import {
 	Button, Navbar, Modal, Carousel, Field, Input, Loading, Dropdown,
-	Icon, Tooltip, Toast, Notification, Datepicker, Collapse, Dialog
+	Icon, Tooltip, Toast, Notification, Datepicker, Collapse, Dialog, Pagination
 } from 'buefy';
 
 
