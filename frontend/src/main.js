@@ -29,6 +29,7 @@ Vue.use(Notification);
 Vue.use(Datepicker)
 Vue.use(Collapse)
 Vue.use(Dialog)
+Vue.use(Pagination)
 Vue.use(VueAxios, axios, store, jwt_decode);
 
 Vue.config.productionTip = false;
