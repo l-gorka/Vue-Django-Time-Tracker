@@ -14,12 +14,12 @@
                 </b-button>
             </template>
 
-            <b-dropdown-item custom aria-role="listitem">
+            <b-dropdown-item class="dropdown-container p-0" custom aria-role="listitem">
                 <div class="columns cy-date-options">
                     <div
                         class="column is-flex is-flex-direction-column is-align-self-baseline is-align-content-stretch"
                     >
-                        <div class="mb-3" v-for="option in dateOptions" :key="option.id">
+                        <div class="mb-3 px-2" v-for="option in dateOptions" :key="option.id">
                             <b-button
                                 class="is-fullwidth"
                                 v-if="option == dateOptionSelected"
@@ -34,7 +34,7 @@
                         </div>
                     </div>
 
-                    <div class="column">
+                    <div class="column p-0">
                         <b-datepicker
                             @range-end="setDateFromCalendar"
                             :first-day-of-week="1"
@@ -120,4 +120,7 @@ export default {
 </script>
 
 <style>
+.dropdown-content {
+    width: 100%;
+}
 </style>
